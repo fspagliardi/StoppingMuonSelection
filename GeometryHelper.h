@@ -2,8 +2,8 @@
   Class containing useful functions for geometry.
 
 */
-#ifndef GEOMETRYHELPER_H
-#define GEOMETRYHELPER_H
+#ifndef GEOMETRY_HELPER_H
+#define GEOMETRY_HELPER_H
 
 #include "larcore/Geometry/Geometry.h"
 #include "larcorealg/Geometry/TPCGeo.h"

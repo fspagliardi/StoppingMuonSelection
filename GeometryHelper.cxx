@@ -2,8 +2,8 @@
   Class containing useful functions for geometry.
 
 */
-#ifndef GEOMETRYHELPER_CXX
-#define GEOMETRYHELPER_CXX
+#ifndef GEOMETRY_HELPER_CXX
+#define GEOMETRY_HELPER_CXX
 
 #include "GeometryHelper.h"
 
