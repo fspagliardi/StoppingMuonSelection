@@ -14,7 +14,7 @@
 
 namespace stoppingcosmicmuonselection {
 
-  class SpacePointHelper {
+  class SpacePointAlg {
 
   public:
     SpacePointHelper(const double &axis, const double &radius, const double &minNumber, const double &T0);
@@ -22,6 +22,9 @@ namespace stoppingcosmicmuonselection {
 
     // Is valid for this track
     bool IsValid();
+
+    // Set T0 value
+    void Set(const double &T0);
 
     // Check if the track correctly fit the space points around the end points
     bool IsGoodTrack(const recob::Track &track, std::vector<recob::SpacePoint> &spacePoints);

@@ -9,24 +9,29 @@
 
 namespace stoppingcosmicmuonselection {
 
-SpacePointHelper::SpacePointHelper(const double &axis, const double &radius, const double &minNumber, const double &T0) {
+SpacePointAlg::SpacePointAlg(const double &axis, const double &radius, const double &minNumber, const double &T0) {
   _cilinderAxis = axis;
   _cilinderRadius = radius;
   _minNumberSpacePoints = minNumber;
   _T0 = T0;
 }
 
-SpacePointHelper::~SpacePointHelper() {
+SpacePointAlg::~SpacePointAlg() {
 
 }
 
 // Is valid for this track
-bool SpacePointHelper::IsValid() {
+bool SpacePointAlg::IsValid() {
   return _isValid;
 }
 
+// Set T0 value
+void Set(const double &T0) {
+  _T0 = T0;
+}
+
 // Check if the track correctly fit the space points around the end points
-bool SpacePointHelper::IsGoodTrack(const recob::Track &track,
+bool SpacePointAlg::IsGoodTrack(const recob::Track &track,
                                     std::vector<recob::SpacePoint> &spacePoints) {
   // Check if the track is valid
   bool isTrackValid = false;
@@ -84,7 +89,7 @@ bool SpacePointHelper::IsGoodTrack(const recob::Track &track,
 }
 
 // Given a point and a line find the projection of that point on the line in 2D
-TVector3 SpacePointHelper::FindFoot(double *coeffLine, const double &sp_Y, const double &sp_Z)  {
+TVector3 SpacePointAlg::FindFoot(double *coeffLine, const double &sp_Y, const double &sp_Z)  {
   TVector3 foot;
   double zz = (sp_Y + (sp_Z / coeffLine[1]) - coeffLine[0]) / ( ((coeffLine[1]*coeffLine[1])+1) / coeffLine[1] );
   double yy = (coeffLine[1] * zz) + coeffLine[0];
@@ -93,7 +98,7 @@ TVector3 SpacePointHelper::FindFoot(double *coeffLine, const double &sp_Y, const
 }
 
 // Check if the track is missing some space points for one end
-void SpacePointHelper::FillLineCoeff(TVector3 &posLastValidPoint,
+void SpacePointAlg::FillLineCoeff(TVector3 &posLastValidPoint,
                                      TVector3 &pos20cmLastValidPoint,
                                      double *coeffLineYZ,
                                      double *coeffLineXZ) {
@@ -104,7 +109,7 @@ void SpacePointHelper::FillLineCoeff(TVector3 &posLastValidPoint,
 }
 
 // Check if the track is missing some space points for one end
-bool SpacePointHelper::IsTrackNotFittingSpacePoints(TVector3 &posExtremeValidPoint,
+bool SpacePointAlg::IsTrackNotFittingSpacePoints(TVector3 &posExtremeValidPoint,
                                                     TVector3 &pos20cmValidPoint,
                                                     const std::vector<recob::SpacePoint> &spacePoints,
                                                     const std::string &whichEnd) {
