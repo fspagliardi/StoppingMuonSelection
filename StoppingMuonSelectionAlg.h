@@ -27,6 +27,7 @@
 
 #include "GeometryHelper.h"
 #include "SpacePointAlg.h"
+#include "DataTypes.h"
 
 namespace stoppingcosmicmuonselection {
 
@@ -36,7 +37,7 @@ namespace stoppingcosmicmuonselection {
     StoppingMuonSelectionAlg();
     ~StoppingMuonSelectionAlg();
 
-    //
+    // See if there is track associated to this PFParticle
     bool IsPFParticleATrack(art::Event const &evt,recob::PFParticle const &thisParticle);
 
     // Read parameters from FHICL file
@@ -62,6 +63,7 @@ namespace stoppingcosmicmuonselection {
     bool _isACathodeCrosser = false;
 
     // Reconstructed information
+    size_t _evNumber;
     double _trackT0;
     TVector3 _recoStartPoint, _recoEndPoint;
     double _theta_xz, _theta_yz;
@@ -72,6 +74,8 @@ namespace stoppingcosmicmuonselection {
     // Truth information
     int _pdg;
     TVector3 _trueStartPoint, _trueEndPoint;
+    double _trueStartT, _trueEndT;
+    double _trueTrackID;
 
     // Helpers and algorithms
     GeometryHelper geoHelper;

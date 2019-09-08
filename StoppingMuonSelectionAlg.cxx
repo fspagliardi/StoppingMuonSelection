@@ -17,7 +17,7 @@ namespace stoppingcosmicmuonselection {
 
   }
 
-  //
+  // See if there is track associated to this PFParticle
   bool StoppingMuonSelectionAlg::IsPFParticleATrack(art::Event const &evt,
                                                     recob::PFParticle const &thisParticle) {
     const recob::Track *trackP = pfpUtil.GetPFParticleTrack(thisParticle,evt,fPFParticleTag,fTrackerTag);
@@ -54,6 +54,7 @@ namespace stoppingcosmicmuonselection {
     if (!thisParticle.IsPrimary()) return false;
 
     // All good now, proceed with storing info for selection.
+    _evNumber = evt.id().event();
     // Get the T0
     std::vector<anab::T0> pfparticleT0s = pfpUtil.GetPFParticleT0(thisParticle,evt,fPFParticleTag);
     if (pfparticleT0s.size() == 0) {
