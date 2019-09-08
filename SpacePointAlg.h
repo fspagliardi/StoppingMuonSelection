@@ -2,8 +2,8 @@
   Class containing useful functions for not fitted space points.
 
 */
-#ifndef SPACEPOINT_HELPER_H
-#define SPACEPOINT_HELPER_H
+#ifndef SPACEPOINT_ALG_H
+#define SPACEPOINT_ALG_H
 
 #include "larcore/Geometry/Geometry.h"
 #include "larcorealg/Geometry/GeometryCore.h"
@@ -39,7 +39,7 @@ namespace stoppingcosmicmuonselection {
     const double INV_DBL = -9999999;
     // Given a point and a line find the projection of that point on the line in 2D
     TVector3 FindFoot(double *coeffLine, const double &sp_Y, const double &sp_Z);
-    // Fill the coefficients for the line interpolating the start and end of the track
+    // Fill the coefficients for the line interpolating the start and end of theALG
     void FillLineCoeff(TVector3 &posLastValidPoint,
                        TVector3 &pos20cmLastValidPoint,
                        double *coeffLineYZ,

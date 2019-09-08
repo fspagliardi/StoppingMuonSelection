@@ -2,10 +2,10 @@
   Class containing useful functions for not fitted space points.
 
 */
-#ifndef SPACEPOINT_HELPER_CXX
-#define SPACEPOINT_HELPER_CXX
+#ifndef SPACEPOINT_ALG_CXX
+#define SPACEPOINT_ALG_CXX
 
-#include "SpacePointHelper.h"
+#include "SpacePointAlg.h"
 
 namespace stoppingcosmicmuonselection {
 
