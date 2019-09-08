@@ -105,20 +105,22 @@ namespace stoppingcosmicmuonselection {
   }
 
   // Check if a point is contained in a slice from the active volume
-  bool GeometryHelper::IsPointInSlice(double *v, TVector3 const &Point) const {
+  bool GeometryHelper::IsPointInSlice(TVector3 const &Point) const {
     if (!_isThicknessSet)
       std::cerr << "Thickness is not set." << std::endl;
-    return (   (Point.Y()>=(v[3]-thicknessStartVolume) && Point.Y()<=v[3])
-            || (Point.X()>=v[0] && Point.X()<=(v[0]+thicknessStartVolume))
-            || (Point.X()<=v[1] && Point.X()>=(v[1]-thicknessStartVolume))
-            || (Point.Z()>=v[4] && Point.Z()<=(v[4]+thicknessStartVolume))
-            || (Point.Z()<=v[5] && Point.Z()>=(v[5]-thicknessStartVolume)));
+    if (!_isActiveBoundsInitialised)
+      std::cerr << "Active Bounds not initialised." << std::endl;
+    return (   (Point.Y()>=(_activeBounds[3]-thicknessStartVolume) && Point.Y()<=v[3])
+            || (Point.X()>=_activeBounds[0] && Point.X()<=(_activeBounds[0]+thicknessStartVolume))
+            || (Point.X()<=_activeBounds[1] && Point.X()>=(_activeBounds[1]-thicknessStartVolume))
+            || (Point.Z()>=_activeBounds[4] && Point.Z()<=(_activeBounds[4]+thicknessStartVolume))
+            || (Point.Z()<=_activeBounds[5] && Point.Z()>=(_activeBounds[5]-thicknessStartVolume)));
   }
 
   // Check if a point is contained in a slice from the active volume
-  bool GeometryHelper::IsPointInSlice(double *v, double *Point) const {
+  bool GeometryHelper::IsPointInSlice(double *Point) const {
     const TVector3 point_V(Point[0],Point[1],Point[2]);
-    return IsPointInSlice(v, point_V);
+    return IsPointInSlice(point_V);
   }
 
 } // end of namespace stoppingcosmicmuonselection
