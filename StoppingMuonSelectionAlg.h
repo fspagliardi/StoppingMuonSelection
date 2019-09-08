@@ -65,7 +65,6 @@ namespace stoppingcosmicmuonselection {
     void Reset();
 
   private:
-    double INV_DBL = -9999999;
     bool _isACathodeCrosser = false;
     bool _isPFParticleATrack = false;
 

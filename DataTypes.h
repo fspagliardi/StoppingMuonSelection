@@ -1,9 +1,10 @@
-#ifndef DATA_TYPES.H
-#define DATA_TYPES.H
+#ifndef DATA_TYPES_H
+#define DATA_TYPES_H
 
 namespace stoppingcosmicmuonselection {
 
-  double INV_DBL = -9999999;
+  const int INV_INT = -999;
+  const double INV_DBL = -9999999;
 
   struct trackProperties {
     // Reconstructed information
@@ -23,8 +24,8 @@ namespace stoppingcosmicmuonselection {
     double trueStartT, trueEndT;
     double trueTrackID;
 
-    Reset() {
-      evNumber = INV_DBL;
+    void Reset() {
+      evNumber = INV_INT;
       trackT0 = INV_DBL;
       recoStartX = INV_DBL;
       recoStartY = INV_DBL;
@@ -38,7 +39,7 @@ namespace stoppingcosmicmuonselection {
       maxHitPeakTime = INV_DBL;
       trackLength = INV_DBL;
       trackID = INV_DBL;
-      pdg = INV_DBL;
+      pdg = INV_INT;
       trueStartX = INV_DBL;
       trueStartY = INV_DBL;
       trueStartZ = INV_DBL;
@@ -49,7 +50,7 @@ namespace stoppingcosmicmuonselection {
       trueEndT = INV_DBL;
       trueTrackID = INV_DBL;
     }
-  }
+  };
 
 }
 

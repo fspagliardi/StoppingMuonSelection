@@ -227,20 +227,19 @@ namespace stoppingcosmicmuonselection {
   void StoppingMuonSelectionAlg::Reset() {
     _isACathodeCrosser = false;
     _isPFParticleATrack = false;
-    // Reconstructed information
-    _evNumber = INV_DBL;
+    _evNumber = INV_INT;
     _trackT0 = INV_DBL;
-    _recoStartPoint.SetXYZ(INV_DBL,INV_DBL,INV_DBL;
-    _recoEndPoint.SetXYZ(INV_DBL,INV_DBL,INV_DBL;
+    _recoStartPoint.SetXYZ(INV_DBL,INV_DBL,INV_DBL);
+    _recoEndPoint.SetXYZ(INV_DBL,INV_DBL,INV_DBL);
     _theta_xz = INV_DBL;
     _theta_yz = INV_DBL;
     _minHitPeakTime = INV_DBL;
     _maxHitPeakTime = INV_DBL;
     _trackLength = INV_DBL;
     _trackID = INV_DBL;
-    _pdg = INV_DBL;
-    _trueStartPoint.SetXYZ(INV_DBL,INV_DBL,INV_DBL;
-    _trueEndPoint.SetXYZ(INV_DBL,INV_DBL,INV_DBL;
+    _pdg = INV_INT;
+    _trueStartPoint.SetXYZ(INV_DBL,INV_DBL,INV_DBL);
+    _trueEndPoint.SetXYZ(INV_DBL,INV_DBL,INV_DBL);
     _trueStartT = INV_DBL;
     _trueEndT = INV_DBL;
     _trueTrackID = INV_DBL;

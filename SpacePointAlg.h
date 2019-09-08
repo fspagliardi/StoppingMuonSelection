@@ -12,6 +12,7 @@
 #include "fhiclcpp/ParameterSet.h"
 #include "TVector3.h"
 #include "TMath.h"
+#include "DataTypes.h"
 
 namespace stoppingcosmicmuonselection {
 
@@ -43,7 +44,6 @@ namespace stoppingcosmicmuonselection {
     double _cilinderAxis; // cm
     double _cilinderRadius; // cm
     size_t _minNumberSpacePoints;
-    const double INV_DBL = -9999999;
     // Given a point and a line find the projection of that point on the line in 2D
     TVector3 FindFoot(double *coeffLine, const double &sp_Y, const double &sp_Z);
     // Fill the coefficients for the line interpolating the start and end of theALG
