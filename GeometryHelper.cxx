@@ -123,6 +123,14 @@ namespace stoppingcosmicmuonselection {
     return IsPointInSlice(point_V);
   }
 
+  // Get the APA boundaries (simple version)
+  double *GetAPABoundaries() {
+    if (!_isActiveBoundsInitialised)
+      std::cerr << "Active Bounds not initialised." << std::endl;
+    _APABoundaries[0] = _activeBounds[5]/3.;
+    _APABoundaries[1] = _activeBounds[5]*2/3.;
+  }
+
 } // end of namespace stoppingcosmicmuonselection
 
 #endif

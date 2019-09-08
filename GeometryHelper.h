@@ -46,6 +46,9 @@ namespace stoppingcosmicmuonselection {
     bool IsPointInSlice(TVector3 const &Point) const;
     bool IsPointInSlice(double *Point) const;
 
+    // Get the APA boundaries (simple version)
+    double *GetAPABoundaries();
+
   private:
     bool _isActiveBoundsInitialised = false;
     bool _isFiducialBoundsInitialised = false;
@@ -55,6 +58,7 @@ namespace stoppingcosmicmuonselection {
     double _thicknessStartVolume;
     double _activeBounds[6];
     double _fiducialBounds[6];
+    double _APABoundaries[2];
   };
 }
 
