@@ -9,6 +9,7 @@
 #include "larcorealg/Geometry/GeometryCore.h"
 #include "lardataobj/RecoBase/Track.h"
 #include "lardataobj/RecoBase/SpacePoint.h"
+#include "fhiclcpp/ParameterSet.h"
 #include "TVector3.h"
 #include "TMath.h"
 
@@ -17,14 +18,17 @@ namespace stoppingcosmicmuonselection {
   class SpacePointAlg {
 
   public:
-    SpacePointAlg(const double &axis, const double &radius, const double &minNumber, const double &T0);
+    SpacePointAlg(const double &T0);
     ~SpacePointAlg();
 
     // Is valid for this track
     bool IsValid();
 
     // Set T0 value
-    void Set(const double &T0);
+    void SetT0(const double &T0);
+
+    // Read parameters from FHICL file
+    void reconfigure(fhicl::ParameterSet const &p);
 
     // Check if the track correctly fit the space points around the end points
     bool IsGoodTrack(const recob::Track &track, std::vector<recob::SpacePoint> &spacePoints);

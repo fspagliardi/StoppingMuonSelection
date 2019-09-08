@@ -9,10 +9,7 @@
 
 namespace stoppingcosmicmuonselection {
 
-SpacePointAlg::SpacePointAlg(const double &axis, const double &radius, const double &minNumber, const double &T0) {
-  _cilinderAxis = axis;
-  _cilinderRadius = radius;
-  _minNumberSpacePoints = minNumber;
+SpacePointAlg::SpacePointAlg(const double &T0) {
   _T0 = T0;
 }
 
@@ -26,8 +23,15 @@ bool SpacePointAlg::IsValid() {
 }
 
 // Set T0 value
-void SpacePointAlg::Set(const double &T0) {
+void SpacePointAlg::SetT0(const double &T0) {
   _T0 = T0;
+}
+
+// Read parameters from FHICL file
+void SpacePointAlg::reconfigure(fhicl::ParameterSet const &p) {
+  _cilinderAxis = p.get<double>("cilinderAxis", 50.);
+  _cilinderRadius = p.get<double>("cilinderRadius", 5.);
+  _minNumberSpacePoints = p.get<int>("minNumberSpacePoints", 10);
 }
 
 // Check if the track correctly fit the space points around the end points
