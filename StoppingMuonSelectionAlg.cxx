@@ -86,6 +86,51 @@ namespace stoppingcosmicmuonselection {
     if (minHitPeakTime <= cutMinHitPeakTime_CC) return false;
     if (maxHitPeakTime >= cutMaxHitPeakTime_CC) return false;
 
+    // Look for broken tracks
+    TVector3 dirFirstTrack = recoEndPoint - recoStartPoint;
+    bool isBrokenTrack = false;
+    const std::vector<recob::PFParticle> & pfparticles = *(evt.getValidHandle<std::vector<recob::PFParticle>>(fPFParticleTag));
+    for (size_t p=0;p<pfparticles.size();p++) {
+      // Get track
+      const recob::Track *newTrack = pfpUtil.GetPFParticleTrack(pfparticles[p],evt,fPFParticleTag,fTrackerTag);
+      if (newTrack==nullptr) continue;
+      if (newTrack->ID()==recoTrackID) continue;
+      size_t fp = newTrack->FirstValidPoint();
+      TVector3 recoStartPointSecond(newTrack->LocationAtPoint(fp).X(),newTrack->LocationAtPoint(fp).Y(),newTrack->LocationAtPoint(fp).Z());
+      TVector3 recoEndPointSecond = newTrack->End<TVector3>();
+      orderRecoStartEnd(recoStartPointSecond,recoEndPointSecond);
+      TVector3 dirSecondTrack = recoEndPointSecond-recoStartPointSecond;
+      TVector3 dirHigherTrack, dirLowerTrack, endPointHigherTrack, startPointLowerTrack, endPointLowerTrack;
+      if (recoStartPoint.Y() > recoStartPointSecond.Y()) {
+        dirHigherTrack = dirFirstTrack;
+        dirLowerTrack = dirSecondTrack;
+        startPointLowerTrack = recoStartPointSecond;
+        endPointLowerTrack = recoEndPointSecond;
+        endPointHigherTrack = recoEndPoint;
+      }
+      else
+        continue;
+      TVector3 middePointLowerTrack = (startPointLowerTrack + endPointLowerTrack) * 0.5;
+      TVector3 dirHigherTrack_YZ(0., dirHigherTrack.Y(), dirHigherTrack.Z());
+      TVector3 dirJoiningSegment(0., middePointLowerTrack.Y()-endPointHigherTrack.Y(), middePointLowerTrack.Z()-endPointHigherTrack.Z());
+      double cosBeta = TMath::Cos(dirHigherTrack_YZ.Angle(dirJoiningSegment));
+      double absCosAlpha = TMath::Abs(TMath::Cos(dirFirstTrack.Angle(dirSecondTrack)));
+
+      if ( (absCosAlpha > cutCosAngleBrokenTracks_CC) && (cosBeta >= cutCosAngleAlignment_CC) )
+        isBrokenTrack = true;
+
+      double distHigherLower = TMath::Sqrt(TMath::Power(endPointHigherTrack.Y()-startPointLowerTrack.Y(),2) + TMath::Power(endPointHigherTrack.Z()-startPointLowerTrack.Z(),2));
+      if (distHigherLower < radiusBrokenTracksSearch_CC) {
+        if ( TMath::Abs(TMath::Cos(dirFirstTrack.Angle(dirSecondTrack))) > 0.96)
+          isBrokenTrack = true;
+      }
+      // Stop searching if found one
+      if (isBrokenTrack) break;
+    }
+    if (isBrokenTrack) return false;
+
+    // All cuts passed, this is likely a cathode-crossing stopping muon.
+    return true;
 
   }
 
@@ -122,7 +167,7 @@ namespace stoppingcosmicmuonselection {
   }
 
   // Determine min and max hit peak time for this track
-  void SetMinAndMaxHitPeakTime(art::Event const &evt, recob::PFParticle const &thisParticle, duoble &minHitPeakTime, double &maxHitPeakTime) {
+  void SetMinAndMaxHitPeakTime(art::Event const &evt, recob::PFParticle const &thisParticle, double &minHitPeakTime, double &maxHitPeakTime) {
     // Get Hits associated with PFParticle
     const std::vector<const recob::Hit*> Hits = pfpUtil.GetPFParticleHits(thisParticle,evt,fPFParticleTag);
     std::vector<double> HitPeakTimes;
