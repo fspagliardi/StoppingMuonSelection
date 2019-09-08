@@ -18,7 +18,7 @@ namespace stoppingcosmicmuonselection {
   class SpacePointAlg {
 
   public:
-    SpacePointAlg(const double &T0);
+    SpacePointAlg();
     ~SpacePointAlg();
 
     // Is valid for this track

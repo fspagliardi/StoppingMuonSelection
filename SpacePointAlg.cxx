@@ -9,8 +9,7 @@
 
 namespace stoppingcosmicmuonselection {
 
-SpacePointAlg::SpacePointAlg(const double &T0) {
-  _T0 = T0;
+SpacePointAlg::SpacePointAlg() {
 }
 
 SpacePointAlg::~SpacePointAlg() {
