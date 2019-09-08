@@ -43,8 +43,8 @@ namespace stoppingcosmicmuonselection {
     void SetThicknessStartVolume(const double &thickness);
 
     // Check if a point is contained in a slice from the active volume
-    bool IsPointInSlice(double *v, TVector3 const &Point, double const &thicknessStartVolume) const;
-    bool IsPointInSlice(double *v, double *Point, double const &thicknessStartVolume) const;
+    bool IsPointInSlice(double *v, TVector3 const &Point) const;
+    bool IsPointInSlice(double *v, double *Point) const;
 
   private:
     bool _isActiveBoundsInitialised = false;
