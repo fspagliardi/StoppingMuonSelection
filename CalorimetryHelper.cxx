@@ -81,7 +81,7 @@ namespace stoppingcosmicmuonselection {
       int size = res_vect.size();
       double max = *max_element(res_vect.begin(),res_vect.end());
       for (int i = 0; i < TMath::Min(3000, _trackHitNumb[planeNumber]);i++) {
-        if (_hity[planeNumber][size-1] < _hity[2][0])  {
+        if (_hity[planeNumber][size-1] < _hity[planeNumber][0])  {
           if (_resrange[planeNumber][size-1] < _resrange[planeNumber][0])  {
             _resrange_ord[planeNumber][i] = _resrange[planeNumber][i];
           }
@@ -99,6 +99,55 @@ namespace stoppingcosmicmuonselection {
         }
       }
     } // end loop on planes
+  }
+
+  // Get hit numb
+  double CalorimetryHelper::GetHitNumb(const int &planeNumb) {
+    return _trackHitNumb[planeNumb];
+  }
+  // Get dqdx
+  double *CalorimetryHelper::GetdQdx(const int &planeNumb) {
+    return _dqdx[planeNumb];
+  }
+  // Get dEdx
+  double *CalorimetryHelper::GetdEdx(const int &planeNumb) {
+    return _dedx[planeNumb];
+  }
+  // Get Residual range
+  double *CalorimetryHelper::GetResRange(const int &planeNumb) {
+    return _resrange[planeNumb];
+  }
+  // Get Ordered residual range
+  double *CalorimetryHelper::GetResRangeOrdered(const int &planeNumb) {
+    return _resrange_ord[planeNumb];
+  }
+  // Get HitX
+  double *CalorimetryHelper::GetHitX(const int &planeNumb) {
+    return _hitx[planeNumb];
+  }
+  // Get HitY
+  double *CalorimetryHelper::GetHitY(const int &planeNumb) {
+    return _hity[planeNumb];
+  }
+  // Get HitZ
+  double *CalorimetryHelper::GetHitZ(const int &planeNumb) {
+    return _hitz[planeNumb];
+  }
+  // Get HitPeakTime
+  double *CalorimetryHelper::GetHitPeakTime(const int &planeNumb) {
+    return _hitPeakTime[planeNumb];
+  }
+  // Get lifetime correction factors
+  double *CalorimetryHelper::GetCorrFactor(const int &planeNumb) {
+    return _corr_factors[planeNumb];
+  }
+  // Get drift times
+  double *CalorimetryHelper::GetDriftTime(const int &planeNumb) {
+    return _drift_time[planeNumb];
+  }
+  // Get track pitches
+  double *CalorimetryHelper::GetTrackPitch(const int &planeNumb) {
+    return _track_pitch[planeNumb];
   }
 
   // Get the lifetime correction

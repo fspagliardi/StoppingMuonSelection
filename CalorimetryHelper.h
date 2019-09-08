@@ -43,6 +43,31 @@ namespace stoppingcosmicmuonselection {
     // Order the residual range with respect to the track direction
     void OrderResRange();
 
+    // Get hit numb
+    double GetHitNumb(const int &planeNumb);
+    // Get dQdx
+    double *GetdQdx(const int &planeNumb);
+    // Get dEdx
+    double *GetdEdx(const int &planeNumb);
+    // Get Residual range
+    double *GetResRange(const int &planeNumb);
+    // Get Ordered residual range
+    double *GetResRangeOrdered(const int &planeNumb);
+    // Get HitX
+    double *GetHitX(const int &planeNumb);
+    // Get HitY
+    double *GetHitY(const int &planeNumb);
+    // Get HitZ
+    double *GetHitZ(const int &planeNumb);
+    // Get HitPeakTime
+    double *GetHitPeakTime(const int &planeNumb);
+    // Get lifetime correction factors
+    double *GetCorrFactor(const int &planeNumb);
+    // Get drift times
+    double *GetDriftTime(const int &planeNumb);
+    // Get track pitches
+    double *GetTrackPitch(const int &planeNumb);
+
     // Get the lifetime correction
     double LifeTimeCorr(double &ticks, const double &T0);
 
