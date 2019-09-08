@@ -58,7 +58,13 @@ namespace stoppingcosmicmuonselection {
     // Determine min and max hit peak time for this track
     void SetMinAndMaxHitPeakTime(art::Event const &evt, recob::PFParticle const &thisParticle, double &minHitPeakTime, double &maxHitPeakTime);
 
-    // Get the property for this track. Only if its selected.
+    // Set MCParticle properties
+    void SetMCParticleProperties(art::Event const &evt, recob::PFParticle const &thisParticle);
+
+    // Check if the true track associated with that PFParticle is a stopping muon
+    bool IsTrueParticleAStoppingMuon(art::Event const &evt, recob::PFParticle const &thisParticle);
+
+    // Get the property for this track.
     const trackProperties GetTrackProperties();
 
     // Reset function
@@ -67,6 +73,7 @@ namespace stoppingcosmicmuonselection {
   private:
     bool _isACathodeCrosser = false;
     bool _isPFParticleATrack = false;
+    bool _areMCParticlePropertiesSet = false;
 
     // Reconstructed information
     size_t _evNumber;

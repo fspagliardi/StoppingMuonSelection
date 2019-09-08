@@ -50,15 +50,6 @@ namespace stoppingcosmicmuonselection {
   bool StoppingMuonSelectionAlg::IsStoppingCathodeCrosser(art::Event const &evt,
                                                           recob::PFParticle const &thisParticle) {
     Reset();
-    // Check that this PFParticle is a track
-    if (!IsPFParticleATrack(evt,thisParticle)) return false;
-    // In case this event is MC, check if we have a MCParticle from cosmics
-    // associated to this PFParticle
-    if (!evt.isRealData() && !IsTrackMatchedToTrueCosmicTrack(evt,thisParticle)) return false;
-    // Check if it's primary
-    if (!thisParticle.IsPrimary()) return false;
-
-    // All good now, proceed with storing info for selection.
     _evNumber = evt.id().event();
     // Get the T0
     std::vector<anab::T0> pfparticleT0s = pfpUtil.GetPFParticleT0(thisParticle,evt,fPFParticleTag);
@@ -195,6 +186,29 @@ namespace stoppingcosmicmuonselection {
     maxHitPeakTime = *(std::max_element(HitPeakTimes.begin(), HitPeakTimes.end()));
   }
 
+  // Set MCParticle properties
+  void StoppingMuonSelectionAlg::SetMCParticleProperties(art::Event const &evt, recob::PFParticle const &thisParticle) {
+    const simb::MCParticle *particleP = truthUtil.GetMCParticleFromPFParticle(thisParticle,evt,fPFParticleTag);
+    _pdg = particleP->PdgCode();
+    double *av = geoHelper.GetActiveVolumeBounds();
+    int firstPoint = truthUtil.GetFirstTrajectoryPointInTPCActiveVolume(*particleP,av[0],av[1],av[2],av[3],av[4],av[5]);
+    _trueStartPoint.SetXYZ(particleP->Vx(firstPoint),particleP->Vy(firstPoint),particleP->Vz(firstPoint));
+    _trueEndPoint = particleP->EndPosition().Vect();
+    _trueStartT = particleP->T(firstPoint);
+    _trueEndT = particleP->EndPosition().T();
+    _trueTrackID = particleP->TrackId();
+    _areMCParticlePropertiesSet = true;
+  }
+
+  // Check if the true track associated with that PFParticle is a stopping muon
+  bool StoppingMuonSelectionAlg::IsTrueParticleAStoppingMuon(art::Event const &evt, recob::PFParticle const &thisParticle) {
+    if (!_areMCParticlePropertiesSet)
+      SetMCParticleProperties(evt,thisParticle);
+    return (TMath::Abs(_pdg)==13
+            && (_trueStartPoint.X()*_trueEndPoint.X()<0)
+            && geoHelper.IsPointInVolume(geoHelper.GetActiveVolumeBounds(),_trueEndPoint));
+  }
+
   // Get the property for this track. Only if its selected.
   const trackProperties StoppingMuonSelectionAlg::GetTrackProperties() {
     trackInfo.evNumber = _evNumber;
@@ -227,6 +241,7 @@ namespace stoppingcosmicmuonselection {
   void StoppingMuonSelectionAlg::Reset() {
     _isACathodeCrosser = false;
     _isPFParticleATrack = false;
+    _areMCParticlePropertiesSet = false;
     _evNumber = INV_INT;
     _trackT0 = INV_DBL;
     _recoStartPoint.SetXYZ(INV_DBL,INV_DBL,INV_DBL);
