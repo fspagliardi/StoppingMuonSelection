@@ -80,11 +80,11 @@ namespace stoppingcosmicmuonselection {
     if (trackLength < length_cutoff_CC) return false;
     if (TMath::Abs(theta_yz-90)<10 || TMath::Abs(theta_yz+90)<10 || TMath::Abs(theta_xz-90)<10 || TMath::Abs(theta_xz+90)<10) return false;
     bool goodTrack = ((recoStartPoint.X()*recoEndPoint.X()<0)
-                     && geoHelper.IsPointInSlice(fActiveBounds_eff,recoStartPoint,thicknessStartVolume)
-                     && geoHelper.IsPointInVolume(fiducialBounds,recoEndPoint));
+                     && geoHelper.IsPointInSlice(recoStartPoint)
+                     && geoHelper.IsPointInVolume(geoHelper.GetFiducialVolumeBounds(),recoEndPoint));
     if (!goodTrack) return false;
-    if (minHitPeakTime <= cutMinHitPeakTime) return false;
-    if (maxHitPeakTime >= cutMaxHitPeakTime) return false;
+    if (minHitPeakTime <= cutMinHitPeakTime_CC) return false;
+    if (maxHitPeakTime >= cutMaxHitPeakTime_CC) return false;
 
 
   }
