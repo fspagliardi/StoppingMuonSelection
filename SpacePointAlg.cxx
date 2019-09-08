@@ -26,13 +26,13 @@ bool SpacePointAlg::IsValid() {
 }
 
 // Set T0 value
-void Set(const double &T0) {
+void SpacePointAlg::Set(const double &T0) {
   _T0 = T0;
 }
 
 // Check if the track correctly fit the space points around the end points
 bool SpacePointAlg::IsGoodTrack(const recob::Track &track,
-                                    std::vector<recob::SpacePoint> &spacePoints) {
+                                std::vector<recob::SpacePoint> &spacePoints) {
   // Check if the track is valid
   bool isTrackValid = false;
   size_t nValidPointsCounter(0);
@@ -99,9 +99,9 @@ TVector3 SpacePointAlg::FindFoot(double *coeffLine, const double &sp_Y, const do
 
 // Check if the track is missing some space points for one end
 void SpacePointAlg::FillLineCoeff(TVector3 &posLastValidPoint,
-                                     TVector3 &pos20cmLastValidPoint,
-                                     double *coeffLineYZ,
-                                     double *coeffLineXZ) {
+                                  TVector3 &pos20cmLastValidPoint,
+                                  double *coeffLineYZ,
+                                  double *coeffLineXZ) {
   coeffLineYZ[1] = (posLastValidPoint.Y()-pos20cmLastValidPoint.Y()) / (posLastValidPoint.Z()-pos20cmLastValidPoint.Z());
   coeffLineYZ[0] = pos20cmLastValidPoint.Y() - (pos20cmLastValidPoint.Z()*(coeffLineYZ[1]));
   coeffLineXZ[1] = (posLastValidPoint.X()-pos20cmLastValidPoint.X()) / (posLastValidPoint.Z()-pos20cmLastValidPoint.Z());
