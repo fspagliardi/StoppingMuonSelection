@@ -21,8 +21,12 @@ namespace stoppingcosmicmuonselection {
   bool StoppingMuonSelectionAlg::IsPFParticleATrack(art::Event const &evt,
                                                     recob::PFParticle const &thisParticle) {
     const recob::Track *trackP = pfpUtil.GetPFParticleTrack(thisParticle,evt,fPFParticleTag,fTrackerTag);
-    if (trackP == nullptr) return false;
-    else return true;
+    if (trackP == nullptr) {
+      _isPFParticleATrack = false;
+      return false;
+    }
+    _isPFParticleATrack = true;
+    return true;
   }
 
   // Read parameters from FHICL file
@@ -45,6 +49,7 @@ namespace stoppingcosmicmuonselection {
   // Determine if the PFParticle is a selected cathode crosser
   bool StoppingMuonSelectionAlg::IsStoppingCathodeCrosser(art::Event const &evt,
                                                           recob::PFParticle const &thisParticle) {
+    Reset();
     // Check that this PFParticle is a track
     if (!IsPFParticleATrack(evt,thisParticle)) return false;
     // In case this event is MC, check if we have a MCParticle from cosmics
@@ -190,6 +195,57 @@ namespace stoppingcosmicmuonselection {
     maxHitPeakTime = *(std::max_element(HitPeakTimes.begin(), HitPeakTimes.end()));
   }
 
+  // Get the property for this track. Only if its selected.
+  const trackProperties StoppingMuonSelectionAlg::GetTrackProperties() {
+    trackInfo.evNumber = _evNumber;
+    trackInfo.trackT0 = _trackT0;
+    trackInfo.recoStartX = _recoStartPoint.X();
+    trackInfo.recoStartY = _recoStartPoint.Y();
+    trackInfo.recoStartZ = _recoStartPoint.Z();
+    trackInfo.recoEndX = _recoEndPoint.X();
+    trackInfo.recoEndY = _recoEndPoint.Y();
+    trackInfo.recoEndZ = _recoEndPoint.Z();
+    trackInfo.theta_xz = _theta_xz;
+    trackInfo.theta_yz = _theta_yz;
+    trackInfo.minHitPeakTime = _minHitPeakTime;
+    trackInfo.maxHitPeakTime = _maxHitPeakTime;
+    trackInfo.trackLength = _trackLength;
+    trackInfo.trackID = _trackID;
+    trackInfo.pdg = _pdg;
+    trackInfo.trueStartX = _trueStartPoint.X();
+    trackInfo.trueStartY = _trueStartPoint.Y();
+    trackInfo.trueStartZ = _trueStartPoint.Z();
+    trackInfo.trueEndX = _trueEndPoint.X();
+    trackInfo.trueEndY = _trueEndPoint.Y();
+    trackInfo.trueEndZ = _trueEndPoint.Z();
+    trackInfo.trueStartT = _trueStartT;
+    trackInfo.trueEndT = _trueEndT;
+    trackInfo.trueTrackID = _trueTrackID;
+    return trackInfo;
+  }
+
+  void StoppingMuonSelectionAlg::Reset() {
+    _isACathodeCrosser = false;
+    _isPFParticleATrack = false;
+    // Reconstructed information
+    _evNumber = INV_DBL;
+    _trackT0 = INV_DBL;
+    _recoStartPoint.SetXYZ(INV_DBL,INV_DBL,INV_DBL;
+    _recoEndPoint.SetXYZ(INV_DBL,INV_DBL,INV_DBL;
+    _theta_xz = INV_DBL;
+    _theta_yz = INV_DBL;
+    _minHitPeakTime = INV_DBL;
+    _maxHitPeakTime = INV_DBL;
+    _trackLength = INV_DBL;
+    _trackID = INV_DBL;
+    _pdg = INV_DBL;
+    _trueStartPoint.SetXYZ(INV_DBL,INV_DBL,INV_DBL;
+    _trueEndPoint.SetXYZ(INV_DBL,INV_DBL,INV_DBL;
+    _trueStartT = INV_DBL;
+    _trueEndT = INV_DBL;
+    _trueTrackID = INV_DBL;
+    trackInfo.Reset();
+  }
 
 } // end of namespace stoppingcosmicmuonselection
 

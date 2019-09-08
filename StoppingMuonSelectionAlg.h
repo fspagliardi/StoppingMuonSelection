@@ -58,9 +58,16 @@ namespace stoppingcosmicmuonselection {
     // Determine min and max hit peak time for this track
     void SetMinAndMaxHitPeakTime(art::Event const &evt, recob::PFParticle const &thisParticle, double &minHitPeakTime, double &maxHitPeakTime);
 
+    // Get the property for this track. Only if its selected.
+    const trackProperties GetTrackProperties();
+
+    // Reset function
+    void Reset();
+
   private:
     double INV_DBL = -9999999;
     bool _isACathodeCrosser = false;
+    bool _isPFParticleATrack = false;
 
     // Reconstructed information
     size_t _evNumber;
@@ -76,6 +83,8 @@ namespace stoppingcosmicmuonselection {
     TVector3 _trueStartPoint, _trueEndPoint;
     double _trueStartT, _trueEndT;
     double _trueTrackID;
+
+    trackProperties trackInfo;
 
     // Helpers and algorithms
     GeometryHelper geoHelper;
