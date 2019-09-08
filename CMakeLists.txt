@@ -55,7 +55,57 @@ art_make(BASENAME_ONLY
     SignalShapingServiceDUNE35t_service
     ProtoDUNEAnaUtils
   MODULE_LIBRARIES
+    ProtoDUNEStoppingMuonSelection
+    ${ART_FRAMEWORK_CORE}
+    ${ART_FRAMEWORK_PRINCIPAL}
+    ${ART_FRAMEWORK_SERVICES_REGISTRY}
+    ${ART_FRAMEWORK_SERVICES_BASIC}
+    ${ART_FRAMEWORK_SERVICES_OPTIONAL}
+    ${ART_ROOT_IO_TFILE_SUPPORT}
+    ${ART_ROOT_IO_TFILESERVICE_SERVICE}
+    ${ART_PERSISTENCY_COMMON}
+    ${ROOT_CORE}
+    ${ROOT_GEOM}
+    ${ROOT_XMLIO}
+    ${ROOT_GDML}
     ${ROOT_BASIC_LIB_LIST}
+    canvas
+    art_Persistency_Provenance
+    art_Persistency_Common
+    ${ART_UTILITIES}
+    ${MF_MESSAGELOGGER}
+    cetlib
+    cetlib_except
+    art_Utilities
+    ${LARRECO_LIB}
+    ${LARDATA_LIB}
+    ${FHICLCPP}
+    ${MF_UTILITIES}
+    ${CETLIB}
+    fhiclcpp
+    lardataobj_RecoBase
+    lardata_Utilities
+    larcorealg_Geometry
+    larcore_Geometry_Geometry_service
+    nusimdata_SimulationBase
+    larsim_Simulation
+    lardataobj_RawData
+    lardataobj_Simulation
+    lardata_RecoObjects
+    dune-raw-data_Services_ChannelMap_PdspChannelMapService_service
+    dune_DuneObj
+    larsim_MCCheater_PhotonBackTrackerService_service
+    larsim_MCCheater_BackTrackerService_service
+    larsim_MCCheater_ParticleInventoryService_service
+    larreco_RecoAlg
+    larreco_Calorimetry
+    larreco_Deprecated
+    nutools_ParticleNavigation
+    larevt_Filters
+    larpandora_LArPandoraInterface
+    SignalShapingServiceDUNE10kt_service
+    SignalShapingServiceDUNE35t_service
+    ProtoDUNEAnaUtils
   )
 install_headers()
 install_fhicl()

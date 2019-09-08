@@ -144,7 +144,7 @@ namespace stoppingcosmicmuonselection {
     if (!evt.isRealData()) {
       particleP = truthUtil.GetMCParticleFromPFParticle(thisParticle,evt,fPFParticleTag);
       if (particleP == 0x0) return false;
-      if ((pi_serv->TrackIdToMCTruth_P(particleP->TrackId())->Origin()) != simb::kCosmicRay)
+      if ((pi_serv->TrackIdToMCTruth_P(particleP->TrackId())->Origin()) == simb::kCosmicRay)
         return true;
       else
         return false;
