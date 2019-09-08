@@ -110,11 +110,11 @@ namespace stoppingcosmicmuonselection {
       std::cerr << "Thickness is not set." << std::endl;
     if (!_isActiveBoundsInitialised)
       std::cerr << "Active Bounds not initialised." << std::endl;
-    return (   (Point.Y()>=(_activeBounds[3]-thicknessStartVolume) && Point.Y()<=v[3])
-            || (Point.X()>=_activeBounds[0] && Point.X()<=(_activeBounds[0]+thicknessStartVolume))
-            || (Point.X()<=_activeBounds[1] && Point.X()>=(_activeBounds[1]-thicknessStartVolume))
-            || (Point.Z()>=_activeBounds[4] && Point.Z()<=(_activeBounds[4]+thicknessStartVolume))
-            || (Point.Z()<=_activeBounds[5] && Point.Z()>=(_activeBounds[5]-thicknessStartVolume)));
+    return (   (Point.Y()>=(_activeBounds[3]-_thicknessStartVolume) && Point.Y()<=_activeBounds[3])
+            || (Point.X()>=_activeBounds[0] && Point.X()<=(_activeBounds[0]+_thicknessStartVolume))
+            || (Point.X()<=_activeBounds[1] && Point.X()>=(_activeBounds[1]-_thicknessStartVolume))
+            || (Point.Z()>=_activeBounds[4] && Point.Z()<=(_activeBounds[4]+_thicknessStartVolume))
+            || (Point.Z()<=_activeBounds[5] && Point.Z()>=(_activeBounds[5]-_thicknessStartVolume)));
   }
 
   // Check if a point is contained in a slice from the active volume
@@ -124,11 +124,12 @@ namespace stoppingcosmicmuonselection {
   }
 
   // Get the APA boundaries (simple version)
-  double *GetAPABoundaries() {
+  double *GeometryHelper::GetAPABoundaries() {
     if (!_isActiveBoundsInitialised)
       std::cerr << "Active Bounds not initialised." << std::endl;
     _APABoundaries[0] = _activeBounds[5]/3.;
     _APABoundaries[1] = _activeBounds[5]*2/3.;
+    return _APABoundaries;
   }
 
 } // end of namespace stoppingcosmicmuonselection
