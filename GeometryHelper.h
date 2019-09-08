@@ -36,15 +36,15 @@ namespace stoppingcosmicmuonselection {
     double *GetFiducialVolumeBounds();
 
     // Check if a point is contained in a general volume
-    bool IsPointInVolume(double *v, TVector3 const &Point) const;
-    bool IsPointInVolume(double *v, double *Point) const;
+    bool IsPointInVolume(double *v, TVector3 const &Point);
+    bool IsPointInVolume(double *v, double *Point);
 
     // Set the thickness for the slice around the active Volume
     void SetThicknessStartVolume(const double &thickness);
 
     // Check if a point is contained in a slice from the active volume
-    bool IsPointInSlice(TVector3 const &Point) const;
-    bool IsPointInSlice(double *Point) const;
+    bool IsPointInSlice(TVector3 const &Point);
+    bool IsPointInSlice(double *Point);
 
     // Get the APA boundaries (simple version)
     double *GetAPABoundaries();

@@ -85,14 +85,14 @@ namespace stoppingcosmicmuonselection {
   }
 
   // Check if a point is contained in a general volume
-  bool GeometryHelper::IsPointInVolume(double *v, TVector3 const &Point) const {
+  bool GeometryHelper::IsPointInVolume(double *v, TVector3 const &Point) {
     return (Point.X() >= v[0] && Point.X() <= v[1]
             && Point.Y() >= v[2] && Point.Y() <= v[3]
             && Point.Z() >= v[4] && Point.Z() <= v[5]);
   }
 
   // Check if a point is contained in a general volume
-  bool GeometryHelper::IsPointInVolume(double *v, double *Point) const {
+  bool GeometryHelper::IsPointInVolume(double *v, double *Point) {
     const TVector3 point_V(Point[0],Point[1],Point[2]);
     return IsPointInVolume(v, point_V);
   }
@@ -105,7 +105,7 @@ namespace stoppingcosmicmuonselection {
   }
 
   // Check if a point is contained in a slice from the active volume
-  bool GeometryHelper::IsPointInSlice(TVector3 const &Point) const {
+  bool GeometryHelper::IsPointInSlice(TVector3 const &Point) {
     if (!_isThicknessSet)
       std::cerr << "Thickness is not set." << std::endl;
     if (!_isActiveBoundsInitialised)
@@ -118,7 +118,7 @@ namespace stoppingcosmicmuonselection {
   }
 
   // Check if a point is contained in a slice from the active volume
-  bool GeometryHelper::IsPointInSlice(double *Point) const {
+  bool GeometryHelper::IsPointInSlice(double *Point) {
     const TVector3 point_V(Point[0],Point[1],Point[2]);
     return IsPointInSlice(point_V);
   }
