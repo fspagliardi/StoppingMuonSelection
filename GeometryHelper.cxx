@@ -52,7 +52,7 @@ namespace stoppingcosmicmuonselection {
   // Get active volume
   double *GeometryHelper::GetActiveVolumeBounds() {
     if (!_isActiveBoundsInitialised)
-      std::cerr << "Returning active bound vector NOT initialised." << std::endl;
+      InitActiveVolumeBounds();
     return _activeBounds;
   }
 
@@ -109,7 +109,7 @@ namespace stoppingcosmicmuonselection {
     if (!_isThicknessSet)
       std::cerr << "Thickness is not set." << std::endl;
     if (!_isActiveBoundsInitialised)
-      std::cerr << "Active Bounds not initialised." << std::endl;
+      InitActiveVolumeBounds();
     return (   (Point.Y()>=(_activeBounds[3]-_thicknessStartVolume) && Point.Y()<=_activeBounds[3])
             || (Point.X()>=_activeBounds[0] && Point.X()<=(_activeBounds[0]+_thicknessStartVolume))
             || (Point.X()<=_activeBounds[1] && Point.X()>=(_activeBounds[1]-_thicknessStartVolume))
@@ -126,7 +126,7 @@ namespace stoppingcosmicmuonselection {
   // Get the APA boundaries (simple version)
   double *GeometryHelper::GetAPABoundaries() {
     if (!_isActiveBoundsInitialised)
-      std::cerr << "Active Bounds not initialised." << std::endl;
+      InitActiveVolumeBounds();
     _APABoundaries[0] = _activeBounds[5]/3.;
     _APABoundaries[1] = _activeBounds[5]*2/3.;
     return _APABoundaries;
