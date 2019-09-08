@@ -49,26 +49,29 @@ namespace stoppingcosmicmuonselection {
     bool IsTrackMatchedToTrueCosmicTrack(art::Event const &evt, recob::PFParticle const &thisParticle);
 
     // Order reco start and end point based on Y position
-    void OrderRecoStartEnd(TVector3 start, TVector3 end);
+    void OrderRecoStartEnd(TVector3 &start, TVector3 &end);
 
     // Get track from PFParticle
     const recob::Track GetTrackFromPFParticle(art::Event const &evt, recob::PFParticle const &thisParticle);
 
     // Determine min and max hit peak time for this track
-    void SetMinAndMaxHitPeakTime(art::Event const &evt, recob::PFParticle const &thisParticle, duoble &minHitPeakTime, double &maxHitPeakTime);
+    void SetMinAndMaxHitPeakTime(art::Event const &evt, recob::PFParticle const &thisParticle, double &minHitPeakTime, double &maxHitPeakTime);
 
   private:
     double INV_DBL = -9999999;
+    bool _isACathodeCrosser = false;
 
     // Reconstructed information
-    double trackT0;
-    TVector3 recoStartPoint, recoEndPoint;
-    double theta_xz, theta_yz;
-    double minHitPeakTime, maxHitPeakTime;
+    double _trackT0;
+    TVector3 _recoStartPoint, _recoEndPoint;
+    double _theta_xz, _theta_yz;
+    double _minHitPeakTime, _maxHitPeakTime;
+    double _trackLength;
+    double _trackID;
 
     // Truth information
-    int pdg;
-    TVector3 trueStartPoint, trueEndPoint;
+    int _pdg;
+    TVector3 _trueStartPoint, _trueEndPoint;
 
     // Helpers and algorithms
     GeometryHelper geoHelper;
@@ -76,6 +79,10 @@ namespace stoppingcosmicmuonselection {
 
     // Declare handle for particle inventory service
     art::ServiceHandle<cheat::ParticleInventoryService> pi_serv;
+    // Declare analysis utils
+    protoana::ProtoDUNETruthUtils        truthUtil;
+    protoana::ProtoDUNETrackUtils        trackUtil;
+    protoana::ProtoDUNEPFParticleUtils   pfpUtil;
 
     // Parameters from FHICL
     std::string fTrackerTag;

@@ -53,9 +53,9 @@ art_make(BASENAME_ONLY
     larpandora_LArPandoraInterface
     SignalShapingServiceDUNE10kt_service
     SignalShapingServiceDUNE35t_service
+    ProtoDUNEAnaUtils
   MODULE_LIBRARIES
     ${ROOT_BASIC_LIB_LIST}
-    ProtoDUNEAnaUtils
   )
 install_headers()
 install_fhicl()

@@ -18,31 +18,33 @@ namespace stoppingcosmicmuonselection {
   }
 
   //
-  bool IsPFParticleATrack(art::Event const &evt,recob::PFParticle const &thisParticle) {
+  bool StoppingMuonSelectionAlg::IsPFParticleATrack(art::Event const &evt,
+                                                    recob::PFParticle const &thisParticle) {
     const recob::Track *trackP = pfpUtil.GetPFParticleTrack(thisParticle,evt,fPFParticleTag,fTrackerTag);
     if (trackP == nullptr) return false;
     else return true;
   }
 
   // Read parameters from FHICL file
-  void reconfigure(fhicl::ParameterSet const &p) {
+  void StoppingMuonSelectionAlg::reconfigure(fhicl::ParameterSet const &p) {
     fTrackerTag = p.get<std::string>("TrackerTag");
     fPFParticleTag = p.get<std::string>("PFParticleTag");
     // Set cuts
     // Define cuts
-    double length_cutoff_CC = p.get<double>("length_cutoff_CC",100);
-    double offsetFiducialBounds_CC = p.get<double>("offsetFiducialBounds_CC",50);
-    double thicknessStartVolume_CC = p.get<double>("thicknessStartVolume_CC",40);
-    double cutMinHitPeakTime_CC = p.get<double>("cutMinHitPeakTime_CC",500);
-    double cutMaxHitPeakTime_CC = p.get<double>("cutMaxHitPeakTime_CC",4800);
-    double radiusBrokenTracksSearch_CC = p.get<double>("radiusBrokenTracksSearch_CC",50);
-    double cutCosAngleBrokenTracks_CC = p.get<double>("cutCosAngleBrokenTracks_CC",0.995);
-    double cutCosAngleAlignment_CC = p.get<double>("cutCosAngleAlignment_CC",0.995);
-    double cutContourAPA_CC = p.get<double>("cutContourAPA_CC",10);
+    length_cutoff_CC = p.get<double>("length_cutoff_CC",100);
+    offsetFiducialBounds_CC = p.get<double>("offsetFiducialBounds_CC",50);
+    thicknessStartVolume_CC = p.get<double>("thicknessStartVolume_CC",40);
+    cutMinHitPeakTime_CC = p.get<double>("cutMinHitPeakTime_CC",500);
+    cutMaxHitPeakTime_CC = p.get<double>("cutMaxHitPeakTime_CC",4800);
+    radiusBrokenTracksSearch_CC = p.get<double>("radiusBrokenTracksSearch_CC",50);
+    cutCosAngleBrokenTracks_CC = p.get<double>("cutCosAngleBrokenTracks_CC",0.995);
+    cutCosAngleAlignment_CC = p.get<double>("cutCosAngleAlignment_CC",0.995);
+    cutContourAPA_CC = p.get<double>("cutContourAPA_CC",10);
   }
 
   // Determine if the PFParticle is a selected cathode crosser
-  bool IsStoppingCathodeCrosser(art::Event const &evt, recob::PFParticle const &thisParticle) {
+  bool StoppingMuonSelectionAlg::IsStoppingCathodeCrosser(art::Event const &evt,
+                                                          recob::PFParticle const &thisParticle) {
     // Check that this PFParticle is a track
     if (!IsPFParticleATrack(evt,thisParticle)) return false;
     // In case this event is MC, check if we have a MCParticle from cosmics
@@ -54,22 +56,24 @@ namespace stoppingcosmicmuonselection {
     // All good now, proceed with storing info for selection.
     // Get the T0
     std::vector<anab::T0> pfparticleT0s = pfpUtil.GetPFParticleT0(thisParticle,evt,fPFParticleTag);
-    if (pfparticleT0s.size() == 0)
-      trackT0 = INV_DBL;
+    if (pfparticleT0s.size() == 0) {
+      _trackT0 = INV_DBL;
+      return false;
+    }
     else
-      trackT0 = pfparticleT0s[0].Time();
+      _trackT0 = pfparticleT0s[0].Time();
     // Get recob::Track from PFParticle
     const recob::Track &track = GetTrackFromPFParticle(evt,thisParticle);
-    recoEndPoint = track.End<TVector3>();
-    recoStartPoint.Set(track.LocationAtPoint(track.FirstValidPoint()).X(), track.LocationAtPoint(track.FirstValidPoint()).Y(), track.LocationAtPoint(track.FirstValidPoint()).Z());
-    OrderRecoStartEnd(recoStartPoint, recoEndPoint);
-    trackLength = track.Length();
-    trackID = track.ID();
-    // using the ordered start and end points calculate the angles theta_xz and theta_yz
-    theta_xz = TMath::RadToDeg() * TMath::ATan2(recoStartPoint.X()-recoEndPoint.X(), recoStartPoint.Z()-recoEndPoint.Z());
-    theta_yz = TMath::RadToDeg() * TMath::ATan2(recoStartPoint.Y()-recoEndPoint.Y(), recoStartPoint.Z()-recoEndPoint.Z());
+    _recoEndPoint = track.End<TVector3>();
+    _recoStartPoint.SetXYZ(track.LocationAtPoint(track.FirstValidPoint()).X(), track.LocationAtPoint(track.FirstValidPoint()).Y(), track.LocationAtPoint(track.FirstValidPoint()).Z());
+    OrderRecoStartEnd(_recoStartPoint, _recoEndPoint);
+    _trackLength = track.Length();
+    _trackID = track.ID();
+    // using the ordered start and end points calculate the angles _theta_xz and _theta_yz
+    _theta_xz = TMath::RadToDeg() * TMath::ATan2(_recoStartPoint.X()-_recoEndPoint.X(), _recoStartPoint.Z()-_recoEndPoint.Z());
+    _theta_yz = TMath::RadToDeg() * TMath::ATan2(_recoStartPoint.Y()-_recoEndPoint.Y(), _recoStartPoint.Z()-_recoEndPoint.Z());
     // Determine min and max hit peak time for this track
-    SetMinAndMaxHitPeakTime(evt,thisParticle,minHitPeakTime,maxHitPeakTime);
+    SetMinAndMaxHitPeakTime(evt,thisParticle,_minHitPeakTime,_maxHitPeakTime);
 
     // Prepare geometry helper
     geoHelper.SetFiducialBoundOffset(offsetFiducialBounds_CC);
@@ -77,36 +81,37 @@ namespace stoppingcosmicmuonselection {
     geoHelper.InitActiveVolumeBounds();
 
     // Apply cuts with selection with progressive cuts
-    if (trackLength < length_cutoff_CC) return false;
-    if (TMath::Abs(theta_yz-90)<10 || TMath::Abs(theta_yz+90)<10 || TMath::Abs(theta_xz-90)<10 || TMath::Abs(theta_xz+90)<10) return false;
-    bool goodTrack = ((recoStartPoint.X()*recoEndPoint.X()<0)
-                     && geoHelper.IsPointInSlice(recoStartPoint)
-                     && geoHelper.IsPointInVolume(geoHelper.GetFiducialVolumeBounds(),recoEndPoint));
+    if (_trackLength < length_cutoff_CC) return false;
+    if (TMath::Abs(_theta_yz-90)<10 || TMath::Abs(_theta_yz+90)<10 || TMath::Abs(_theta_xz-90)<10 || TMath::Abs(_theta_xz+90)<10) return false;
+    bool goodTrack = ((_recoStartPoint.X()*_recoEndPoint.X()<0)
+                     && geoHelper.IsPointInSlice(_recoStartPoint)
+                     && geoHelper.IsPointInVolume(geoHelper.GetFiducialVolumeBounds(),_recoEndPoint));
     if (!goodTrack) return false;
-    if (minHitPeakTime <= cutMinHitPeakTime_CC) return false;
-    if (maxHitPeakTime >= cutMaxHitPeakTime_CC) return false;
+    if (_minHitPeakTime <= cutMinHitPeakTime_CC) return false;
+    if (_maxHitPeakTime >= cutMaxHitPeakTime_CC) return false;
+    if ((TMath::Abs(_recoEndPoint.Z()-geoHelper.GetAPABoundaries()[0])<=cutContourAPA_CC) || (TMath::Abs(_recoEndPoint.Z()-geoHelper.GetAPABoundaries()[1])<=cutContourAPA_CC)) return false;
 
     // Look for broken tracks
-    TVector3 dirFirstTrack = recoEndPoint - recoStartPoint;
+    TVector3 dirFirstTrack = _recoEndPoint - _recoStartPoint;
     bool isBrokenTrack = false;
     const std::vector<recob::PFParticle> & pfparticles = *(evt.getValidHandle<std::vector<recob::PFParticle>>(fPFParticleTag));
     for (size_t p=0;p<pfparticles.size();p++) {
       // Get track
       const recob::Track *newTrack = pfpUtil.GetPFParticleTrack(pfparticles[p],evt,fPFParticleTag,fTrackerTag);
       if (newTrack==nullptr) continue;
-      if (newTrack->ID()==recoTrackID) continue;
+      if (newTrack->ID()==_trackID) continue;
       size_t fp = newTrack->FirstValidPoint();
       TVector3 recoStartPointSecond(newTrack->LocationAtPoint(fp).X(),newTrack->LocationAtPoint(fp).Y(),newTrack->LocationAtPoint(fp).Z());
       TVector3 recoEndPointSecond = newTrack->End<TVector3>();
-      orderRecoStartEnd(recoStartPointSecond,recoEndPointSecond);
+      OrderRecoStartEnd(recoStartPointSecond,recoEndPointSecond);
       TVector3 dirSecondTrack = recoEndPointSecond-recoStartPointSecond;
       TVector3 dirHigherTrack, dirLowerTrack, endPointHigherTrack, startPointLowerTrack, endPointLowerTrack;
-      if (recoStartPoint.Y() > recoStartPointSecond.Y()) {
+      if (_recoStartPoint.Y() > recoStartPointSecond.Y()) {
         dirHigherTrack = dirFirstTrack;
         dirLowerTrack = dirSecondTrack;
         startPointLowerTrack = recoStartPointSecond;
         endPointLowerTrack = recoEndPointSecond;
-        endPointHigherTrack = recoEndPoint;
+        endPointHigherTrack = _recoEndPoint;
       }
       else
         continue;
@@ -130,17 +135,19 @@ namespace stoppingcosmicmuonselection {
     if (isBrokenTrack) return false;
 
     // All cuts passed, this is likely a cathode-crossing stopping muon.
+    _isACathodeCrosser = true;
     return true;
 
   }
 
   // For MC events, check if the track is associated to a cosmic track
-  bool IsTrackMatchedToTrueCosmicTrack(art::Event const &evt, recob::PFParticle const &thisParticle) {
+  bool StoppingMuonSelectionAlg::IsTrackMatchedToTrueCosmicTrack(art::Event const &evt,
+                                                                 recob::PFParticle const &thisParticle) {
     const simb::MCParticle *particleP = 0x0;
     if (!evt.isRealData()) {
       particleP = truthUtil.GetMCParticleFromPFParticle(thisParticle,evt,fPFParticleTag);
       if (particleP == 0x0) return false;
-      if (pi_serv->TrackIdToMCTruth_P(particleP->TrackId())->Origin() != simb::kCosmicRay))
+      if ((pi_serv->TrackIdToMCTruth_P(particleP->TrackId())->Origin()) != simb::kCosmicRay)
         return true;
       else
         return false;
@@ -150,7 +157,7 @@ namespace stoppingcosmicmuonselection {
   }
 
   // Order reco start and end point based on Y position
-  void OrderRecoStartEnd(TVector3 start, TVector3 end) {
+  void StoppingMuonSelectionAlg::OrderRecoStartEnd(TVector3 &start, TVector3 &end) {
     TVector3 prov;
     if (end.Y() > start.Y()) {
       prov = start;
@@ -161,13 +168,17 @@ namespace stoppingcosmicmuonselection {
   }
 
   // Get track from PFParticle
-  const recob::Track GetTrackFromPFParticle(art::Event const &evt, recob::PFParticle const &thisParticle) {
+  const recob::Track StoppingMuonSelectionAlg::GetTrackFromPFParticle(art::Event const &evt,
+                                                                      recob::PFParticle const &thisParticle) {
     const recob::Track *trackP = pfpUtil.GetPFParticleTrack(thisParticle,evt,fPFParticleTag,fTrackerTag);
     return *(trackP);
   }
 
   // Determine min and max hit peak time for this track
-  void SetMinAndMaxHitPeakTime(art::Event const &evt, recob::PFParticle const &thisParticle, double &minHitPeakTime, double &maxHitPeakTime) {
+  void StoppingMuonSelectionAlg::SetMinAndMaxHitPeakTime(art::Event const &evt,
+                                                         recob::PFParticle const &thisParticle,
+                                                         double &minHitPeakTime,
+                                                         double &maxHitPeakTime) {
     // Get Hits associated with PFParticle
     const std::vector<const recob::Hit*> Hits = pfpUtil.GetPFParticleHits(thisParticle,evt,fPFParticleTag);
     std::vector<double> HitPeakTimes;
