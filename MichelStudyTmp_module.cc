@@ -68,6 +68,12 @@ namespace stoppingcosmicmuonselection {
       // Fill TTree
       fTrackTree->Fill();
 
+      // Let's go to the Calorimetry. Need to set it for this track first
+      caloHelper.Set(thisParticle,evt);
+      // Take the histos
+      h_dQdxVsRR = caloHelper.GetHisto_dQdxVsRR(2);
+      h_dQdxVsRR_TP075 = caloHelper.GetHisto_dQdxVsRR(2,0.75-0.1,0.75+0.1);
+
     } // end of loop over PFParticles
 
   } // end of analyzer

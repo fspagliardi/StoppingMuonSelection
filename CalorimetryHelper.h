@@ -87,7 +87,7 @@ namespace stoppingcosmicmuonselection {
 
 
   private:
-    std::vector<anab::Calorimetry> calos;
+    std::vector<anab::Calorimetry> _calos;
     int _trackHitNumb[3];
     double _dqdx[3][3000];
     double _dedx[3][3000];

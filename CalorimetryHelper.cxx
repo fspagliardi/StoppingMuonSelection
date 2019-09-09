@@ -27,28 +27,28 @@ namespace stoppingcosmicmuonselection {
     // Set variable to see if it's data or MC (different histo scales)
     if (evt.isRealData()) _isData = true;
     const recob::Track &track = *(pfpUtil.GetPFParticleTrack(thisParticle,evt,fPFParticleTag,fTrackerTag));
-    calos = trackUtil.GetRecoTrackCalorimetry(track,evt,fTrackerTag,fCalorimetryTag);
+    _calos = trackUtil.GetRecoTrackCalorimetry(track,evt,fTrackerTag,fCalorimetryTag);
     _isCalorimetrySet = true;
     if (!IsValid()) return;
-    for (size_t itcal = 0; itcal < calos.size(); itcal++) {
-      if (!(calos[itcal].PlaneID().isValid)) {std::cout << "plane not valid"<< std::endl;continue;}
-      int planeNumb = calos[itcal].PlaneID().Plane;
+    for (size_t itcal = 0; itcal < _calos.size(); itcal++) {
+      if (!(_calos[itcal].PlaneID().isValid)) {std::cout << "plane not valid"<< std::endl;continue;}
+      int planeNumb = _calos[itcal].PlaneID().Plane;
       if (planeNumb<0 || planeNumb>2) {std::cout << "plane number not valid"<< std::endl;continue;}
-      size_t const Nhits = calos[itcal].dEdx().size();
+      size_t const Nhits = _calos[itcal].dEdx().size();
       _trackHitNumb[planeNumb] = int(Nhits);
-      //geo::PlaneID Plane = calos[itcal].PlaneID();
+      //geo::PlaneID Plane = _calos[itcal].PlaneID();
       for (size_t itHit = 0; itHit < Nhits; itHit++)  {
-        //std::cout << "TpIndex: " << (calos[itcal].TpIndices())[itHit] << std::endl;
-        auto const & TrackPos = (calos[itcal].XYZ())[itHit];
-        _dqdx[planeNumb][itHit]=(calos[itcal].dQdx())[itHit];
-        _dedx[planeNumb][itHit]=(calos[itcal].dEdx())[itHit];
-        _resrange[planeNumb][itHit]=(calos[itcal].ResidualRange())[itHit];
+        //std::cout << "TpIndex: " << (_calos[itcal].TpIndices())[itHit] << std::endl;
+        auto const & TrackPos = (_calos[itcal].XYZ())[itHit];
+        _dqdx[planeNumb][itHit]=(_calos[itcal].dQdx())[itHit];
+        _dedx[planeNumb][itHit]=(_calos[itcal].dEdx())[itHit];
+        _resrange[planeNumb][itHit]=(_calos[itcal].ResidualRange())[itHit];
         _hitx[planeNumb][itHit]=TrackPos.X();
     	  _hity[planeNumb][itHit]=TrackPos.Y();
     	  _hitz[planeNumb][itHit]=TrackPos.Z();
-        _track_pitch[planeNumb][itHit]=(calos[itcal].TrkPitchVec())[itHit];
+        _track_pitch[planeNumb][itHit]=(_calos[itcal].TrkPitchVec())[itHit];
         // Get Hit Peak Time
-        //const size_t & hitIndex = (calos[itcal].TpIndices())[itHit];
+        //const size_t & hitIndex = (_calos[itcal].TpIndices())[itHit];
         //const auto & thisHit = allHits[hitIndex];
         //hitPeakTime[planeNumb][itHit] = thisHit.PeakTime();
         _hitPeakTime[planeNumb][itHit] = INV_DBL; // For now in MCC11
@@ -67,7 +67,7 @@ namespace stoppingcosmicmuonselection {
 
   // Check if the calorimetry is valid
   bool CalorimetryHelper::IsValid() {
-    if (calos.size() == 0) {
+    if (_calos.size() == 0) {
       _isValid = false;
       return false;
     }
@@ -172,7 +172,7 @@ namespace stoppingcosmicmuonselection {
   // Get 2D histo of dQdx vs residual range for hits in a given plane
   TH2D *CalorimetryHelper::GetHisto_dQdxVsRR(const int &planeNumb) {
     TH2D *h_dQdxVsRR;
-    if (_isData) h_dQdxVsRR = new TH2D("h_dQdxVsRR","h_dQdxVsRR",200,0,200,800,0,800);
+    if (!_isData) h_dQdxVsRR = new TH2D("h_dQdxVsRR","h_dQdxVsRR",200,0,200,800,0,800);
     else h_dQdxVsRR = new TH2D("h_dQdxVsRR","h_dQdxVsRR",200,0,200,1600,0,1600);
     int hitNumb = GetHitNumb(planeNumb);
     double *dQdx = GetdQdx(planeNumb);
@@ -185,7 +185,7 @@ namespace stoppingcosmicmuonselection {
   // Get 2D histo of dQdx vs residual range for hits in a given plane, in a track pitch interval
   TH2D *CalorimetryHelper::GetHisto_dQdxVsRR(const int &planeNumb, const double &tp_min, const double &tp_max) {
     TH2D *h_dQdxVsRR;
-    if (_isData) h_dQdxVsRR = new TH2D("h_dQdxVsRR","h_dQdxVsRR",200,0,200,800,0,800);
+    if (!_isData) h_dQdxVsRR = new TH2D("h_dQdxVsRR","h_dQdxVsRR",200,0,200,800,0,800);
     else h_dQdxVsRR = new TH2D("h_dQdxVsRR","h_dQdxVsRR",200,0,200,1600,0,1600);
     int hitNumb = GetHitNumb(planeNumb);
     double *dQdx = GetdQdx(planeNumb);
@@ -198,7 +198,6 @@ namespace stoppingcosmicmuonselection {
     return h_dQdxVsRR;
   }
 
-
   // Set the parameters from the FHICL file
   void CalorimetryHelper::reconfigure(fhicl::ParameterSet const &p) {
     fTrackerTag = p.get<std::string>("TrackerTag");
@@ -210,7 +209,8 @@ namespace stoppingcosmicmuonselection {
   void CalorimetryHelper::Reset() {
     _isValid = false;
     _isCalorimetrySet = false;
-    calos.clear();
+    _isData = false;
+    _calos.clear();
     for (int j=0; j<3; j++) {
       _trackHitNumb[j]=INV_DBL;
       for(int k=0; k<3000; k++){

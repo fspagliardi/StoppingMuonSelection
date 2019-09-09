@@ -58,11 +58,12 @@ private:
   GeometryHelper           geoHelper;
   SpacePointAlg            spAlg;        // need configuration
   StoppingMuonSelectionAlg selectorAlg;  // need configuration
-  //CalorimetryHelper        caloHelper;   // need configuration
+  CalorimetryHelper        caloHelper;   // need configuration
 
   std::string fPFParticleTag, fSpacePointTag, fTrackerTag;
   protoana::ProtoDUNEPFParticleUtils   pfpUtil;
 
+  // Track Tree stuff
   TTree *fTrackTree;
   // Tree variables
   size_t fEvNumber;
@@ -91,6 +92,10 @@ private:
   double fMaxHitPeakTime = INV_DBL;
   bool fIsRecoSelectedCathodeCrosser = false;
   bool fIsTrueSelectedCathodeCrosser = false;
+
+  // Histos
+  TH2D *h_dQdxVsRR;
+  TH2D *h_dQdxVsRR_TP075;
 };
 
 MichelStudyTmp::MichelStudyTmp(fhicl::ParameterSet const & p)
@@ -130,6 +135,10 @@ void MichelStudyTmp::beginJob()
   fTrackTree->Branch("theta_yz", &ftheta_yz, "ftheta_yz/d");
   fTrackTree->Branch("isRecoSelectedCathodeCrosser",&fIsRecoSelectedCathodeCrosser);
   fTrackTree->Branch("isTrueSelectedCathodeCrosser",&fIsTrueSelectedCathodeCrosser);
+
+  // Histograms
+  h_dQdxVsRR = tfs->make<TH2D>("h_dQdxVsRR","h_dQdxVsRR",200,0,200,800,0,800);
+  h_dQdxVsRR_TP075 = tfs->make<TH2D>("h_dQdxVsRR_TP075","h_dQdxVsRR_TP075",200,0,200,800,0,800);
 }
 
 void MichelStudyTmp::endJob()
@@ -147,7 +156,7 @@ void MichelStudyTmp::reconfigure(fhicl::ParameterSet const& p)
   fSpacePointTag = p.get<std::string>("SpacePointTag");
   spAlg.reconfigure(p.get<fhicl::ParameterSet>("SpacePointAlg"));
   selectorAlg.reconfigure(p.get<fhicl::ParameterSet>("StoppingMuonSelectionAlg"));
-  //caloHelper.reconfigure(p.get<fhicl::ParameterSet>("CalorimetryHelper"));
+  caloHelper.reconfigure(p.get<fhicl::ParameterSet>("CalorimetryHelper"));
 }
 
 void MichelStudyTmp::UpdateTTreeVariableWithTrackProperties(const trackProperties &trackInfo) {
