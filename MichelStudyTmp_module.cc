@@ -51,6 +51,12 @@ namespace stoppingcosmicmuonselection {
       if (selectorAlg.IsTrueParticleAStoppingMuon(evt,thisParticle))
         fIsTrueSelectedCathodeCrosser = true;
 
+      // Check if the track is missing some space points (need to get
+      // an handle on the track)
+      const recob::Track &track = selectorAlg.GetTrackFromPFParticle(evt,thisParticle);
+      if(!spAlg.IsGoodTrack(track,spacePoints))
+        continue;
+
       // Updating variables to be stored in TTree
       UpdateTTreeVariableWithTrackProperties(selectorAlg.GetTrackProperties());
 

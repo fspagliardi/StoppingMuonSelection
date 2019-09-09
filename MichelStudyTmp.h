@@ -60,7 +60,7 @@ private:
   StoppingMuonSelectionAlg selectorAlg;  // need configuration
   //CalorimetryHelper        caloHelper;   // need configuration
 
-  std::string fPFParticleTag, fSpacePointTag;
+  std::string fPFParticleTag, fSpacePointTag, fTrackerTag;
 
   TTree *fTrackTree;
   // Tree variables
