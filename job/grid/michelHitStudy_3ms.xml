@@ -1,0 +1,67 @@
+<?xml version="1.0"?>
+
+<!-- Production Project -->
+
+<!DOCTYPE project [
+    <!ENTITY release "v08_21_00">
+    <!ENTITY file_type "mc">
+    <!ENTITY run_type "physics">
+    <!ENTITY name "MichelStudy_3ms">
+    <!ENTITY tag "ana">
+    ]>
+
+<job>
+
+<project name="&name;">
+
+<!-- Group -->
+<group>dune</group>
+
+<!-- Make sure we keep a 1-to-1 mapping with the SAM files -->
+<!-- Number of events large enough that we always process all events -->
+<numevents>10000000</numevents>
+<maxfilesperjob>1</maxfilesperjob>
+
+<!-- Operating System -->
+<os>SL6</os>
+
+<!-- Batch resources -->
+<resource>DEDICATED,OPPORTUNISTIC</resource>
+
+<!-- Larsoft information -->
+<larsoft>
+<tag>&release;</tag>
+<qual>e17:prof</qual>
+<local>/pnfs/dune/resilient/users/fspaglia/localLarsoftv08_21_00.tar</local>
+</larsoft>
+
+<check>1</check>
+
+<stage name = "createTTree5.0GeV">
+  <fcl>/pnfs/dune/resilient/users/fspaglia/runMichelStudy.fcl</fcl>
+    <inputdef>jhugon_mcc11_pd_sp_reco_3ms_5.0GeV</inputdef>
+    <outdir>/pnfs/dune/scratch/users/fspaglia/&release;/&name;5.0GeV</outdir>
+    <workdir>/pnfs/dune/scratch/users/fspaglia/&release;/&name;5.0GeV</workdir>
+    <numjobs>1123</numjobs>
+    <!--schema>root</schema-->
+    <anadatatier>full-reconstructed</anadatatier>
+<jobsub>--memory=4000 --expected-lifetime=2h</jobsub>
+</stage>
+
+<stage name = "createTTree5.0_6.0_7.0GeV">
+  <fcl>/pnfs/dune/resilient/users/fspaglia/runMichelStudy.fcl</fcl>
+    <inputdef>fspaglia_mcc11_reco_3ms_5.0_6.0_7.0</inputdef>
+    <outdir>/pnfs/dune/scratch/users/fspaglia/&release;/&name;5.0_6.0_7.0GeV</outdir>
+    <workdir>/pnfs/dune/scratch/users/fspaglia/&release;/&name;5.0_6.0_7.0GeV</workdir>
+    <numjobs>355</numjobs>
+    <schema>root</schema>
+    <maxfilesperjob>10</maxfilesperjob>
+    <anadatatier>full-reconstructed</anadatatier>
+<jobsub>--memory=4000 --expected-lifetime=2h</jobsub>
+</stage>
+
+<filetype>&file_type;</filetype>
+<runtype>&run_type;</runtype>
+
+</project>
+</job>

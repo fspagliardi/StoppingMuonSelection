@@ -1,0 +1,51 @@
+#include "services_dune.fcl"
+#include "spacepointAlg.fcl"
+#include "stoppingmuonAlg.fcl"
+#include "caloHelper.fcl"
+#include "protodune_tools_dune.fcl"
+
+process_name: MichelStudy
+
+services:
+{
+  IFDH: {}
+  TFileService: {fileName: "%ifb_result.root"}
+  TimeTracker: {}
+  MemoryTracker: {}
+  RandomNumberGenerator: {}
+  message:  @local::dune_message_services_prod_debug
+  FileCatalogMetadata: @local::art_file_catalog_mc
+  #@table::protodune_services
+  @table::protodune_reco_services
+}
+
+michel_study:
+{
+  module_type: "MichelStudyTmp"
+  PFParticleTag: "pandora"
+  SpacePointTag: "reco3d"
+  TrackerTag: "pandoraTrack"
+  SpacePointAlg: @local::spacepointAlg
+  StoppingMuonSelectionAlg: @local::stoppingmuonAlg
+  CalorimetryHelper: @local::caloHelper
+}
+
+source:
+{
+  module_type:RootInput
+  maxEvents: -1
+
+}
+
+physics:
+{
+analyzers:
+{
+  fabioana: @local::michel_study
+
+}
+
+ana: [fabioana]
+
+end_paths: [ana]
+}
