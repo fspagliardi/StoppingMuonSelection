@@ -57,6 +57,7 @@ namespace stoppingcosmicmuonselection {
       // Check if the matched PFParticle is a cathode-crossing stopping muon
       fIsTrueSelectedCathodeCrosser = selectorAlg.IsTrueParticleAStoppingMuon(evt,thisParticle);
 
+      std::cout << "*******************************" << std::endl;
       std::cout << "Track accepted." << std::endl;
       std::cout << "Event: " << selectorAlg.GetTrackProperties().evNumber << std::endl;
       std::cout << "trackID: " << selectorAlg.GetTrackProperties().trackID << std::endl;
