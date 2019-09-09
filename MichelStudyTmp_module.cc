@@ -45,12 +45,6 @@ namespace stoppingcosmicmuonselection {
       // Check if this PFParticle is a stopping cathode crosser
       if (!selectorAlg.IsStoppingCathodeCrosser(evt,thisParticle))
         continue;
-      else
-        fIsRecoSelectedCathodeCrosser = true;
-
-      // Check if the matched PFParticle is a cathode-crossing stopping muon
-      if (selectorAlg.IsTrueParticleAStoppingMuon(evt,thisParticle))
-        fIsTrueSelectedCathodeCrosser = true;
 
       // Check if the track is missing some space points (need to get
       // an handle on the track)
@@ -58,10 +52,14 @@ namespace stoppingcosmicmuonselection {
       spAlg.SetT0(selectorAlg.GetTrackProperties().trackT0);
       if(!spAlg.IsGoodTrack(track,spacePoints))
         continue;
+      fIsRecoSelectedCathodeCrosser = true;
+
+      // Check if the matched PFParticle is a cathode-crossing stopping muon
+      fIsTrueSelectedCathodeCrosser = selectorAlg.IsTrueParticleAStoppingMuon(evt,thisParticle);
 
       std::cout << "Track accepted." << std::endl;
       std::cout << "Event: " << selectorAlg.GetTrackProperties().evNumber << std::endl;
-      std::cout << "trackID: " << selectedAlg.GetTrackProperties().trackID << std::endl;
+      std::cout << "trackID: " << selectorAlg.GetTrackProperties().trackID << std::endl;
 
       // Updating variables to be stored in TTree
       UpdateTTreeVariableWithTrackProperties(selectorAlg.GetTrackProperties());
