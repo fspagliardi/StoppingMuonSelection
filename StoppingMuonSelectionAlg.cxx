@@ -48,6 +48,7 @@ namespace stoppingcosmicmuonselection {
     geoHelper.SetFiducialBoundOffset(offsetFiducialBounds_CC);
     geoHelper.SetThicknessStartVolume(thicknessStartVolume_CC);
     geoHelper.InitActiveVolumeBounds();
+    geoHelper.InitFiducialVolumeBounds();
   }
 
   // Determine if the PFParticle is a selected cathode crosser
@@ -74,19 +75,27 @@ namespace stoppingcosmicmuonselection {
     _theta_xz = TMath::RadToDeg() * TMath::ATan2(_recoStartPoint.X()-_recoEndPoint.X(), _recoStartPoint.Z()-_recoEndPoint.Z());
     _theta_yz = TMath::RadToDeg() * TMath::ATan2(_recoStartPoint.Y()-_recoEndPoint.Y(), _recoStartPoint.Z()-_recoEndPoint.Z());
     // Determine min and max hit peak time for this track
+    //std::cout << "theta xz :"  << _theta_xz << std::endl;
+    //std::cout << "theta yz :"  << _theta_yz << std::endl;
     SetMinAndMaxHitPeakTime(evt,thisParticle,_minHitPeakTime,_maxHitPeakTime);
-
+    //std::cout << "_minHitPeakTime :"  << _minHitPeakTime << std::endl;
+    //std::cout << "_maxHitPeakTime :"  << _maxHitPeakTime << std::endl;
     // Apply cuts with selection with progressive cuts
+    //std::cout << "Length: " << _trackLength << std::endl;
     if (_trackLength < length_cutoff_CC) return false;
     if (TMath::Abs(_theta_yz-90)<10 || TMath::Abs(_theta_yz+90)<10 || TMath::Abs(_theta_xz-90)<10 || TMath::Abs(_theta_xz+90)<10) return false;
     bool goodTrack = ((_recoStartPoint.X()*_recoEndPoint.X()<0)
                      && geoHelper.IsPointInSlice(_recoStartPoint)
                      && geoHelper.IsPointInVolume(geoHelper.GetFiducialVolumeBounds(),_recoEndPoint));
+    //std::cout << "start*end: " << _recoStartPoint.X()*_recoEndPoint.X() << std::endl;
+    //std::cout << "start point in slice: " << geoHelper.IsPointInSlice(_recoStartPoint) << std::endl;
+    //std::cout << "End point in volume: " << geoHelper.IsPointInVolume(geoHelper.GetFiducialVolumeBounds(),_recoEndPoint) << std::endl;
+    //std::cout << "End point (XYZ): " << _recoEndPoint.X() << " " << _recoEndPoint.Y() << " " << _recoEndPoint.Z() << std::endl;
     if (!goodTrack) return false;
     if (_minHitPeakTime <= cutMinHitPeakTime_CC) return false;
     if (_maxHitPeakTime >= cutMaxHitPeakTime_CC) return false;
     if ((TMath::Abs(_recoEndPoint.Z()-geoHelper.GetAPABoundaries()[0])<=cutContourAPA_CC) || (TMath::Abs(_recoEndPoint.Z()-geoHelper.GetAPABoundaries()[1])<=cutContourAPA_CC)) return false;
-
+    //std::cout << "End Point Z: " << _recoEndPoint.Z() << std::endl;
     // Look for broken tracks
     TVector3 dirFirstTrack = _recoEndPoint - _recoStartPoint;
     bool isBrokenTrack = false;
