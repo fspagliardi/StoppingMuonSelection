@@ -44,6 +44,10 @@ namespace stoppingcosmicmuonselection {
     cutCosAngleBrokenTracks_CC = p.get<double>("cutCosAngleBrokenTracks_CC",0.995);
     cutCosAngleAlignment_CC = p.get<double>("cutCosAngleAlignment_CC",0.995);
     cutContourAPA_CC = p.get<double>("cutContourAPA_CC",10);
+    // Prepare geometry helper
+    geoHelper.SetFiducialBoundOffset(offsetFiducialBounds_CC);
+    geoHelper.SetThicknessStartVolume(thicknessStartVolume_CC);
+    geoHelper.InitActiveVolumeBounds();
   }
 
   // Determine if the PFParticle is a selected cathode crosser
@@ -71,11 +75,6 @@ namespace stoppingcosmicmuonselection {
     _theta_yz = TMath::RadToDeg() * TMath::ATan2(_recoStartPoint.Y()-_recoEndPoint.Y(), _recoStartPoint.Z()-_recoEndPoint.Z());
     // Determine min and max hit peak time for this track
     SetMinAndMaxHitPeakTime(evt,thisParticle,_minHitPeakTime,_maxHitPeakTime);
-
-    // Prepare geometry helper
-    geoHelper.SetFiducialBoundOffset(offsetFiducialBounds_CC);
-    geoHelper.SetThicknessStartVolume(thicknessStartVolume_CC);
-    geoHelper.InitActiveVolumeBounds();
 
     // Apply cuts with selection with progressive cuts
     if (_trackLength < length_cutoff_CC) return false;
