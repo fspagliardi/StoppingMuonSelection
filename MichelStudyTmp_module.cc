@@ -36,6 +36,7 @@ namespace stoppingcosmicmuonselection {
 
       // Skip if the PFParticle is not track-like
       if (!selectorAlg.IsPFParticleATrack(evt,thisParticle)) continue;
+      counter_total_number_tracks++;
 
       // If this is MC we want that the PFParticle is matched to a cosmic MCParticle
       if (!evt.isRealData() && !selectorAlg.IsTrackMatchedToTrueCosmicTrack(evt,thisParticle))
@@ -57,6 +58,10 @@ namespace stoppingcosmicmuonselection {
       spAlg.SetT0(selectorAlg.GetTrackProperties().trackT0);
       if(!spAlg.IsGoodTrack(track,spacePoints))
         continue;
+
+      std::cout << "Track accepted." << std::endl;
+      std::cout << "Event: " << selectorAlg.GetTrackProperties().evNumber << std::endl;
+      std::cout << "trackID: " << selectedAlg.GetTrackProperties().trackID << std::endl;
 
       // Updating variables to be stored in TTree
       UpdateTTreeVariableWithTrackProperties(selectorAlg.GetTrackProperties());
