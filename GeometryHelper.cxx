@@ -66,14 +66,14 @@ namespace stoppingcosmicmuonselection {
   // Initialise fiducial volume
   void GeometryHelper::InitFiducialVolumeBounds() {
     if (!_isActiveBoundsInitialised)
-      std::cerr << "Returning WRONG fiducial volume." << std::endl;
+      InitActiveVolumeBounds();
     if (!_isFiducialBoundOffsetSet)
       std::cerr << "Returning WRONG fiducial volume." << std::endl;
     for (int i=0;i<6;i++) {
       if (i%2==0) _fiducialBounds[i]=_activeBounds[i]+_fiducialBoundOffset;
       else _fiducialBounds[i]=_activeBounds[i]-_fiducialBoundOffset;
     }
-    _isFiducialBoundOffsetSet = true;
+    _isFiducialBoundsInitialised = true;
     return;
   }
 
@@ -81,6 +81,8 @@ namespace stoppingcosmicmuonselection {
   double *GeometryHelper::GetFiducialVolumeBounds() {
     if (!_isFiducialBoundOffsetSet)
       std::cerr << "Returning fiducial bound vector NOT initialised." << std::endl;
+    if (!_isFiducialBoundsInitialised)
+      InitFiducialVolumeBounds();
     return _fiducialBounds;
   }
 
