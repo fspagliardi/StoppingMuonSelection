@@ -49,3 +49,5 @@ ana: [fabioana]
 
 end_paths: [ana]
 }
+
+services.DetectorPropertiesService.Electronlifetime: 3000
