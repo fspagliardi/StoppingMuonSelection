@@ -1,0 +1,19 @@
+BEGIN_PROLOG
+
+stoppingmuonAlg:
+{
+  # labels for data products
+  TrackerTag:      "pandoraTrack"
+  PFParticleTag:   "pandora"
+  # cut values for cathode crossers
+  length_cutoff_CC:               100
+  offsetFiducialBounds_CC:        50
+  thicknessStartVolume_CC:        40
+  cutMinHitPeakTime_CC:           500
+  cutMaxHitPeakTime_CC:           4800
+  radiusBrokenTracksSearch_CC:    50
+  cutCosAngleBrokenTracks_CC:     0.995
+  cutCosAngleAlignment_CC:        0.995
+  cutContourAPA_CC:               10
+}
+END_PROLOG

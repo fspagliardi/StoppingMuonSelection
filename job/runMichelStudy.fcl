@@ -1,0 +1,56 @@
+#include "services_dune.fcl"
+#include "protodune_tools_dune.fcl"
+
+#include "spacepointAlg.fcl"
+#include "stoppingmuonAlg.fcl"
+
+process_name: MichelStudy
+
+services:
+{
+  IFDH: {}
+  TFileService: {fileName: "%ifb_result.root"}
+  TimeTracker: {}
+  MemoryTracker: {}
+  RandomNumberGenerator: {}
+  message:  @local::dune_message_services_prod_debug
+  FileCatalogMetadata: @local::art_file_catalog_mc
+  #@table::protodune_services
+  @table::protodune_reco_services
+}
+
+michel_study:
+{
+  module_type: "MichelStudyTmp"
+  PFParticleTag: "pandora"
+  SpacePointTag: "reco3d"
+  SpacePointAlg: @local::spacepointAlg
+  StoppingMuonSelectionAlg: @local::stoppingmuonAlg
+}
+
+source:
+{
+  module_type:RootInput
+  maxEvents: -1
+
+}
+
+physics:
+{
+analyzers:
+{
+  fabioana: @local::michelhitstudy
+
+}
+
+ana: [fabioana]
+
+end_paths: [ana]
+}
+
+physics.analyzers.MichelHitStudy.CalorimetryTag: "pandoracalo"
+physics.analyzers.MichelHitStudy.StoreOnlyTracksWithoutMichelHits: false
+physics.analyzers.MichelHitStudy.CreateImages: true
+physics.analyzers.MichelHitStudy.ElectronHitEnergyFracThr: 0.5
+# Set lifetime by end because it doesn't read that from the file
+services.DetectorPropertiesService.Electronlifetime: 3000
