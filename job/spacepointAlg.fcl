@@ -1,9 +1,6 @@
-BEGIN_PROLOG
-
 spacepointAlg:
 {
   cilinderAxis:   50
   cilinderRadius: 5
   minNumberSpacePoints: 10
 }
-END_PROLOG

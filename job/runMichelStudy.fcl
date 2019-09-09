@@ -39,7 +39,7 @@ physics:
 {
 analyzers:
 {
-  fabioana: @local::michelhitstudy
+  fabioana: @local::michel_study
 
 }
 
