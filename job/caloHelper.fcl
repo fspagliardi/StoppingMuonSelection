@@ -3,7 +3,7 @@ BEGIN_PROLOG
 caloHelper:
 {
   TrackerTag: "pandoraTrack"
-  CalorimetryTag: "pandora"
+  CalorimetryTag: "pandoracalo"
   PFParticleTag: "pandora"
 }
 

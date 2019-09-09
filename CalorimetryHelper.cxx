@@ -169,24 +169,18 @@ namespace stoppingcosmicmuonselection {
     return correction;
   }
 
-  // Get 2D histo of dQdx vs residual range for hits in a given plane
-  TH2D *CalorimetryHelper::GetHisto_dQdxVsRR(const int &planeNumb) {
-    TH2D *h_dQdxVsRR;
-    if (!_isData) h_dQdxVsRR = new TH2D("h_dQdxVsRR","h_dQdxVsRR",200,0,200,800,0,800);
-    else h_dQdxVsRR = new TH2D("h_dQdxVsRR","h_dQdxVsRR",200,0,200,1600,0,1600);
+  // FIll 2D histo of dQdx vs residual range for hits in a given plane
+  void CalorimetryHelper::FillHisto_dQdxVsRR(TH2D *h_dQdxVsRR, const int &planeNumb) {
     int hitNumb = GetHitNumb(planeNumb);
     double *dQdx = GetdQdx(planeNumb);
     double *resRangeOrd = GetResRangeOrdered(planeNumb);
-    for (int it = 0; it < hitNumb; it++)
+    for (int it = 0; it < hitNumb; it++) {
       h_dQdxVsRR->Fill(resRangeOrd[it],dQdx[it]);
-    return h_dQdxVsRR;
+    }
   }
 
-  // Get 2D histo of dQdx vs residual range for hits in a given plane, in a track pitch interval
-  TH2D *CalorimetryHelper::GetHisto_dQdxVsRR(const int &planeNumb, const double &tp_min, const double &tp_max) {
-    TH2D *h_dQdxVsRR;
-    if (!_isData) h_dQdxVsRR = new TH2D("h_dQdxVsRR","h_dQdxVsRR",200,0,200,800,0,800);
-    else h_dQdxVsRR = new TH2D("h_dQdxVsRR","h_dQdxVsRR",200,0,200,1600,0,1600);
+  // FIll 2D histo of dQdx vs residual range for hits in a given plane, in a track pitch interval
+  void CalorimetryHelper::FillHisto_dQdxVsRR(TH2D *h_dQdxVsRR, const int &planeNumb, const double &tp_min, const double &tp_max) {
     int hitNumb = GetHitNumb(planeNumb);
     double *dQdx = GetdQdx(planeNumb);
     double *resRangeOrd = GetResRangeOrdered(planeNumb);
@@ -195,28 +189,20 @@ namespace stoppingcosmicmuonselection {
       if (trackPitch[it]<tp_min || trackPitch[it]>tp_max) continue;
       h_dQdxVsRR->Fill(resRangeOrd[it],dQdx[it]);
     }
-    return h_dQdxVsRR;
   }
 
-  // Get 2D histo of dQdx vs residual range for hits in a given plane. Correct by MC lifetime
-  TH2D *CalorimetryHelper::GetHisto_dQdxVsRR_LTCorr(const int &planeNumb) {
-    TH2D *h_dQdxVsRR;
-    if (!_isData) h_dQdxVsRR = new TH2D("h_dQdxVsRR","h_dQdxVsRR",200,0,200,800,0,800);
-    else h_dQdxVsRR = new TH2D("h_dQdxVsRR","h_dQdxVsRR",200,0,200,1600,0,1600);
+  // FIll 2D histo of dQdx vs residual range for hits in a given plane. Correct by MC lifetime
+  void CalorimetryHelper::FillHisto_dQdxVsRR_LTCorr(TH2D *h_dQdxVsRR, const int &planeNumb) {
     int hitNumb = GetHitNumb(planeNumb);
     double *dQdx = GetdQdx(planeNumb);
     double *resRangeOrd = GetResRangeOrdered(planeNumb);
     double *corrFactor = GetCorrFactor(planeNumb);
     for (int it = 0; it < hitNumb; it++)
       h_dQdxVsRR->Fill(resRangeOrd[it],dQdx[it]*corrFactor[it]);
-    return h_dQdxVsRR;
   }
 
   // Same as above but with track pitch cut
-  TH2D *CalorimetryHelper::GetHisto_dQdxVsRR_LTCorr(const int &planeNumb, const double &tp_min, const double &tp_max) {
-    TH2D *h_dQdxVsRR;
-    if (!_isData) h_dQdxVsRR = new TH2D("h_dQdxVsRR","h_dQdxVsRR",200,0,200,800,0,800);
-    else h_dQdxVsRR = new TH2D("h_dQdxVsRR","h_dQdxVsRR",200,0,200,1600,0,1600);
+  void CalorimetryHelper::FillHisto_dQdxVsRR_LTCorr(TH2D *h_dQdxVsRR, const int &planeNumb, const double &tp_min, const double &tp_max) {
     int hitNumb = GetHitNumb(planeNumb);
     double *dQdx = GetdQdx(planeNumb);
     double *resRangeOrd = GetResRangeOrdered(planeNumb);
@@ -226,7 +212,6 @@ namespace stoppingcosmicmuonselection {
       if (trackPitch[it]<tp_min || trackPitch[it]>tp_max) continue;
       h_dQdxVsRR->Fill(resRangeOrd[it],dQdx[it]*corrFactor[it]);
     }
-    return h_dQdxVsRR;
   }
 
   // Set the parameters from the FHICL file

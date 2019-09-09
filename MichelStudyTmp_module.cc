@@ -57,7 +57,7 @@ namespace stoppingcosmicmuonselection {
       // Check if the matched PFParticle is a cathode-crossing stopping muon
       fIsTrueSelectedCathodeCrosser = selectorAlg.IsTrueParticleAStoppingMuon(evt,thisParticle);
 
-      std::cout << "*******************************" << std::endl;
+      std::cout << "**************************" << std::endl;
       std::cout << "Track accepted." << std::endl;
       std::cout << "Event: " << selectorAlg.GetTrackProperties().evNumber << std::endl;
       std::cout << "trackID: " << selectorAlg.GetTrackProperties().trackID << std::endl;
@@ -68,17 +68,18 @@ namespace stoppingcosmicmuonselection {
       // Fill TTree
       fTrackTree->Fill();
 
-      // Let's go to the Calorimetry. Need to set it for this track first
+      // Let's go to the Calorimetry. Need to set it for this track first.
       caloHelper.Set(thisParticle,evt);
-      // Take the histos
-      h_dQdxVsRR = caloHelper.GetHisto_dQdxVsRR(2);
-      h_dQdxVsRR_TP075 = caloHelper.GetHisto_dQdxVsRR(2,0.75-0.1,0.75+0.1);
-      h_dQdxVsRR_LTCorr = caloHelper.GetHisto_dQdxVsRR_LTCorr(2);
-      h_dQdxVsRR_TP075_LTCorr = caloHelper.GetHisto_dQdxVsRR_LTCorr(2,0.75-0.1,0.75+0.1);
+      // Fill the histos
+      caloHelper.FillHisto_dQdxVsRR(h_dQdxVsRR,2);
+      caloHelper.FillHisto_dQdxVsRR(h_dQdxVsRR_TP075,2,0.75-0.1,0.75+0.1);
+      caloHelper.FillHisto_dQdxVsRR_LTCorr(h_dQdxVsRR_LTCorr,2);
+      caloHelper.FillHisto_dQdxVsRR_LTCorr(h_dQdxVsRR_TP075_LTCorr,2,0.75-0.1,0.75+0.1);
 
     } // end of loop over PFParticles
 
   } // end of analyzer
-}
+  
+} // namespace
 
 DEFINE_ART_MODULE(stoppingcosmicmuonselection::MichelStudyTmp)
