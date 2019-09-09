@@ -1,5 +1,5 @@
 /***
-  Class containing useful functions for geometry.
+  Class containing useful functions for calorimetry.
 
 */
 #ifndef CALORIMETRY_HELPER_CXX
