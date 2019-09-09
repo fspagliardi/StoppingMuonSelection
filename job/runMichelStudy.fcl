@@ -23,6 +23,7 @@ michel_study:
   module_type: "MichelStudyTmp"
   PFParticleTag: "pandora"
   SpacePointTag: "reco3d"
+  TrackerTag: "pandoraTrack"
   SpacePointAlg: @local::spacepointAlg
   StoppingMuonSelectionAlg: @local::stoppingmuonAlg
 }
