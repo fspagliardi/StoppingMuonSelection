@@ -32,7 +32,7 @@ namespace stoppingcosmicmuonselection {
     void reconfigure(fhicl::ParameterSet const &p);
 
     // Check if the track correctly fit the space points around the end points
-    bool IsGoodTrack(const recob::Track &track, std::vector<recob::SpacePoint> &spacePoints);
+    bool IsGoodTrack(const recob::Track &track, const std::vector<recob::SpacePoint> &spacePoints);
 
   private:
     // Strings for track orientation
