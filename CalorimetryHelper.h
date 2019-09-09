@@ -75,9 +75,11 @@ namespace stoppingcosmicmuonselection {
 
     // Get 2D histo of dQdx vs residual range for hits in a given plane
     TH2D *GetHisto_dQdxVsRR(const int &planeNumb);
-
     TH2D *GetHisto_dQdxVsRR(const int &planeNumb, const double &tp_min, const double &tp_max);
 
+    // Get 2D histo of dQdx vs residual range for hits in a given plane. Correct by MC lifetime
+    TH2D *GetHisto_dQdxVsRR_LTCorr(const int &planeNumb);
+    TH2D *GetHisto_dQdxVsRR_LTCorr(const int &planeNumb, const double &tp_min, const double &tp_max);
 
     // Set the parameters from the FHICL file
     void reconfigure(fhicl::ParameterSet const &p);

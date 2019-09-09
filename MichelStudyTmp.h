@@ -96,6 +96,8 @@ private:
   // Histos
   TH2D *h_dQdxVsRR;
   TH2D *h_dQdxVsRR_TP075;
+  TH2D *h_dQdxVsRR_LTCorr;
+  TH2D *h_dQdxVsRR_TP075_LTCorr;
 };
 
 MichelStudyTmp::MichelStudyTmp(fhicl::ParameterSet const & p)
@@ -139,6 +141,8 @@ void MichelStudyTmp::beginJob()
   // Histograms
   h_dQdxVsRR = tfs->make<TH2D>("h_dQdxVsRR","h_dQdxVsRR",200,0,200,800,0,800);
   h_dQdxVsRR_TP075 = tfs->make<TH2D>("h_dQdxVsRR_TP075","h_dQdxVsRR_TP075",200,0,200,800,0,800);
+  h_dQdxVsRR_LTCorr = tfs->make<TH2D>("h_dQdxVsRR_LTCorr","h_dQdxVsRR_LTCorr",200,0,200,800,0,800);
+  h_dQdxVsRR_TP075_LTCorr = tfs->make<TH2D>("h_dQdxVsRR_TP075_LTCorr","h_dQdxVsRR_TP075_LTCorr",200,0,200,800,0,800);
 }
 
 void MichelStudyTmp::endJob()
