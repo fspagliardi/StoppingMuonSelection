@@ -22,6 +22,7 @@
 #include "art/Framework/Principal/Event.h"
 #include "art/Framework/Principal/Handle.h"
 #include "TVector3.h"
+#include "TH2D.h"
 #include "TMath.h"
 
 #include "DataTypes.h"
@@ -32,6 +33,7 @@ namespace stoppingcosmicmuonselection {
 
   public:
     CalorimetryHelper();
+    CalorimetryHelper(const recob::PFParticle &thisParticle, art::Event const &evt);
     ~CalorimetryHelper();
 
     // Get the calorimetry from the PFParticle
@@ -44,7 +46,7 @@ namespace stoppingcosmicmuonselection {
     void OrderResRange();
 
     // Get hit numb
-    double GetHitNumb(const int &planeNumb);
+    int GetHitNumb(const int &planeNumb);
     // Get dQdx
     double *GetdQdx(const int &planeNumb);
     // Get dEdx
@@ -71,6 +73,12 @@ namespace stoppingcosmicmuonselection {
     // Get the lifetime correction
     double LifeTimeCorr(double &ticks, const double &T0);
 
+    // Get 2D histo of dQdx vs residual range for hits in a given plane
+    TH2D *GetHisto_dQdxVsRR(const int &planeNumb);
+
+    TH2D *GetHisto_dQdxVsRR(const int &planeNumb, const double &tp_min, const double &tp_max);
+
+
     // Set the parameters from the FHICL file
     void reconfigure(fhicl::ParameterSet const &p);
 
@@ -95,6 +103,7 @@ namespace stoppingcosmicmuonselection {
 
     bool _isValid = false;
     bool _isCalorimetrySet = false;
+    bool _isData = false;
 
     std::string fTrackerTag;
     std::string fCalorimetryTag;

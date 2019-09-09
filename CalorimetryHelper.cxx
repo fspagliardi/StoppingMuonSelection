@@ -13,6 +13,10 @@ namespace stoppingcosmicmuonselection {
 
   }
 
+  CalorimetryHelper::CalorimetryHelper(const recob::PFParticle &thisParticle, art::Event const &evt) {
+    Set(thisParticle, evt);
+  }
+
   CalorimetryHelper::~CalorimetryHelper() {
 
   }
@@ -20,6 +24,8 @@ namespace stoppingcosmicmuonselection {
   // Get the calorimetry from the PFParticle
   void CalorimetryHelper::Set(const recob::PFParticle &thisParticle, art::Event const &evt) {
     Reset();
+    // Set variable to see if it's data or MC (different histo scales)
+    if (evt.isRealData()) _isData = true;
     const recob::Track &track = *(pfpUtil.GetPFParticleTrack(thisParticle,evt,fPFParticleTag,fTrackerTag));
     calos = trackUtil.GetRecoTrackCalorimetry(track,evt,fTrackerTag,fCalorimetryTag);
     _isCalorimetrySet = true;
@@ -102,7 +108,7 @@ namespace stoppingcosmicmuonselection {
   }
 
   // Get hit numb
-  double CalorimetryHelper::GetHitNumb(const int &planeNumb) {
+  int CalorimetryHelper::GetHitNumb(const int &planeNumb) {
     return _trackHitNumb[planeNumb];
   }
   // Get dqdx
@@ -161,6 +167,35 @@ namespace stoppingcosmicmuonselection {
     double tau = detprop->ElectronLifetime();
     double correction = TMath::Exp(time/tau);
     return correction;
+  }
+
+  // Get 2D histo of dQdx vs residual range for hits in a given plane
+  TH2D *CalorimetryHelper::GetHisto_dQdxVsRR(const int &planeNumb) {
+    TH2D *h_dQdxVsRR;
+    if (_isData) h_dQdxVsRR = new TH2D("h_dQdxVsRR","h_dQdxVsRR",200,0,200,800,0,800);
+    else h_dQdxVsRR = new TH2D("h_dQdxVsRR","h_dQdxVsRR",200,0,200,1600,0,1600);
+    int hitNumb = GetHitNumb(planeNumb);
+    double *dQdx = GetdQdx(planeNumb);
+    double *resRangeOrd = GetResRangeOrdered(planeNumb);
+    for (int it = 0; it < hitNumb; it++)
+      h_dQdxVsRR->Fill(resRangeOrd[it],dQdx[it]);
+    return h_dQdxVsRR;
+  }
+
+  // Get 2D histo of dQdx vs residual range for hits in a given plane, in a track pitch interval
+  TH2D *CalorimetryHelper::GetHisto_dQdxVsRR(const int &planeNumb, const double &tp_min, const double &tp_max) {
+    TH2D *h_dQdxVsRR;
+    if (_isData) h_dQdxVsRR = new TH2D("h_dQdxVsRR","h_dQdxVsRR",200,0,200,800,0,800);
+    else h_dQdxVsRR = new TH2D("h_dQdxVsRR","h_dQdxVsRR",200,0,200,1600,0,1600);
+    int hitNumb = GetHitNumb(planeNumb);
+    double *dQdx = GetdQdx(planeNumb);
+    double *resRangeOrd = GetResRangeOrdered(planeNumb);
+    double *trackPitch = GetTrackPitch(planeNumb);
+    for (int it = 0; it < hitNumb; it++) {
+      if (trackPitch[it]<tp_min || trackPitch[it]>tp_max) continue;
+      h_dQdxVsRR->Fill(resRangeOrd[it],dQdx[it]);
+    }
+    return h_dQdxVsRR;
   }
 
 
