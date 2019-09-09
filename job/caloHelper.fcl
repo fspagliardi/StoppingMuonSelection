@@ -1,0 +1,10 @@
+BEGIN_PROLOG
+
+caloHelper:
+{
+  TrackerTag: "pandoraTrack"
+  CalorimetryTag: "pandora"
+  PFParticleTag: "pandora"
+}
+
+END_PROLOG
