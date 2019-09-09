@@ -1,3 +1,5 @@
+BEGIN_PROLOG
+
 stoppingmuonAlg:
 {
   # labels for data products
@@ -14,3 +16,4 @@ stoppingmuonAlg:
   cutCosAngleAlignment_CC:        0.995
   cutContourAPA_CC:               10
 }
+END_PROLOG

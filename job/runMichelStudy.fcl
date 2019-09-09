@@ -1,8 +1,7 @@
 #include "services_dune.fcl"
-#include "protodune_tools_dune.fcl"
-
 #include "spacepointAlg.fcl"
 #include "stoppingmuonAlg.fcl"
+#include "protodune_tools_dune.fcl"
 
 process_name: MichelStudy
 
