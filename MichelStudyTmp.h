@@ -61,6 +61,7 @@ private:
   //CalorimetryHelper        caloHelper;   // need configuration
 
   std::string fPFParticleTag, fSpacePointTag, fTrackerTag;
+  protoana::ProtoDUNEPFParticleUtils   pfpUtil;
 
   TTree *fTrackTree;
   // Tree variables
@@ -141,6 +142,7 @@ void MichelStudyTmp::endJob()
 
 void MichelStudyTmp::reconfigure(fhicl::ParameterSet const& p)
 {
+  fTrackerTag = p.get<std::string>("TrackerTag");
   fPFParticleTag = p.get<std::string>("PFParticleTag");
   fSpacePointTag = p.get<std::string>("SpacePointTag");
   spAlg.reconfigure(p.get<fhicl::ParameterSet>("SpacePointAlg"));
