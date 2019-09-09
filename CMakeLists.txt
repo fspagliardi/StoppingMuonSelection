@@ -107,6 +107,7 @@ art_make(BASENAME_ONLY
     SignalShapingServiceDUNE35t_service
     ProtoDUNEAnaUtils
   )
+add_subdirectory(job)
 install_headers()
 install_fhicl()
 install_source()
