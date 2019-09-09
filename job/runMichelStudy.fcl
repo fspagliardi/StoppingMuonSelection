@@ -47,10 +47,3 @@ ana: [fabioana]
 
 end_paths: [ana]
 }
-
-physics.analyzers.MichelHitStudy.CalorimetryTag: "pandoracalo"
-physics.analyzers.MichelHitStudy.StoreOnlyTracksWithoutMichelHits: false
-physics.analyzers.MichelHitStudy.CreateImages: true
-physics.analyzers.MichelHitStudy.ElectronHitEnergyFracThr: 0.5
-# Set lifetime by end because it doesn't read that from the file
-services.DetectorPropertiesService.Electronlifetime: 3000
