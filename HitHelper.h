@@ -5,6 +5,7 @@
 #ifndef HIT_HELPER_H
 #define HIT_HELPER_H
 
+#include "lardataobj/Simulation/SimChannel.h"
 #include "dune/Protodune/Analysis/ProtoDUNETrackUtils.h"
 #include "dune/Protodune/Analysis/ProtoDUNEPFParticleUtils.h"
 #include "fhiclcpp/ParameterSet.h"
@@ -42,16 +43,24 @@ namespace stoppingcosmicmuonselection {
     // Get XYZ position for that hit
     TVector3 GetHitXYZ(const art::Ptr<recob::Hit> &hitp,
                        art::FindManyP<recob::Hit,recob::TrackHitMeta> &fmthm,
-                       std::vector<art::Ptr<recob::Track>> &tracklist,
-                       size_t &trackIndex);
+                       const std::vector<art::Ptr<recob::Track>> &tracklist,
+                       const size_t &trackIndex);
 
-    //
-    bool IsTrackWithMichelHits();
+    // Check if a hit has high electron contribution at a certain distance from the end point
+    bool IsHitMichelLike(const art::Ptr<recob::Hit> &hitp,
+                         const TVector3 &recoEndPoint,
+                         art::FindManyP<recob::Hit,recob::TrackHitMeta> &fmthm,
+                         const std::vector<art::Ptr<recob::Track>> &tracklist,
+                         const size_t &trackIndex);
+
 
     // Set the parameters from the FHICL file
     void reconfigure(fhicl::ParameterSet const &p);
 
   private:
+    // Fhicl file parameters for michel hits search
+    double _electronEnergyFractionToCallMichelHits;
+    double _maxDistanceToCallMichelHits;
 
     // Declare handle for particle inventory service
     art::ServiceHandle<cheat::ParticleInventoryService> pi_serv;

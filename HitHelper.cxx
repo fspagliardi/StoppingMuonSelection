@@ -35,10 +35,10 @@ namespace stoppingcosmicmuonselection {
   }
 
   // Get XYZ position for that hit
-  TVector3 GetHitXYZ(const art::Ptr<recob::Hit> &hitp,
-                     art::FindManyP<recob::Hit,recob::TrackHitMeta> &fmthm,
-                     const std::vector<art::Ptr<recob::Track>> &tracklist,
-                     const size_t &trackIndex) {
+  TVector3 HitHelper::GetHitXYZ(const art::Ptr<recob::Hit> &hitp,
+                                art::FindManyP<recob::Hit,recob::TrackHitMeta> &fmthm,
+                                const std::vector<art::Ptr<recob::Track>> &tracklist,
+                                const size_t &trackIndex) {
 
     TVector3 hitLoc(INV_DBL,INV_DBL,INV_DBL);
     if (!fmthm.isValid()) return hitLoc;
@@ -64,10 +64,31 @@ namespace stoppingcosmicmuonselection {
     return hitLoc;
   }
 
+  // Check if a hit has high electron contribution at a certain distance from the end point
+  bool HitHelper::IsHitMichelLike(const art::Ptr<recob::Hit> &hitp,
+                                  const TVector3 &recoEndPoint,
+                                  art::FindManyP<recob::Hit,recob::TrackHitMeta> &fmthm,
+                                  const std::vector<art::Ptr<recob::Track>> &tracklist,
+                                  const size_t &trackIndex) {
+    for (const sim::TrackIDE &tIDE : bt_serv->HitToTrackIDEs(*hitp)) {
+      // check if there is a contribution from an electron.
+      if (TMath::Abs(pi_serv->TrackIdToParticle_P(tIDE.trackID)->PdgCode())==11) {
+        TVector3 hitLoc = GetHitXYZ(hitp,fmthm,tracklist,trackIndex);
+        if (hitLoc == TVector3(INV_DBL,INV_DBL,INV_DBL)) continue;
+        if (tIDE.energyFrac>_electronEnergyFractionToCallMichelHits
+            && (hitLoc-recoEndPoint).Mag()<_maxDistanceToCallMichelHits)
+          return true;
+      }
+    }
+    return false;
+  }
+
   // Set the parameters from the FHICL file
   void HitHelper::reconfigure(fhicl::ParameterSet const &p) {
     fTrackerTag = p.get<std::string>("TrackerTag");
     fPFParticleTag = p.get<std::string>("PFParticleTag");
+    _electronEnergyFractionToCallMichelHits = p.get<double>("electronEnergyFractionToCallMichelHits", 0.7);
+    _maxDistanceToCallMichelHits = p.get<double>("maxDistanceToCallMichelHits", 15);
   }
 
 } // end of namespace stoppingcosmicmuonselection
