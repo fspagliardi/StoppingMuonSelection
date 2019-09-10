@@ -2,6 +2,7 @@
 #include "spacepointAlg.fcl"
 #include "stoppingmuonAlg.fcl"
 #include "caloHelper.fcl"
+#include "hitHelper.fcl"
 #include "protodune_tools_dune.fcl"
 
 process_name: MichelStudy
@@ -28,6 +29,7 @@ michel_study:
   SpacePointAlg: @local::spacepointAlg
   StoppingMuonSelectionAlg: @local::stoppingmuonAlg
   CalorimetryHelper: @local::caloHelper
+  HitHelper: @local::hitHelper
 }
 
 source:

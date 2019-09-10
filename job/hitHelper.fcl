@@ -1,0 +1,9 @@
+BEGIN_PROLOG
+
+hitHelper:
+{
+  electronEnergyFractionToCallMichelHits:   0.7
+  maxDistanceToCallMichelHits: 15
+}
+
+END_PROLOG
