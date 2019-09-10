@@ -132,8 +132,6 @@ namespace stoppingcosmicmuonselection {
 
   // Set the parameters from the FHICL file
   void HitHelper::reconfigure(fhicl::ParameterSet const &p) {
-    fTrackerTag = p.get<std::string>("TrackerTag");
-    fPFParticleTag = p.get<std::string>("PFParticleTag");
     _electronEnergyFractionToCallMichelHits = p.get<double>("electronEnergyFractionToCallMichelHits", 0.7);
     _maxDistanceToCallMichelHits = p.get<double>("maxDistanceToCallMichelHits", 15);
   }

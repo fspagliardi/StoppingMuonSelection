@@ -81,12 +81,6 @@ namespace stoppingcosmicmuonselection {
     // Declare handle for backtracker
     art::ServiceHandle<cheat::BackTrackerService> bt_serv;
 
-    // Utils
-    protoana::ProtoDUNEPFParticleUtils   pfpUtil;
-
-    // Product labels from FHICL file.
-    std::string fTrackerTag, fPFParticleTag;
-
     // Declare handle for detector properties
     const detinfo::DetectorProperties *detprop = lar::providerFrom<detinfo::DetectorPropertiesService>();
 
