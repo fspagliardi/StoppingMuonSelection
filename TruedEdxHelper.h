@@ -40,9 +40,12 @@ namespace stoppingcosmicmuonselection {
 
 
   private:
+    // Declare handle for detector properties
+    const detinfo::DetectorProperties *detprop = lar::providerFrom<detinfo::DetectorPropertiesService>();
+
     double m_muon = 105.6583745; //MeV
     double c = 299792458;
-    double LArdensity = 1.3954; // g/cm3
+    double LArdensity = detprop->Density(detprop->Temperature()); // g/cm3
   };
 }
 
