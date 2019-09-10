@@ -21,7 +21,6 @@ namespace stoppingcosmicmuonselection {
   void GeometryHelper::InitActiveVolumeBounds() {
     _activeBounds[0] = _activeBounds[2] = _activeBounds[4] = DBL_MAX;
     _activeBounds[1] = _activeBounds[3] = _activeBounds[5] = -DBL_MAX;
-    const geo::GeometryCore *geom = lar::providerFrom<geo::Geometry>();
     double abs_X_collection = 0;
     for (geo::TPCGeo const& TPC: geom->IterateTPCs())  {
       double origin[3] = {0.};
@@ -132,6 +131,36 @@ namespace stoppingcosmicmuonselection {
     _APABoundaries[0] = _activeBounds[5]/3.;
     _APABoundaries[1] = _activeBounds[5]*2/3.;
     return _APABoundaries;
+  }
+
+  // Get the number of wires from one beam side for a given plane
+  size_t GeometryHelper::GetNumberWiresOneSide(const int &planeNumber) {
+    size_t nWires = -INV_INT;
+    size_t nWiresBL = 0, nWiresBR = 0;
+    for (geo::PlaneID const& pID: geom->IteratePlaneIDs()) {
+      geo::PlaneGeo const& planeHandle = geom->Plane(pID);
+      //std::cout << "Plane ID: " << pID.Plane << "| Coordinates: x=" << planeHandle.GetCenter().X() << " y=" << planeHandle.GetCenter().Y() << " z=" << planeHandle.GetCenter().Z() << std::endl;
+      if (pID.Plane != (size_t)planeNumber) continue;
+      //pitch = planeHandle.WirePitch();
+      unsigned int tpcid = pID.TPC;
+      //std::cout << "TPC ID: " << tpcid << " Numb. of wires for plane 2 in that TPC: " << planeHandle.Nwires();
+      bool itsBL = false, itsBR = false;
+      for (int it=0;it<3;it++) {
+        if (tpcIndecesBL[it] == tpcid)
+          itsBL = true;
+        else if (tpcIndecesBR[it] == tpcid)
+          itsBR = true;
+      }
+      if (itsBL)
+        nWiresBL += planeHandle.Nwires();
+      if (itsBR)
+        nWiresBR += planeHandle.Nwires();
+    } // end iteration on planes
+    if (nWiresBR == nWiresBL)
+      nWires = nWiresBL;
+    else
+      std::cout << "Two sides don't have same number of wires. Returning invalid number." << std::endl;
+    return nWires;
   }
 
 } // end of namespace stoppingcosmicmuonselection

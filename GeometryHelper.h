@@ -12,6 +12,8 @@
 #include "TVector3.h"
 #include "TMath.h"
 
+#include "DataTypes.h"
+
 namespace stoppingcosmicmuonselection {
 
   class GeometryHelper {
@@ -49,6 +51,13 @@ namespace stoppingcosmicmuonselection {
     // Get the APA boundaries (simple version)
     double *GetAPABoundaries();
 
+    // Get the number of wires from one beam side for a given plane
+    size_t GetNumberWiresOneSide(const int &planeNumber);
+
+    // Arrays with TPC number info
+    const unsigned int tpcIndecesBL[3] = {2,6,10};
+    const unsigned int tpcIndecesBR[3] = {1,5,9};
+
   private:
     bool _isActiveBoundsInitialised = false;
     bool _isFiducialBoundsInitialised = false;
@@ -59,6 +68,10 @@ namespace stoppingcosmicmuonselection {
     double _activeBounds[6];
     double _fiducialBounds[6];
     double _APABoundaries[2];
+
+    // Handle for geometry service
+    const geo::GeometryCore *geom = lar::providerFrom<geo::Geometry>();
+
   };
 }
 
