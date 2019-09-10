@@ -16,14 +16,19 @@
 #include "lardataobj/RecoBase/PFParticle.h"
 #include "lardataobj/RecoBase/TrackHitMeta.h"
 #include "lardata/DetectorInfoServices/DetectorPropertiesService.h"
+#include "larcore/Geometry/Geometry.h"
+#include "larcorealg/Geometry/TPCGeo.h"
+#include "larcorealg/Geometry/GeometryCore.h"
 #include "art/Framework/Principal/Event.h"
 #include "art/Framework/Principal/Handle.h"
 #include "canvas/Persistency/Common/FindManyP.h"
 #include "TVector3.h"
 #include "TH2D.h"
+#include "TProfile2D.h"
 #include "TMath.h"
 
 #include "DataTypes.h"
+#include "GeometryHelper.h"
 
 namespace stoppingcosmicmuonselection {
 
@@ -53,6 +58,11 @@ namespace stoppingcosmicmuonselection {
                          const std::vector<art::Ptr<recob::Track>> &tracklist,
                          const size_t &trackIndex);
 
+    // Get a TProfile2D filled with hit peak times and wire number
+    void GetTrackHitPicture(TProfile2D* image,
+                            const std::vector<art::Ptr<recob::Hit>> &trackHits,
+                            const TVector3 &recoEndPoint,
+                            const int &planeNumber);
 
     // Set the parameters from the FHICL file
     void reconfigure(fhicl::ParameterSet const &p);
@@ -73,6 +83,8 @@ namespace stoppingcosmicmuonselection {
     // Product labels from FHICL file.
     std::string fTrackerTag, fPFParticleTag;
 
+    // Geometry helper.
+    GeometryHelper geoHelper;
 
   };
 }

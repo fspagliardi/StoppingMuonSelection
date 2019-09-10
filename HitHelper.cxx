@@ -83,6 +83,46 @@ namespace stoppingcosmicmuonselection {
     return false;
   }
 
+  // Get a TProfile2D filled with hit peak times and wire number
+  void HitHelper::GetTrackHitPicture(TProfile2D* image,
+                                     const std::vector<art::Ptr<recob::Hit>> &trackHits,
+                                     const TVector3 &recoEndPoint,
+                                     const int &planeNumber) {
+    image->Reset();
+    const geo::GeometryCore *geom = lar::providerFrom<geo::Geometry>();
+    const geo::Point_t EndPoint(recoEndPoint.X(), recoEndPoint.Y(), recoEndPoint.Z());
+    geo::TPCID const & tpcid = geom->FindTPCAtPosition(EndPoint);
+    if (!tpcid.isValid) {
+      std::cout << "Track End Point is in invalid TPC. Filling the image at (1,1)." << std::endl;
+      // Dummy filling
+      image->Fill(1,1,1);
+      return;
+    }
+    size_t nWires = geoHelper.GetNumberWiresOneSide(planeNumber);
+    for (const art::Ptr<recob::Hit> & hitp : trackHits) {
+      // Get only hit in the collection plane
+      if (!hitp->WireID().isValid) continue;
+      if (hitp->WireID().Plane != (size_t)planeNumber) continue;
+      unsigned int hit_tpcid = hitp->WireID().TPC;
+      double hitPeakTime = hitp->PeakTime();
+      unsigned int wireID = hitp->WireID().Wire;
+      double electron_perc = 0;
+      for(const sim::TrackIDE& ide : bt_serv->HitToTrackIDEs(*hitp)) {
+        if (TMath::Abs(pi_serv->TrackIdToParticle_P(ide.trackID)->PdgCode())==11) {//contribution from electron
+          electron_perc += ide.energyFrac;
+          //std::cout << "Electron perc: " << electron_perc << std::endl;
+        }
+      }
+      if (hit_tpcid == geoHelper.tpcIndecesBL[0] || hit_tpcid == geoHelper.tpcIndecesBR[0])
+        image->Fill(wireID,hitPeakTime,electron_perc);
+      else if (hit_tpcid == geoHelper.tpcIndecesBL[1] || hit_tpcid == geoHelper.tpcIndecesBR[1])
+        image->Fill((nWires/3+wireID),hitPeakTime,electron_perc);
+      else if (hit_tpcid == geoHelper.tpcIndecesBL[2] || hit_tpcid == geoHelper.tpcIndecesBR[2])
+        image->Fill((2*nWires/3+wireID),hitPeakTime,electron_perc);
+    }
+    return;
+  }
+
   // Set the parameters from the FHICL file
   void HitHelper::reconfigure(fhicl::ParameterSet const &p) {
     fTrackerTag = p.get<std::string>("TrackerTag");
