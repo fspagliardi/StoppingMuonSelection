@@ -21,6 +21,7 @@
 #include "SpacePointAlg.h"
 #include "CalorimetryHelper.h"
 #include "StoppingMuonSelectionAlg.h"
+#include "HitHelper.h"
 
 namespace stoppingcosmicmuonselection {
 
@@ -46,6 +47,7 @@ public:
   void endJob() override;
   void reconfigure(fhicl::ParameterSet const& p);
 
+  // Function called by the analyze function
   void UpdateTTreeVariableWithTrackProperties(const trackProperties &trackProp);
 
 private:
@@ -59,6 +61,10 @@ private:
   SpacePointAlg            spAlg;        // need configuration
   StoppingMuonSelectionAlg selectorAlg;  // need configuration
   CalorimetryHelper        caloHelper;   // need configuration
+  HitHelper                hitHelper;    // need configuration
+
+  // Parameters form FHICL File
+  size_t _minNumbMichelLikeHit;
 
   std::string fPFParticleTag, fSpacePointTag, fTrackerTag;
   protoana::ProtoDUNEPFParticleUtils   pfpUtil;
@@ -92,6 +98,7 @@ private:
   double fMaxHitPeakTime = INV_DBL;
   bool fIsRecoSelectedCathodeCrosser = false;
   bool fIsTrueSelectedCathodeCrosser = false;
+  TProfile2D *fh_imageCollection = nullptr;
 
   // Histos
   TH2D *h_dQdxVsRR;
@@ -137,6 +144,10 @@ void MichelStudyTmp::beginJob()
   fTrackTree->Branch("theta_yz", &ftheta_yz, "ftheta_yz/d");
   fTrackTree->Branch("isRecoSelectedCathodeCrosser",&fIsRecoSelectedCathodeCrosser);
   fTrackTree->Branch("isTrueSelectedCathodeCrosser",&fIsTrueSelectedCathodeCrosser);
+  fTrackTree->Branch("h_imageCollection","TProfile2D",&fh_imageCollection,64000,0);
+
+  // Init the Image for the hits
+  hitHelper.InitHitImageHisto(fh_imageCollection, 2, "h_imageCollection");
 
   // Histograms
   h_dQdxVsRR = tfs->make<TH2D>("h_dQdxVsRR","h_dQdxVsRR",200,0,200,800,0,800);
@@ -158,20 +169,22 @@ void MichelStudyTmp::reconfigure(fhicl::ParameterSet const& p)
   fTrackerTag = p.get<std::string>("TrackerTag");
   fPFParticleTag = p.get<std::string>("PFParticleTag");
   fSpacePointTag = p.get<std::string>("SpacePointTag");
+  _minNumbMichelLikeHit = p.get<size_t>("minNumbMichelLikeHit", 2);
   spAlg.reconfigure(p.get<fhicl::ParameterSet>("SpacePointAlg"));
   selectorAlg.reconfigure(p.get<fhicl::ParameterSet>("StoppingMuonSelectionAlg"));
   caloHelper.reconfigure(p.get<fhicl::ParameterSet>("CalorimetryHelper"));
+  hitHelper.reconfigure(p.get<fhicl::ParameterSet>("HitHelper"));
 }
 
 void MichelStudyTmp::UpdateTTreeVariableWithTrackProperties(const trackProperties &trackInfo) {
   fEvNumber       = trackInfo.evNumber;
   fT0_reco        = trackInfo.trackT0;
-  fStartX         = trackInfo.recoStartX;
-  fStartY         = trackInfo.recoStartY;
-  fStartZ         = trackInfo.recoStartZ;
-  fEndX           = trackInfo.recoEndX;
-  fEndY           = trackInfo.recoEndY;
-  fEndZ           = trackInfo.recoEndZ;
+  fStartX         = trackInfo.recoStartPoint.X();
+  fStartY         = trackInfo.recoStartPoint.Y();
+  fStartZ         = trackInfo.recoStartPoint.Z();
+  fEndX           = trackInfo.recoEndPoint.X();
+  fEndY           = trackInfo.recoEndPoint.Y();
+  fEndZ           = trackInfo.recoEndPoint.Z();
   ftheta_xz       = trackInfo.theta_xz;
   ftheta_yz       = trackInfo.theta_yz;
   fMinHitPeakTime = trackInfo.minHitPeakTime;
@@ -179,12 +192,12 @@ void MichelStudyTmp::UpdateTTreeVariableWithTrackProperties(const trackPropertie
   fTrackLength    = trackInfo.trackLength;
   fRecoTrackID    = trackInfo.trackID;
   fPdgID          = trackInfo.pdg;
-  fTStartX        = trackInfo.trueStartX;
-  fTStartY        = trackInfo.trueStartY;
-  fTStartZ        = trackInfo.trueStartZ;
-  fTEndX          = trackInfo.trueEndX;
-  fTEndY          = trackInfo.trueEndY;
-  fTEndZ          = trackInfo.trueEndZ;
+  fTStartX        = trackInfo.trueStartPoint.X();
+  fTStartY        = trackInfo.trueStartPoint.Y();
+  fTStartZ        = trackInfo.trueStartPoint.Z();
+  fTEndX          = trackInfo.trueEndPoint.X();
+  fTEndY          = trackInfo.trueEndPoint.Y();
+  fTEndZ          = trackInfo.trueEndPoint.Z();
   fTStartT        = trackInfo.trueStartT;;
   fTEndT          = trackInfo.trueEndT;
   fTrackID        = trackInfo.trueTrackID;
