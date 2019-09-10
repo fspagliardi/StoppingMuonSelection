@@ -32,8 +32,12 @@ namespace stoppingcosmicmuonselection {
     HitHelper();
     ~HitHelper();
 
-    // Get track index in track vector for that event.
+    // Get the track index of a track object
     size_t GetTrackIndex(const recob::Track &track, const std::vector<art::Ptr<recob::Track>> &tracklist);
+
+    // Get the vector of art::Ptr to hit for the given track
+    const std::vector<art::Ptr<recob::Hit>> GetArtPtrToHitVect(const art::FindManyP<recob::Hit> &fmht,
+                                                               const size_t &trackIndex);
 
     // Get XYZ position for that hit
     TVector3 GetHitXYZ(const art::Ptr<recob::Hit> &hitp,
