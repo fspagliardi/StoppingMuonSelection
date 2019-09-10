@@ -87,7 +87,7 @@ namespace stoppingcosmicmuonselection {
   void HitHelper::GetTrackHitPicture(TProfile2D* image,
                                      const std::vector<art::Ptr<recob::Hit>> &trackHits,
                                      const TVector3 &recoEndPoint,
-                                     const int &planeNumber) {
+                                     const size_t &planeNumber) {
     image->Reset();
     const geo::GeometryCore *geom = lar::providerFrom<geo::Geometry>();
     const geo::Point_t EndPoint(recoEndPoint.X(), recoEndPoint.Y(), recoEndPoint.Z());
@@ -102,7 +102,7 @@ namespace stoppingcosmicmuonselection {
     for (const art::Ptr<recob::Hit> & hitp : trackHits) {
       // Get only hit in the collection plane
       if (!hitp->WireID().isValid) continue;
-      if (hitp->WireID().Plane != (size_t)planeNumber) continue;
+      if (hitp->WireID().Plane != planeNumber) continue;
       unsigned int hit_tpcid = hitp->WireID().TPC;
       double hitPeakTime = hitp->PeakTime();
       unsigned int wireID = hitp->WireID().Wire;
@@ -124,7 +124,7 @@ namespace stoppingcosmicmuonselection {
   }
 
   // Initialise the image for a series of hit for a given plane
-  void HitHelper::InitHitImageHisto(TProfile2D *image, const int &planeNumber, const std::string &name) {
+  void HitHelper::InitHitImageHisto(TProfile2D *image, const size_t &planeNumber, const std::string &name) {
     size_t nWires = geoHelper.GetNumberWiresOneSide(planeNumber);
     int nTicks = detprop->NumberTimeSamples();
     image = new TProfile2D(name.c_str(),name.c_str(),nWires,0,nWires,nTicks,0,nTicks);

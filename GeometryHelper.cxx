@@ -134,13 +134,13 @@ namespace stoppingcosmicmuonselection {
   }
 
   // Get the number of wires from one beam side for a given plane
-  size_t GeometryHelper::GetNumberWiresOneSide(const int &planeNumber) {
+  size_t GeometryHelper::GetNumberWiresOneSide(const size_t &planeNumber) {
     size_t nWires = -INV_INT;
     size_t nWiresBL = 0, nWiresBR = 0;
     for (geo::PlaneID const& pID: geom->IteratePlaneIDs()) {
       geo::PlaneGeo const& planeHandle = geom->Plane(pID);
       //std::cout << "Plane ID: " << pID.Plane << "| Coordinates: x=" << planeHandle.GetCenter().X() << " y=" << planeHandle.GetCenter().Y() << " z=" << planeHandle.GetCenter().Z() << std::endl;
-      if (pID.Plane != (size_t)planeNumber) continue;
+      if (pID.Plane != planeNumber) continue;
       //pitch = planeHandle.WirePitch();
       unsigned int tpcid = pID.TPC;
       //std::cout << "TPC ID: " << tpcid << " Numb. of wires for plane 2 in that TPC: " << planeHandle.Nwires();

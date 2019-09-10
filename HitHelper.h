@@ -63,10 +63,10 @@ namespace stoppingcosmicmuonselection {
     void GetTrackHitPicture(TProfile2D* image,
                             const std::vector<art::Ptr<recob::Hit>> &trackHits,
                             const TVector3 &recoEndPoint,
-                            const int &planeNumber);
+                            const size_t &planeNumber);
 
     // Initialise the image for a series of hit for a given plane
-    void InitHitImageHisto(TProfile2D *image, const int &planeNumber, const std::string &name);
+    void InitHitImageHisto(TProfile2D *image, const size_t &planeNumber, const std::string &name);
 
     // Set the parameters from the FHICL file
     void reconfigure(fhicl::ParameterSet const &p);

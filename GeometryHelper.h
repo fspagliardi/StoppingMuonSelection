@@ -52,7 +52,7 @@ namespace stoppingcosmicmuonselection {
     double *GetAPABoundaries();
 
     // Get the number of wires from one beam side for a given plane
-    size_t GetNumberWiresOneSide(const int &planeNumber);
+    size_t GetNumberWiresOneSide(const size_t &planeNumber);
 
     // Arrays with TPC number info
     const unsigned int tpcIndecesBL[3] = {2,6,10};
