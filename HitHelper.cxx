@@ -124,7 +124,7 @@ namespace stoppingcosmicmuonselection {
   }
 
   // Initialise the image for a series of hit for a given plane
-  void HitHelper::InitHitImageHisto(TProfile2D *image, const size_t &planeNumber, const std::string &name) {
+  void HitHelper::InitHitImageHisto(TProfile2D *&image, const size_t &planeNumber, const std::string &name) {
     size_t nWires = geoHelper.GetNumberWiresOneSide(planeNumber);
     int nTicks = detprop->NumberTimeSamples();
     image = new TProfile2D(name.c_str(),name.c_str(),nWires,0,nWires,nTicks,0,nTicks);

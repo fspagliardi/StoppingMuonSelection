@@ -66,7 +66,7 @@ namespace stoppingcosmicmuonselection {
                              const size_t &planeNumber);
 
     // Initialise the image for a series of hit for a given plane
-    void InitHitImageHisto(TProfile2D *image, const size_t &planeNumber, const std::string &name);
+    void InitHitImageHisto(TProfile2D *&image, const size_t &planeNumber, const std::string &name);
 
     // Set the parameters from the FHICL file
     void reconfigure(fhicl::ParameterSet const &p);
