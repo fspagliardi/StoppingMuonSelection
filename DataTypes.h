@@ -1,6 +1,8 @@
 #ifndef DATA_TYPES_H
 #define DATA_TYPES_H
 
+#include "TVector3.h"
+
 namespace stoppingcosmicmuonselection {
 
   const int INV_INT = -999;
@@ -10,8 +12,8 @@ namespace stoppingcosmicmuonselection {
     // Reconstructed information
     size_t evNumber;
     double trackT0;
-    double recoStartX, recoStartY, recoStartZ;
-    double recoEndX, recoEndY, recoEndZ;
+    TVector3 recoStartPoint;
+    TVector3 recoEndPoint;
     double theta_xz, theta_yz;
     double minHitPeakTime, maxHitPeakTime;
     double trackLength;
@@ -19,20 +21,16 @@ namespace stoppingcosmicmuonselection {
 
     // Truth information
     int pdg;
-    double trueStartX, trueStartY, trueStartZ;
-    double trueEndX, trueEndY, trueEndZ;
+    TVector3 trueStartPoint;
+    TVector3 trueEndPoint;
     double trueStartT, trueEndT;
     double trueTrackID;
 
     void Reset() {
       evNumber = INV_INT;
       trackT0 = INV_DBL;
-      recoStartX = INV_DBL;
-      recoStartY = INV_DBL;
-      recoStartZ = INV_DBL;
-      recoEndX = INV_DBL;
-      recoEndY = INV_DBL;
-      recoEndZ = INV_DBL;
+      recoStartPoint.SetXYZ(INV_DBL,INV_DBL,INV_DBL);
+      recoEndPoint.SetXYZ(INV_DBL,INV_DBL,INV_DBL);
       theta_xz = INV_DBL;
       theta_yz = INV_DBL;
       minHitPeakTime = INV_DBL;
@@ -40,12 +38,8 @@ namespace stoppingcosmicmuonselection {
       trackLength = INV_DBL;
       trackID = INV_DBL;
       pdg = INV_INT;
-      trueStartX = INV_DBL;
-      trueStartY = INV_DBL;
-      trueStartZ = INV_DBL;
-      trueEndX = INV_DBL;
-      trueEndY = INV_DBL;
-      trueEndZ = INV_DBL;
+      trueStartPoint.SetXYZ(INV_DBL,INV_DBL,INV_DBL);
+      trueEndPoint.SetXYZ(INV_DBL,INV_DBL,INV_DBL);
       trueStartT = INV_DBL;
       trueEndT = INV_DBL;
       trueTrackID = INV_DBL;

@@ -221,12 +221,8 @@ namespace stoppingcosmicmuonselection {
   const trackProperties StoppingMuonSelectionAlg::GetTrackProperties() {
     trackInfo.evNumber = _evNumber;
     trackInfo.trackT0 = _trackT0;
-    trackInfo.recoStartX = _recoStartPoint.X();
-    trackInfo.recoStartY = _recoStartPoint.Y();
-    trackInfo.recoStartZ = _recoStartPoint.Z();
-    trackInfo.recoEndX = _recoEndPoint.X();
-    trackInfo.recoEndY = _recoEndPoint.Y();
-    trackInfo.recoEndZ = _recoEndPoint.Z();
+    trackInfo.recoStartPoint = _recoStartPoint;
+    trackInfo.recoEndPoint = _recoEndPoint;
     trackInfo.theta_xz = _theta_xz;
     trackInfo.theta_yz = _theta_yz;
     trackInfo.minHitPeakTime = _minHitPeakTime;
@@ -234,12 +230,8 @@ namespace stoppingcosmicmuonselection {
     trackInfo.trackLength = _trackLength;
     trackInfo.trackID = _trackID;
     trackInfo.pdg = _pdg;
-    trackInfo.trueStartX = _trueStartPoint.X();
-    trackInfo.trueStartY = _trueStartPoint.Y();
-    trackInfo.trueStartZ = _trueStartPoint.Z();
-    trackInfo.trueEndX = _trueEndPoint.X();
-    trackInfo.trueEndY = _trueEndPoint.Y();
-    trackInfo.trueEndZ = _trueEndPoint.Z();
+    trackInfo.trueStartPoint = _trueStartPoint;
+    trackInfo.trueEndPoint = _trueEndPoint;
     trackInfo.trueStartT = _trueStartT;
     trackInfo.trueEndT = _trueEndT;
     trackInfo.trueTrackID = _trueTrackID;
