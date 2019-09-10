@@ -75,8 +75,6 @@ namespace stoppingcosmicmuonselection {
       // Updating variables to be stored in TTree
       UpdateTTreeVariableWithTrackProperties(selectorAlg.GetTrackProperties());
 
-
-
       // Let's go to the Calorimetry. Need to set it for this track first.
       caloHelper.Set(thisParticle,evt);
       // Fill the histos
