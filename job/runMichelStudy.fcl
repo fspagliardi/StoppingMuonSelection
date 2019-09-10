@@ -22,10 +22,10 @@ services:
 
 michel_study:
 {
-  module_type: "MichelStudyTmp"
+  module_type:   "MichelStudyTmp"
   PFParticleTag: "pandora"
   SpacePointTag: "reco3d"
-  TrackerTag: "pandoraTrack"
+  TrackerTag:    "pandoraTrack"
   minNumbMichelLikeHit: 3
   SpacePointAlg: @local::spacepointAlg
   StoppingMuonSelectionAlg: @local::stoppingmuonAlg
