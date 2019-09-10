@@ -84,7 +84,7 @@ namespace stoppingcosmicmuonselection {
   }
 
   // Get a TProfile2D filled with hit peak times and wire number
-  void HitHelper::GetTrackHitPicture(TProfile2D* image,
+  void HitHelper::FillTrackHitPicture(TProfile2D* image,
                                      const std::vector<art::Ptr<recob::Hit>> &trackHits,
                                      const TVector3 &recoEndPoint,
                                      const size_t &planeNumber) {

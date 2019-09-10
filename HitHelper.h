@@ -60,10 +60,10 @@ namespace stoppingcosmicmuonselection {
                          const size_t &trackIndex);
 
     // Get a TProfile2D filled with hit peak times and wire number
-    void GetTrackHitPicture(TProfile2D* image,
-                            const std::vector<art::Ptr<recob::Hit>> &trackHits,
-                            const TVector3 &recoEndPoint,
-                            const size_t &planeNumber);
+    void FillTrackHitPicture(TProfile2D* image,
+                             const std::vector<art::Ptr<recob::Hit>> &trackHits,
+                             const TVector3 &recoEndPoint,
+                             const size_t &planeNumber);
 
     // Initialise the image for a series of hit for a given plane
     void InitHitImageHisto(TProfile2D *image, const size_t &planeNumber, const std::string &name);
