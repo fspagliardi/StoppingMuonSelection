@@ -19,6 +19,7 @@
 #include "larcore/Geometry/Geometry.h"
 #include "larcorealg/Geometry/TPCGeo.h"
 #include "larcorealg/Geometry/GeometryCore.h"
+#include "lardata/DetectorInfoServices/DetectorPropertiesService.h"
 #include "art/Framework/Principal/Event.h"
 #include "art/Framework/Principal/Handle.h"
 #include "canvas/Persistency/Common/FindManyP.h"
@@ -64,6 +65,9 @@ namespace stoppingcosmicmuonselection {
                             const TVector3 &recoEndPoint,
                             const int &planeNumber);
 
+    // Initialise the image for a series of hit for a given plane
+    void InitHitImageHisto(TProfile2D *image, const int &planeNumber, const std::string &name);
+
     // Set the parameters from the FHICL file
     void reconfigure(fhicl::ParameterSet const &p);
 
@@ -82,6 +86,9 @@ namespace stoppingcosmicmuonselection {
 
     // Product labels from FHICL file.
     std::string fTrackerTag, fPFParticleTag;
+
+    // Declare handle for detector properties
+    const detinfo::DetectorProperties *detprop = lar::providerFrom<detinfo::DetectorPropertiesService>();
 
     // Geometry helper.
     GeometryHelper geoHelper;

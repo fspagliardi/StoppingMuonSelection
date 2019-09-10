@@ -123,6 +123,13 @@ namespace stoppingcosmicmuonselection {
     return;
   }
 
+  // Initialise the image for a series of hit for a given plane
+  void HitHelper::InitHitImageHisto(TProfile2D *image, const int &planeNumber, const std::string &name) {
+    size_t nWires = geoHelper.GetNumberWiresOneSide(planeNumber);
+    int nTicks = detprop->NumberTimeSamples();
+    image = new TProfile2D(name.c_str(),name.c_str(),nWires,0,nWires,nTicks,0,nTicks);
+  }
+
   // Set the parameters from the FHICL file
   void HitHelper::reconfigure(fhicl::ParameterSet const &p) {
     fTrackerTag = p.get<std::string>("TrackerTag");
