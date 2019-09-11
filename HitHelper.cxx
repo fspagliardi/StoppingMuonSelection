@@ -136,7 +136,6 @@ namespace stoppingcosmicmuonselection {
       image->Fill(1,1,1);
       return;
     }
-    size_t nWires = geoHelper.GetNumberWiresOneSide(planeNumber);
     for (const art::Ptr<recob::Hit> & hitp : trackHits) {
       // Get only hit in the collection plane
       if (!hitp->WireID().isValid) continue;
@@ -151,12 +150,8 @@ namespace stoppingcosmicmuonselection {
           //std::cout << "Electron perc: " << electron_perc << std::endl;
         }
       }
-      if (hit_tpcid == geoHelper.tpcIndecesBL[0] || hit_tpcid == geoHelper.tpcIndecesBR[0])
-        image->Fill(wireID,hitPeakTime,electron_perc);
-      else if (hit_tpcid == geoHelper.tpcIndecesBL[1] || hit_tpcid == geoHelper.tpcIndecesBR[1])
-        image->Fill((nWires/3+wireID),hitPeakTime,electron_perc);
-      else if (hit_tpcid == geoHelper.tpcIndecesBL[2] || hit_tpcid == geoHelper.tpcIndecesBR[2])
-        image->Fill((2*nWires/3+wireID),hitPeakTime,electron_perc);
+      size_t wireOffset = geoHelper.GetWireOffset(hit_tpcid, planeNumber);
+      image->Fill(wireID+wireOffset,hitPeakTime,electron_perc);
     }
     return;
   }
