@@ -8,6 +8,8 @@ namespace stoppingcosmicmuonselection {
   const int INV_INT = -999;
   const double INV_DBL = -9999999;
 
+  typedef artPtrHitVect std::vector<art::Ptr<recob::Hit>>;
+
   struct trackProperties {
     // Reconstructed information
     size_t evNumber;
