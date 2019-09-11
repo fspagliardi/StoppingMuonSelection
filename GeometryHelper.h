@@ -54,6 +54,9 @@ namespace stoppingcosmicmuonselection {
     // Get the number of wires from one beam side for a given plane
     size_t GetNumberWiresOneSide(const size_t &planeNumber);
 
+    // Constant to add to number of wires.
+    size_t GetWireOffset(const unsigned int &hit_tpcid, const size_t &planeNumber);
+
     // Arrays with TPC number info
     const unsigned int tpcIndecesBL[3] = {2,6,10};
     const unsigned int tpcIndecesBR[3] = {1,5,9};
