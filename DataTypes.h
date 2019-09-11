@@ -1,14 +1,17 @@
 #ifndef DATA_TYPES_H
 #define DATA_TYPES_H
 
+#include "art/Framework/Principal/Event.h"
+#include "art/Framework/Principal/Handle.h"
+#include "lardataobj/RecoBase/Hit.h"
 #include "TVector3.h"
 
 namespace stoppingcosmicmuonselection {
 
-  const int INV_INT = -999;
-  const double INV_DBL = -9999999;
+  constexpr int INV_INT = -999;
+  constexpr double INV_DBL = -9999999;
 
-  typedef artPtrHitVect std::vector<art::Ptr<recob::Hit>>;
+  typedef std::vector<art::Ptr<recob::Hit>> artPtrHitVec;
 
   struct trackProperties {
     // Reconstructed information
