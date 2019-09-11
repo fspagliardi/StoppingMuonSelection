@@ -10,13 +10,14 @@
 
 #include "DataTypes.h"
 #include "HitHelper.h"
+#include "GeometryHelper.h"
 
 namespace stoppingcosmicmuonselection {
 
   class HitPlaneAlg {
 
   public:
-    HitPlaneAlg(artPtrHitVec &hitsOnPlane, const size_t start_index);
+    HitPlaneAlg(artPtrHitVec &hitsOnPlane, const size_t &start_index, const size_t &planeNumber);
     ~HitPlaneAlg();
 
     // Order hits based on their 2D (wire-time) position.
@@ -26,6 +27,12 @@ namespace stoppingcosmicmuonselection {
 
     artPtrHitVec &_hitsOnPlane;
     const size_t &_start_index;
+    const size_t &_planeNumber;
+
+    bool _isOrdered = false;
+
+    // Geometry helper.
+    GeometryHelper geoHelper;
 
   };
 }
