@@ -29,9 +29,21 @@ namespace stoppingcosmicmuonselection {
   }
 
   // Get the vector of art::Ptr to hit for the given track
-  const std::vector<art::Ptr<recob::Hit>> HitHelper::GetArtPtrToHitVect(const art::FindManyP<recob::Hit> &fmht,
-                                                                        const size_t &trackIndex) {
+  const artPtrHitVec HitHelper::GetArtPtrToHitVect(const art::FindManyP<recob::Hit> &fmht,
+                                                   const size_t &trackIndex) {
     return fmht.at(trackIndex);
+  }
+
+  // Get hit list on a given plane.
+  artPtrHitVec HitHelper::GetHitsOnAPlane(const size_t &planeNumb,
+                                          const artPtrHitVec &allHits) {
+    artPtrHitVec hitsOnPlane;
+    for (auto const &hitp : allHits) {
+      if (!hitp->WireID().isValid) continue;
+      if (hitp->WireID().Plane != planeNumb) continue;
+      hitsOnPlane.push_back(hitp);
+    }
+    return hitsOnPlane;
   }
 
   // Get XYZ position for that hit
@@ -43,7 +55,7 @@ namespace stoppingcosmicmuonselection {
     TVector3 hitLoc(INV_DBL,INV_DBL,INV_DBL);
     if (!fmthm.isValid()) return hitLoc;
 
-    const std::vector<art::Ptr<recob::Hit>> vhit = fmthm.at(trackIndex);
+    const artPtrHitVec vhit = fmthm.at(trackIndex);
     const std::vector<const recob::TrackHitMeta*> vmeta = fmthm.data(trackIndex);
     // iterate on meta data
     for (size_t ii=0;ii<vhit.size();++ii) {
@@ -62,6 +74,32 @@ namespace stoppingcosmicmuonselection {
     } // iteration on metadata
 
     return hitLoc;
+  }
+
+  // Get index of the closest hit to a given point on the given track.
+  const size_t HitHelper::GetIndexClosestHitToPoint(const TVector3 &point,
+                                                    const artPtrHitVec &hits,
+                                                    art::FindManyP<recob::Hit,recob::TrackHitMeta> &fmthm,
+                                                    const std::vector<art::Ptr<recob::Track>> &tracklist,
+                                                    const size_t &trackIndex) {
+    std::vector<double> distanceVec;
+    for (auto const &hitp : hits) {
+      const TVector3 &hitLoc = GetHitXYZ(hitp,fmthm,tracklist,trackIndex);
+      distanceVec.push_back((hitLoc - point).Mag());
+    }
+    auto it_min_element = std::min_element(distanceVec.begin(),distanceVec.end());
+    size_t hitIndex = it_min_element - distanceVec.begin();
+    return hitIndex;
+  }
+
+  // Get the closest hit to a given point on the given track.
+  art::Ptr<recob::Hit> HitHelper::GetClosestHitToPoint(const TVector3 &point,
+                                                       const artPtrHitVec &hits,
+                                                       art::FindManyP<recob::Hit,recob::TrackHitMeta> &fmthm,
+                                                       const std::vector<art::Ptr<recob::Track>> &tracklist,
+                                                       const size_t &trackIndex) {
+    size_t hitIndex = GetIndexClosestHitToPoint(point, hits, fmthm, tracklist, trackIndex);
+    return hits.at(hitIndex);
   }
 
   // Check if a hit has high electron contribution at a certain distance from the end point
@@ -85,7 +123,7 @@ namespace stoppingcosmicmuonselection {
 
   // Get a TProfile2D filled with hit peak times and wire number
   void HitHelper::FillTrackHitPicture(TProfile2D* image,
-                                     const std::vector<art::Ptr<recob::Hit>> &trackHits,
+                                     const artPtrHitVec &trackHits,
                                      const TVector3 &recoEndPoint,
                                      const size_t &planeNumber) {
     image->Reset();

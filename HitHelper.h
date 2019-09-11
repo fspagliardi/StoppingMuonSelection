@@ -43,14 +43,32 @@ namespace stoppingcosmicmuonselection {
     size_t GetTrackIndex(const recob::Track &track, const std::vector<art::Ptr<recob::Track>> &tracklist);
 
     // Get the vector of art::Ptr to hit for the given track
-    const std::vector<art::Ptr<recob::Hit>> GetArtPtrToHitVect(const art::FindManyP<recob::Hit> &fmht,
+    const artPtrHitVec GetArtPtrToHitVect(const art::FindManyP<recob::Hit> &fmht,
                                                                const size_t &trackIndex);
+
+    // Get hit list on a given plane.
+    artPtrHitVec GetHitsOnAPlane(const size_t &planeNumb,
+                                       const artPtrHitVec &allHits);
 
     // Get XYZ position for that hit
     TVector3 GetHitXYZ(const art::Ptr<recob::Hit> &hitp,
                        art::FindManyP<recob::Hit,recob::TrackHitMeta> &fmthm,
                        const std::vector<art::Ptr<recob::Track>> &tracklist,
                        const size_t &trackIndex);
+
+    // Get index of the closest hit to a given point on the given track.
+    const size_t GetIndexClosestHitToPoint(const TVector3 &point,
+                                           const artPtrHitVec &hits,
+                                           art::FindManyP<recob::Hit,recob::TrackHitMeta> &fmthm,
+                                           const std::vector<art::Ptr<recob::Track>> &tracklist,
+                                           const size_t &trackIndex);
+
+    // Get the closest hit to a given point on the given track.
+    art::Ptr<recob::Hit> GetClosestHitToPoint(const TVector3 &point,
+                                              const artPtrHitVec &hits,
+                                              art::FindManyP<recob::Hit,recob::TrackHitMeta> &fmthm,
+                                              const std::vector<art::Ptr<recob::Track>> &tracklist,
+                                              const size_t &trackIndex);
 
     // Check if a hit has high electron contribution at a certain distance from the end point
     bool IsHitMichelLike(const art::Ptr<recob::Hit> &hitp,
@@ -61,7 +79,7 @@ namespace stoppingcosmicmuonselection {
 
     // Get a TProfile2D filled with hit peak times and wire number
     void FillTrackHitPicture(TProfile2D* image,
-                             const std::vector<art::Ptr<recob::Hit>> &trackHits,
+                             const artPtrHitVec &trackHits,
                              const TVector3 &recoEndPoint,
                              const size_t &planeNumber);
 
