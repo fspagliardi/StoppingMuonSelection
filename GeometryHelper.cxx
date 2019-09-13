@@ -176,6 +176,10 @@ namespace stoppingcosmicmuonselection {
       throw cet::exception("GeometryHelper.cxx") << "TPC ID for the hit is not valid.";
     return -(INV_INT);
   }
+  size_t GeometryHelper::GetWireOffset(const art::Ptr<recob::Hit> &hit, const size_t &planeNumber) {
+    unsigned int hit_tpcid = hit->WireID().TPC;
+    return GetWireOffset(hit_tpcid, planeNumber);
+  }
 
 } // end of namespace stoppingcosmicmuonselection
 
