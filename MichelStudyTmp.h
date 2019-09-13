@@ -8,9 +8,11 @@
 //#include "messagefacility/MessageLogger/MessageLogger.h"
 #include "art/Framework/Core/EDAnalyzer.h"
 #include "art/Framework/Core/ModuleMacros.h"
+#include "art/Framework/Core/FileBlock.h"
 #include "canvas/Persistency/Common/FindManyP.h"
 
 #include <fstream>
+#include <string>
 #include "TTree.h"
 #include "TH2.h"
 #include "TProfile2D.h"
@@ -46,6 +48,7 @@ public:
   void beginJob() override;
   void endJob() override;
   void reconfigure(fhicl::ParameterSet const& p);
+  void respondToOpenInputFile(art::FileBlock const &inputFile) override;
 
   // Function called by the analyze function
   void UpdateTTreeVariableWithTrackProperties(const trackProperties &trackProp);
@@ -65,8 +68,9 @@ private:
 
   // Parameters form FHICL File
   size_t _minNumbMichelLikeHit;
-
   std::string fPFParticleTag, fSpacePointTag, fTrackerTag;
+
+  // Utils
   protoana::ProtoDUNEPFParticleUtils   pfpUtil;
 
   // Track Tree stuff
@@ -98,6 +102,7 @@ private:
   double fMaxHitPeakTime = INV_DBL;
   bool fIsRecoSelectedCathodeCrosser = false;
   bool fIsTrueSelectedCathodeCrosser = false;
+  std::string filename;
   TProfile2D *fh_imageCollection = nullptr;
 
   // Histos
@@ -144,6 +149,7 @@ void MichelStudyTmp::beginJob()
   fTrackTree->Branch("theta_yz", &ftheta_yz, "ftheta_yz/d");
   fTrackTree->Branch("isRecoSelectedCathodeCrosser",&fIsRecoSelectedCathodeCrosser);
   fTrackTree->Branch("isTrueSelectedCathodeCrosser",&fIsTrueSelectedCathodeCrosser);
+  fTrackTree->Branch("filename", &filename);
   fTrackTree->Branch("h_imageCollection","TProfile2D",&fh_imageCollection,64000,0);
 
   // Init the Image for the hits
@@ -162,6 +168,11 @@ void MichelStudyTmp::endJob()
   std::cout << "Total number of events: " << counter_total_number_events << std::endl;
   std::cout << "Total number of tracks: " << counter_total_number_tracks << std::endl;
   std::cout << "Number of T0-tagged tracks: " << counter_T0_tagged_tracks << std::endl;
+}
+
+void MichelStudyTmp::respondToOpenInputFile(art::FileBlock const &inputFile) {
+  filename = inputFile.fileName();
+  std::cout << "Analyzer on file: " << filename << std::endl;
 }
 
 void MichelStudyTmp::reconfigure(fhicl::ParameterSet const& p)

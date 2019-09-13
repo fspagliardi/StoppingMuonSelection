@@ -92,6 +92,8 @@ namespace stoppingcosmicmuonselection {
       }
       if (numbMichelLikeHits > _minNumbMichelLikeHit)
         hitHelper.FillTrackHitPicture(fh_imageCollection,trackHits,selectorAlg.GetTrackProperties().recoEndPoint,2);
+      else
+        fh_imageCollection->Reset();
 
       // Fill TTree
       fTrackTree->Fill();
