@@ -7,6 +7,7 @@
 
 #include "TVector3.h"
 #include "TMath.h"
+#include "lardata/DetectorInfoServices/DetectorPropertiesService.h"
 
 #include "DataTypes.h"
 #include "HitHelper.h"
@@ -21,18 +22,28 @@ namespace stoppingcosmicmuonselection {
     ~HitPlaneAlg();
 
     // Order hits based on their 2D (wire-time) position.
-    const artPtrHitVec GetOrderedHitArray();
+    void OrderHitVec();
+
+    // Get the ordered hit vector.
+    const artPtrHitVec OrderedHitVec();
+
+    // Work out the vector of ordered dQds.
+    const std::vector<double> GetOrderedDqds();
 
   private:
 
     artPtrHitVec &_hitsOnPlane;
     const size_t &_start_index;
     const size_t &_planeNumber;
+    std::vector<double> _effectiveWireID;
 
     bool _isOrdered = false;
 
     // Geometry helper.
     GeometryHelper geoHelper;
+
+    // Declare handle for detector properties
+    const detinfo::DetectorProperties *detprop = lar::providerFrom<detinfo::DetectorPropertiesService>();
 
   };
 }
