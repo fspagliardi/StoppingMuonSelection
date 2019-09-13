@@ -181,6 +181,17 @@ namespace stoppingcosmicmuonselection {
     return GetWireOffset(hit_tpcid, planeNumber);
   }
 
+  // Get the wire pitch.
+  double GeometryHelper::GetWirePitch(const size_t &planeNumber)  {
+    for (geo::PlaneID const& pID: geom->IteratePlaneIDs()) {
+      geo::PlaneGeo const& planeHandle = geom->Plane(pID);
+      if (pID.Plane == planeNumber)
+        return planeHandle.WirePitch();
+
+    } // end iteration on planes
+    return INV_DBL;
+  }
+
 } // end of namespace stoppingcosmicmuonselection
 
 #endif

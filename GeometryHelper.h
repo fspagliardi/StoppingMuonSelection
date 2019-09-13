@@ -58,6 +58,9 @@ namespace stoppingcosmicmuonselection {
     size_t GetWireOffset(const unsigned int &hit_tpcid, const size_t &planeNumber);
     size_t GetWireOffset(const art::Ptr<recob::Hit> &hit, const size_t &planeNumber);
 
+    // Get the wire pitch.
+    double GetWirePitch(const size_t &planeNumb);
+
     // Arrays with TPC number info
     const unsigned int tpcIndecesBL[3] = {2,6,10};
     const unsigned int tpcIndecesBR[3] = {1,5,9};
