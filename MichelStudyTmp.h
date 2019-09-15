@@ -118,6 +118,9 @@ private:
   // Graphs
   TGraphErrors *g_Q = nullptr;
   TGraphErrors *g_Dqds = nullptr;
+  TGraphErrors *g_QSmooth = nullptr;
+  TGraphErrors *g_DqdsSmooth = nullptr;
+  TGraphErrors *g_LocalLin = nullptr;
 };
 
 MichelStudyTmp::MichelStudyTmp(fhicl::ParameterSet const & p)
@@ -161,6 +164,9 @@ void MichelStudyTmp::beginJob()
   fTrackTree->Branch("h_imageCollection","TProfile2D",&fh_imageCollection,64000,0);
   fTrackTree->Branch("g_Q", &g_Q);
   fTrackTree->Branch("g_Dqds", &g_Dqds);
+  fTrackTree->Branch("g_QSmooth", &g_QSmooth);
+  fTrackTree->Branch("g_DqdsSmooth", &g_DqdsSmooth);
+  fTrackTree->Branch("g_LocalLin", &g_LocalLin);
 
   // Init the Image for the hits
   hitHelper.InitHitImageHisto(fh_imageCollection, 2, "h_imageCollection");
@@ -174,6 +180,9 @@ void MichelStudyTmp::beginJob()
   // Graphs
   g_Q = tfs->make<TGraphErrors>();
   g_Dqds = tfs->make<TGraphErrors>();
+  g_QSmooth = tfs->make<TGraphErrors>();
+  g_DqdsSmooth = tfs->make<TGraphErrors>();
+  g_LocalLin = tfs->make<TGraphErrors>();
 }
 
 void MichelStudyTmp::endJob()

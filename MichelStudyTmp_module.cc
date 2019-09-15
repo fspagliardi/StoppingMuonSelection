@@ -99,7 +99,18 @@ namespace stoppingcosmicmuonselection {
       const artPtrHitVec &hitsOnCollection = hitHelper.GetHitsOnAPlane(2,trackHits);
       const size_t &hitIndex = hitHelper.GetIndexClosestHitToPoint(selectorAlg.GetTrackProperties().recoStartPoint,hitsOnCollection,fmthm,tracklist,trackIndex);
       HitPlaneAlg hitPlaneAlg(trackHits,hitIndex,2);
-      // Create the graph
+      // Get the vectors.
+      const std::vector<double> &Qs = hitPlaneAlg.GetOrderedQ();
+      const std::vector<double> &Dqds = hitPlaneAlg.GetOrderedDqds();
+      const std::vector<double> &QsSmooth = hitPlaneAlg.Smoother(Qs,_numberNeighbors);
+      const std::vector<double> &DqdsSmooth = hitPlaneAlg.Smoother(Dqds,_numberNeighbors);
+      const std::vector<double> &LocalLin = hitPlaneAlg.CalculateLocalLinearity(_numberNeighbors);
+      // Fill the graphs.
+      FillTGraph(g_Q,Qs);
+      FillTGraph(g_Dqds,Dqds);
+      FillTGraph(g_QSmooth,QsSmooth);
+      FillTGraph(g_DqdsSmooth,DqdsSmooth);
+      FillTGraph(g_LocalLin,LocalLin);
 
       // Fill TTree
       fTrackTree->Fill();
