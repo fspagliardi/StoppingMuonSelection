@@ -6,6 +6,7 @@
 #include <string>
 #include <algorithm>
 #include "TVector3.h"
+#include "TGraphErrors.h"
 
 #include "DataTypes.h"
 
@@ -33,7 +34,7 @@ namespace stoppingcosmicmuonselection {
   void printVec(const std::vector<double> &data);
 
   // Fill Graph for a single variable.
-  void FillTGraphDqds(TGraphErrors *graph, std::vector<double> v);
+  void FillTGraph(TGraphErrors *graph, std::vector<double> v);
 
 }
 #include "Tools.tcxx" // for template functions.

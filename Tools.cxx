@@ -97,10 +97,9 @@ namespace stoppingcosmicmuonselection {
   }
 
   // Fill Graph for a single variable.
-  void FillTGraphDqds(TGraphErrors *graph, std::vector<double> v) {
+  void FillTGraph(TGraphErrors *graph, std::vector<double> v) {
     for (size_t i = 0; i < v.size(); i++)
-      g_Dqds->SetPoint(i, i, v[i]);
-
+      graph->SetPoint(i, i, v[i]);
   }
 
 }
