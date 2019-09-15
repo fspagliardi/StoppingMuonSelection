@@ -79,9 +79,9 @@ namespace stoppingcosmicmuonselection {
       caloHelper.Set(thisParticle,evt);
       // Fill the histos
       caloHelper.FillHisto_dQdxVsRR(h_dQdxVsRR,2);
-      caloHelper.FillHisto_dQdxVsRR(h_dQdxVsRR_TP075,2,0.75-0.1,0.75+0.1);
+      caloHelper.FillHisto_dQdxVsRR(h_dQdxVsRR_TP075,2,_trackPitch-_trackPitchTolerance,_trackPitch+_trackPitchTolerance);
       caloHelper.FillHisto_dQdxVsRR_LTCorr(h_dQdxVsRR_LTCorr,2);
-      caloHelper.FillHisto_dQdxVsRR_LTCorr(h_dQdxVsRR_TP075_LTCorr,2,0.75-0.1,0.75+0.1);
+      caloHelper.FillHisto_dQdxVsRR_LTCorr(h_dQdxVsRR_TP075_LTCorr,2,_trackPitch-_trackPitchTolerance,_trackPitch+_trackPitchTolerance);
 
       size_t trackIndex = hitHelper.GetTrackIndex(track,tracklist);
       auto const &trackHits = hitHelper.GetArtPtrToHitVect(fmht,trackIndex);
@@ -100,8 +100,6 @@ namespace stoppingcosmicmuonselection {
       const size_t &hitIndex = hitHelper.GetIndexClosestHitToPoint(selectorAlg.GetTrackProperties().recoStartPoint,hitsOnCollection,fmthm,tracklist,trackIndex);
       HitPlaneAlg hitPlaneAlg(trackHits,hitIndex,2);
       // Create the graph
-      hitPlaneAlg.FillTGraphDqds(g_Q);
-      hitPlaneAlg.FillTGraphDqds(g_Dqds);
 
       // Fill TTree
       fTrackTree->Fill();

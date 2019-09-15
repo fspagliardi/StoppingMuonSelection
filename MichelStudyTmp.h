@@ -70,6 +70,9 @@ private:
 
   // Parameters form FHICL File
   size_t _minNumbMichelLikeHit;
+  double _trackPitch;
+  double _trackPitchTolerance;
+  size_t _numberNeighbors;
   std::string fPFParticleTag, fSpacePointTag, fTrackerTag;
 
   // Utils
@@ -192,6 +195,9 @@ void MichelStudyTmp::reconfigure(fhicl::ParameterSet const& p)
   fPFParticleTag = p.get<std::string>("PFParticleTag");
   fSpacePointTag = p.get<std::string>("SpacePointTag");
   _minNumbMichelLikeHit = p.get<size_t>("minNumbMichelLikeHit", 2);
+  _trackPitch = p.get<double>("trackPitch", 0.75);
+  _trackPitchTolerance = p.get<double>("trackPitchTolerance", 0.1);
+  _numberNeighbors = p.get<size_t>("numberNeighbors", 5);
   spAlg.reconfigure(p.get<fhicl::ParameterSet>("SpacePointAlg"));
   selectorAlg.reconfigure(p.get<fhicl::ParameterSet>("StoppingMuonSelectionAlg"));
   caloHelper.reconfigure(p.get<fhicl::ParameterSet>("CalorimetryHelper"));

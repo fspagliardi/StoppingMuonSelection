@@ -27,6 +27,9 @@ michel_study:
   SpacePointTag: "reco3d"
   TrackerTag:    "pandoraTrack"
   minNumbMichelLikeHit: 3
+  trackPitch: 0.75
+  trackPitchTolerance: 0.1
+  numberNeighbors: 5
   SpacePointAlg: @local::spacepointAlg
   StoppingMuonSelectionAlg: @local::stoppingmuonAlg
   CalorimetryHelper: @local::caloHelper
