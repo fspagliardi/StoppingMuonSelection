@@ -113,6 +113,7 @@ private:
   TH2D *h_dQdxVsRR_LTCorr;
   TH2D *h_dQdxVsRR_TP075_LTCorr;
   // Graphs
+  TGraphErrors *g_Q = nullptr;
   TGraphErrors *g_Dqds = nullptr;
 };
 
@@ -155,6 +156,7 @@ void MichelStudyTmp::beginJob()
   fTrackTree->Branch("isTrueSelectedCathodeCrosser",&fIsTrueSelectedCathodeCrosser);
   fTrackTree->Branch("filename", &filename);
   fTrackTree->Branch("h_imageCollection","TProfile2D",&fh_imageCollection,64000,0);
+  fTrackTree->Branch("g_Q", &g_Q);
   fTrackTree->Branch("g_Dqds", &g_Dqds);
 
   // Init the Image for the hits
@@ -167,6 +169,7 @@ void MichelStudyTmp::beginJob()
   h_dQdxVsRR_TP075_LTCorr = tfs->make<TH2D>("h_dQdxVsRR_TP075_LTCorr","h_dQdxVsRR_TP075_LTCorr",200,0,200,800,0,800);
 
   // Graphs
+  g_Q = tfs->make<TGraphErrors>();
   g_Dqds = tfs->make<TGraphErrors>();
 }
 

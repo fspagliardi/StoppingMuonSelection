@@ -100,7 +100,8 @@ namespace stoppingcosmicmuonselection {
       const size_t &hitIndex = hitHelper.GetIndexClosestHitToPoint(selectorAlg.GetTrackProperties().recoStartPoint,hitsOnCollection,fmthm,tracklist,trackIndex);
       HitPlaneAlg hitPlaneAlg(trackHits,hitIndex,2);
       // Create the graph
-      hitPlaneAlg.CreateTGraphDqds(g_Dqds);
+      hitPlaneAlg.FillTGraphDqds(g_Q);
+      hitPlaneAlg.FillTGraphDqds(g_Dqds);
 
       // Fill TTree
       fTrackTree->Fill();
