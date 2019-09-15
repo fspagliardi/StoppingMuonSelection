@@ -35,7 +35,7 @@ namespace stoppingcosmicmuonselection {
     const std::vector<double> GetOrderedDqds();
 
     // Define smoother.
-    const std::vector<double> Smoother();
+    const std::vector<double> Smoother(const std::vector<double> &object, const size_t &Nneighbors);
 
     // Fill Graph.
     void FillTGraphQ(TGraphErrors *g_Q);

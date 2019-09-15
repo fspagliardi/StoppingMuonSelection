@@ -112,6 +112,17 @@ namespace stoppingcosmicmuonselection {
     return dQds;
   }
 
+  // Define smoother.
+  const std::vector<double> HitPlaneAlg::Smoother(const std::vector<double> &object, const size_t &Nneighbors) {
+    std::vector<double> result;
+    result.reserve(object.size());
+    for (const auto &neighbors : get_neighbors(object,Nneighbors)) {
+      double median = get_smooth_trunc_median(neighbors);
+      result.push_back(median);
+    }
+    return result;
+  }
+
   // Fill Graph.
   void HitPlaneAlg::FillTGraphQ(TGraphErrors *g_Q) {
     std::cout << "Creating TGraph for hit charge..." << std::endl;
