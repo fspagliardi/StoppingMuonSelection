@@ -7,6 +7,7 @@
 
 #include "TVector3.h"
 #include "TMath.h"
+#include "TGraphErrors.h"
 #include "lardata/DetectorInfoServices/DetectorPropertiesService.h"
 
 #include "DataTypes.h"
@@ -18,29 +19,34 @@ namespace stoppingcosmicmuonselection {
   class HitPlaneAlg {
 
   public:
-    HitPlaneAlg(artPtrHitVec &hitsOnPlane, const size_t &start_index, const size_t &planeNumber);
+    HitPlaneAlg(const artPtrHitVec &trackHits, const size_t &start_index, const size_t &planeNumber);
     ~HitPlaneAlg();
 
     // Order hits based on their 2D (wire-time) position.
     void OrderHitVec();
 
     // Get the ordered hit vector.
-    const artPtrHitVec OrderedHitVec();
+    const artPtrHitVec GetOrderedHitVec();
 
     // Work out the vector of ordered dQds.
     const std::vector<double> GetOrderedDqds();
 
-  private:
+    // Fill Graph.
+    void CreateTGraphDqds(TGraphErrors *&g_Dqds);
 
-    artPtrHitVec &_hitsOnPlane;
+  private:
+    const artPtrHitVec &_trackHits;
     const size_t &_start_index;
     const size_t &_planeNumber;
+
+    artPtrHitVec _hitsOnPlane;
     std::vector<double> _effectiveWireID;
 
-    bool _isOrdered = false;
+    bool _areHitOrdered = false;
 
-    // Geometry helper.
+    // Helpers.
     GeometryHelper geoHelper;
+    HitHelper      hitHelper;
 
     // Declare handle for detector properties
     const detinfo::DetectorProperties *detprop = lar::providerFrom<detinfo::DetectorPropertiesService>();
