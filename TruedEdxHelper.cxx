@@ -10,7 +10,8 @@
 namespace stoppingcosmicmuonselection {
 
   TruedEdxHelper::TruedEdxHelper() {
-
+    TFile inputFile("/pnfs/dune/resilient/users/fspaglia/MCdEdxSuperBinning.root");
+    _h_dEdx = (TH1D *)inputFile.Get("h_MPV");
   }
 
   TruedEdxHelper::~TruedEdxHelper() {
@@ -47,9 +48,7 @@ namespace stoppingcosmicmuonselection {
 
   // Get the dEdx from the MC simulation.
   double TruedEdxHelper::GetMCdEdx(const double &resRange) {
-    TFile inputFile("/pnfs/dune/resilient/users/fspaglia/MCdEdxSuperBinning.root");
-    TH1D *h_dEdx = (TH1D *)inputFile.Get("h_MPV");
-    double MCdEdx = h_dEdx->GetBinContent(h_dEdx->FindBin(resRange));
+    double MCdEdx = _h_dEdx->GetBinContent(_h_dEdx->FindBin(resRange));
     return MCdEdx;
   }
 

@@ -45,6 +45,9 @@ namespace stoppingcosmicmuonselection {
 
 
   private:
+
+    TH1D *_h_dEdx;
+    
     // Declare handle for detector properties
     const detinfo::DetectorProperties *detprop = lar::providerFrom<detinfo::DetectorPropertiesService>();
 
