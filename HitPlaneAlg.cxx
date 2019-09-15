@@ -60,6 +60,7 @@ namespace stoppingcosmicmuonselection {
       }
       auto const &hit = _hitsOnPlane.at(min_index);
       newVector.push_back(hit);
+      _hitPeakTime.push_back(hit->PeakTime());
       _effectiveWireID.push_back(hit->WireID().Wire + geoHelper.GetWireOffset(hit,_planeNumber));
       _hitsOnPlane.erase(_hitsOnPlane.begin() + min_index);
     }
@@ -121,6 +122,29 @@ namespace stoppingcosmicmuonselection {
       result.push_back(median);
     }
     return result;
+  }
+
+  // Calculate local linearity.
+  const std::vector<double> HitPlaneAlg::CalculateLocalLinearity(const size_t &Nneighbors) {
+    std::vector<double> linearity;
+    std::vector<double> time, wire;
+    for (const auto &hits : get_neighbors(_hitsOnPlane,Nneighbors)) {
+      for (const auto &hit : hits) {
+        time.push_back(hit->PeakTime());
+        wire.push_back(hit->WireID().Wire+geoHelper.GetWireOffset(hit,_planeNumber));
+      }
+      double covariance = cov(time,wire);
+      double stdevTime = stdev(time);
+      double stdevWire = stdev(wire);
+      double N = time.size();
+      double lin = TMath::Abs(covariance) / N / (stdevTime*stdevWire);
+      if (std::isnan(lin)) lin = 0.0;
+      linearity.push_back(lin);
+      time.clear();
+      wire.clear();
+    }
+    _isLinearityCalculated = true;
+    return linearity;
   }
 
   // Fill Graph.

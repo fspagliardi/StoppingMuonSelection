@@ -13,6 +13,7 @@
 #include "DataTypes.h"
 #include "HitHelper.h"
 #include "GeometryHelper.h"
+#include "Tools.h"
 
 namespace stoppingcosmicmuonselection {
 
@@ -37,6 +38,9 @@ namespace stoppingcosmicmuonselection {
     // Define smoother.
     const std::vector<double> Smoother(const std::vector<double> &object, const size_t &Nneighbors);
 
+    // Calculate local linearity.
+    const std::vector<double> CalculateLocalLinearity(const size_t &Nneighbors);
+
     // Fill Graph.
     void FillTGraphQ(TGraphErrors *g_Q);
 
@@ -49,9 +53,11 @@ namespace stoppingcosmicmuonselection {
     const size_t &_planeNumber;
 
     artPtrHitVec _hitsOnPlane;
+    std::vector<double> _hitPeakTime;
     std::vector<double> _effectiveWireID;
 
     bool _areHitOrdered = false;
+    bool _isLinearityCalculated = false;
 
     // Helpers.
     GeometryHelper geoHelper;
