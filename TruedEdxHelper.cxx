@@ -10,7 +10,7 @@
 namespace stoppingcosmicmuonselection {
 
   TruedEdxHelper::TruedEdxHelper() {
-    TFile inputFile("/pnfs/dune/resilient/users/fspaglia/MCdEdxSuperBinning.root");
+    TFile inputFile("./MCdEdxSuperBinning.root");
     _h_dEdx = (TH1D *)inputFile.Get("h_MPV");
   }
 
