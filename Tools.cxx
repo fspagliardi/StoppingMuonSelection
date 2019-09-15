@@ -14,8 +14,8 @@
 namespace stoppingcosmicmuonselection {
 
   template<typename T>
-  std::vector<std::vector<T>> get_neighbors(const std::vector<T>& object,
-                                            const size_t numbNeighbors) {
+  std::vector<std::vector<T>> get_neighbors(const std::vector<T> &object,
+                                            const size_t &numbNeighbors) {
 
     if ((2*numbNeighbors+1)>object.size()) {
       std::cout << "Number of neighbors " << numbNeighbors
@@ -122,6 +122,18 @@ namespace stoppingcosmicmuonselection {
     }
     result = TMath::Sqrt(result / ((double)(data.size()-1)));
     return result;
+  }
+
+  // Print content of a vector.
+  void printVec(const std::vector<double> &data) {
+    for (size_t i = 0; i < data.size(); i++) {
+      if (i == 0)
+        std::cout << data[i];
+      else {
+        std::cout << ", " << data[i];
+      }
+    }
+    std::cout << std::endl;
   }
 
 }
