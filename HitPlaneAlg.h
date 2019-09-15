@@ -32,7 +32,7 @@ namespace stoppingcosmicmuonselection {
     const std::vector<double> GetOrderedDqds();
 
     // Fill Graph.
-    void CreateTGraphDqds(TGraphErrors *&g_Dqds);
+    void CreateTGraphDqds(TGraphErrors *g_Dqds);
 
   private:
     const artPtrHitVec &_trackHits;

@@ -102,14 +102,14 @@ namespace stoppingcosmicmuonselection {
   }
 
   // Fill Graph.
-  void HitPlaneAlg::CreateTGraphDqds(TGraphErrors *&g_Dqds) {
+  void HitPlaneAlg::CreateTGraphDqds(TGraphErrors *g_Dqds) {
     std::cout << "Creating TGraph for Dqds..." << std::endl;
     std::vector<double> dQds;
     dQds = GetOrderedDqds();
     for (size_t i = 0; i < dQds.size(); i++) {
+      //if (dQds.size()-1-i >50) continue;
       g_Dqds->SetPoint(i, i, dQds[i]);
     }
-    //g_Dqds = _tfs->make<TGraphErrors>(hitNumber.size(),&hitNumber[0],&dQds[0],&dummy[0],&dummy[0]);
   }
 
 } // end of namespace stoppingcosmicmuonselection
