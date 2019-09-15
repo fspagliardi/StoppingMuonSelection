@@ -13,46 +13,6 @@
 
 namespace stoppingcosmicmuonselection {
 
-  template<typename T>
-  std::vector<std::vector<T>> get_neighbors(const std::vector<T> &object,
-                                            const size_t &numbNeighbors) {
-
-    if ((2*numbNeighbors+1)>object.size()) {
-      std::cout << "Number of neighbors " << numbNeighbors
-                << " is too big. Trying with "
-                << numbNeighbors-1 << " neighbours." << std::endl;
-      return get_neighbors(object, numbNeighbors-1);
-    }
-    std::vector<std::vector<T>> data;
-    size_t objectSize = object.size();
-    size_t m = numbNeighbors;
-
-    for (size_t i = 0; i < objectSize; i++) {
-      std::vector<T> inner;
-
-      if (i < m) {
-        for (size_t j =0; j <= 2*i; j++) {
-          inner.push_back(object.at(j));
-        }
-      }
-      else if (i > objectSize-m-1) {
-        for (size_t j = 2*i-objectSize+1; j<objectSize;j++) {
-          inner.push_back(object.at(j));
-        }
-      }
-      else {
-        for (size_t j = i-m; j <= i+m; j++) {
-          inner.push_back(object.at(j));
-        }
-      }
-
-      data.push_back(inner);
-
-    }
-
-    return data;
-  }
-
   // Get the median without the max and min value.
   double get_smooth_trunc_median(std::vector<double> data) {
     if (data.size() > 2) {
