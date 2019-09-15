@@ -100,6 +100,8 @@ namespace stoppingcosmicmuonselection {
   void FillTGraph(TGraphErrors *graph, std::vector<double> v) {
     for (size_t i = 0; i < v.size(); i++)
       graph->SetPoint(i, i, v[i]);
+    graph->SetMarkerStyle(20);
+    graph->SetMarkerSize(4);
   }
 
 }
