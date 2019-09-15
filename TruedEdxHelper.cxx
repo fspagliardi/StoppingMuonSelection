@@ -45,6 +45,14 @@ namespace stoppingcosmicmuonselection {
     return LandauVav(&resRange, pars);
   }
 
+  // Get the dEdx from the MC simulation.
+  double TruedEdxHelper::GetMCdEdx(const double &resRange) {
+    TFile inputFile("/pnfs/dune/resilient/users/fspaglia/MCdEdxSuperBinning.root");
+    TH1D *h_dEdx = (TH1D *)inputFile.Get("h_MPV");
+    double MCdEdx = h_dEdx->GetBinContent(h_dEdx->FindBin(resRange));
+    return MCdEdx;
+  }
+
   // Get relativist beta given the kinetic energy
   double TruedEdxHelper::GetBetaFromkEnergy(const double &kEnergy)  {
     double beta = (TMath::Sqrt((kEnergy+m_muon)*(kEnergy+m_muon) - m_muon*m_muon))  / (kEnergy+m_muon);

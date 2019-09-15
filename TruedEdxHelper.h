@@ -11,6 +11,8 @@
 #include "lardata/DetectorInfoServices/DetectorPropertiesService.h"
 #include "TVector3.h"
 #include "TMath.h"
+#include "TFile.h"
+#include "TH1.h"
 
 namespace stoppingcosmicmuonselection {
 
@@ -25,6 +27,9 @@ namespace stoppingcosmicmuonselection {
 
     // Return MPV of dEdx according to landau-vavilov
     double LandauVav(double &resRange);
+
+    // Get the dEdx from the MC simulation.
+    double GetMCdEdx(const double &resRange);
 
     // Get relativist beta given the kinetic energy
     double GetBetaFromkEnergy(const double &kEnergy);
@@ -43,9 +48,9 @@ namespace stoppingcosmicmuonselection {
     // Declare handle for detector properties
     const detinfo::DetectorProperties *detprop = lar::providerFrom<detinfo::DetectorPropertiesService>();
 
-    double m_muon = 105.6583745; //MeV
-    double c = 299792458;
-    double LArdensity = detprop->Density(detprop->Temperature()); // g/cm3
+    const double m_muon = 105.6583745; //MeV
+    const double c = 299792458;
+    const double LArdensity = detprop->Density(detprop->Temperature()); // g/cm3
   };
 }
 
