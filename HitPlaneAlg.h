@@ -28,11 +28,20 @@ namespace stoppingcosmicmuonselection {
     // Get the ordered hit vector.
     const artPtrHitVec GetOrderedHitVec();
 
+    // Work out the vector of ordered hit charge.
+    const std::vector<double> GetOrderedQ();
+
     // Work out the vector of ordered dQds.
     const std::vector<double> GetOrderedDqds();
 
+    // Define smoother.
+    const std::vector<double> Smoother();
+
     // Fill Graph.
-    void CreateTGraphDqds(TGraphErrors *g_Dqds);
+    void FillTGraphQ(TGraphErrors *g_Q);
+
+    // Fill Graph.
+    void FillTGraphDqds(TGraphErrors *g_Dqds);
 
   private:
     const artPtrHitVec &_trackHits;

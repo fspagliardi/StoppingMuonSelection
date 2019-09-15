@@ -76,13 +76,24 @@ namespace stoppingcosmicmuonselection {
     return _hitsOnPlane;
   }
 
+  // Work out the vector of ordered hit charge.
+  const std::vector<double> HitPlaneAlg::GetOrderedQ() {
+    if (!_areHitOrdered)
+      OrderHitVec();
+    std::vector<double> Qs;
+    //std::cout << "Calculating hit Qs..." << std::endl;
+    for (size_t i = 0; i < _hitsOnPlane.size()-1; i++)
+      Qs.push_back(_hitsOnPlane[i]->Integral());
+    return Qs;
+  }
+
   // Work out the vector of ordered dQds.
   const std::vector<double> HitPlaneAlg::GetOrderedDqds() {
     if (!_areHitOrdered)
       OrderHitVec();
     std::vector<double> dQds;
     double ds = 1.;
-    std::cout << "Calculating dQds..." << std::endl;
+    //std::cout << "Calculating dQds..." << std::endl;
     for (size_t i = 0; i < _hitsOnPlane.size()-1; i++) {
       auto const &hit = _hitsOnPlane[i];
       auto const &nextHit = _hitsOnPlane[i+1];
@@ -97,12 +108,22 @@ namespace stoppingcosmicmuonselection {
     }
     // Need final point.
     dQds.push_back(_hitsOnPlane.at(_hitsOnPlane.size()-1)->Integral() / ds);
-    std::cout << "Dqds vector for this track calculated." << std::endl;
+    //std::cout << "Dqds vector for this track calculated." << std::endl;
     return dQds;
   }
 
   // Fill Graph.
-  void HitPlaneAlg::CreateTGraphDqds(TGraphErrors *g_Dqds) {
+  void HitPlaneAlg::FillTGraphQ(TGraphErrors *g_Q) {
+    std::cout << "Creating TGraph for hit charge..." << std::endl;
+    std::vector<double> Qs;
+    Qs = GetOrderedQ();
+    for (size_t i = 0; i < Qs.size(); i++) {
+      g_Q->SetPoint(i, i, Qs[i]);
+    }
+  }
+
+  // Fill Graph.
+  void HitPlaneAlg::FillTGraphDqds(TGraphErrors *g_Dqds) {
     std::cout << "Creating TGraph for Dqds..." << std::endl;
     std::vector<double> dQds;
     dQds = GetOrderedDqds();
