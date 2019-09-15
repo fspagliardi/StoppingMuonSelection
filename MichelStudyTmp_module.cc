@@ -95,6 +95,13 @@ namespace stoppingcosmicmuonselection {
       else
         fh_imageCollection->Reset();
 
+      // Init HitPlaneAlg.
+      const artPtrHitVec &hitsOnCollection = hitHelper.GetHitsOnAPlane(2,trackHits);
+      const size_t &hitIndex = hitHelper.GetIndexClosestHitToPoint(selectorAlg.GetTrackProperties().recoStartPoint,hitsOnCollection,fmthm,tracklist,trackIndex);
+      HitPlaneAlg hitPlaneAlg(trackHits,hitIndex,2);
+      // Create the graph
+      hitPlaneAlg.CreateTGraphDqds(g_Dqds);
+
       // Fill TTree
       fTrackTree->Fill();
 
