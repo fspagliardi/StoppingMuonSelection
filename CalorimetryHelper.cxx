@@ -214,6 +214,35 @@ namespace stoppingcosmicmuonselection {
     }
   }
 
+  // Fill 2D histo for dQdx/dEdx with lifetime correction. dEdx taken from MC.
+  void CalorimetryHelper::FillHisto_dQdEVsRR_LTCorr_MC(TH2D *h_dQdEVsRR, const int &planeNumb, const double &tp_min, const double &tp_max) {
+    int hitNumb = GetHitNumb(planeNumb);
+    double *dQdx = GetdQdx(planeNumb);
+    double *resRangeOrd = GetResRangeOrdered(planeNumb);
+    double *trackPitch = GetTrackPitch(planeNumb);
+    double *corrFactor = GetCorrFactor(planeNumb);
+    for (int it = 0; it < hitNumb; it++) {
+      if (trackPitch[it]<tp_min || trackPitch[it]>tp_max) continue;
+      double dEdx = truedEdxHelper.GetMCdEdx(resRangeOrd[it]);
+      h_dQdEVsRR->Fill(resRangeOrd[it],dQdx[it]*corrFactor[it]/dEdx);
+    }
+  }
+
+  // Fill 2D histo for dQdx/dEdx with lifetime correction. dEdx taken from LandauVav.
+  void CalorimetryHelper::FillHisto_dQdEVsRR_LTCorr_LV(TH2D *h_dQdEVsRR, const int &planeNumb, const double &tp_min, const double &tp_max) {
+    int hitNumb = GetHitNumb(planeNumb);
+    double *dQdx = GetdQdx(planeNumb);
+    double *resRangeOrd = GetResRangeOrdered(planeNumb);
+    double *trackPitch = GetTrackPitch(planeNumb);
+    double *corrFactor = GetCorrFactor(planeNumb);
+    double p[2] = {(tp_min+tp_max)/2,0};
+    for (int it = 0; it < hitNumb; it++) {
+      if (trackPitch[it]<tp_min || trackPitch[it]>tp_max) continue;
+      double dEdx = truedEdxHelper.LandauVav(&resRangeOrd[it],p);
+      h_dQdEVsRR->Fill(resRangeOrd[it],dQdx[it]*corrFactor[it]/dEdx);
+    }
+  }
+
   // Set the parameters from the FHICL file
   void CalorimetryHelper::reconfigure(fhicl::ParameterSet const &p) {
     fTrackerTag = p.get<std::string>("TrackerTag");

@@ -26,6 +26,7 @@
 #include "TMath.h"
 
 #include "DataTypes.h"
+#include "TruedEdxHelper.h"
 
 namespace stoppingcosmicmuonselection {
 
@@ -81,6 +82,12 @@ namespace stoppingcosmicmuonselection {
     void FillHisto_dQdxVsRR_LTCorr(TH2D *h_dQdxVsRR, const int &planeNumb);
     void FillHisto_dQdxVsRR_LTCorr(TH2D *h_dQdxVsRR, const int &planeNumb, const double &tp_min, const double &tp_max);
 
+    // Fill 2D histo for dQdx/dEdx with lifetime correction. dEdx taken from MC.
+    void FillHisto_dQdEVsRR_LTCorr_MC(TH2D *h_dQdEVsRR, const int &planeNumb, const double &tp_min, const double &tp_max);
+
+    // Fill 2D histo for dQdx/dEdx with lifetime correction. dEdx taken from LandauVav.
+    void FillHisto_dQdEVsRR_LTCorr_LV(TH2D *h_dQdEVsRR, const int &planeNumb, const double &tp_min, const double &tp_max);
+
     // Set the parameters from the FHICL file
     void reconfigure(fhicl::ParameterSet const &p);
 
@@ -110,6 +117,8 @@ namespace stoppingcosmicmuonselection {
     std::string fTrackerTag;
     std::string fCalorimetryTag;
     std::string fPFParticleTag;
+
+    TruedEdxHelper truedEdxHelper;
 
     protoana::ProtoDUNETrackUtils        trackUtil;
     protoana::ProtoDUNEPFParticleUtils   pfpUtil;
