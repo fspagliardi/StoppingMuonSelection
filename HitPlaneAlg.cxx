@@ -147,27 +147,6 @@ namespace stoppingcosmicmuonselection {
     return linearity;
   }
 
-  // Fill Graph.
-  void HitPlaneAlg::FillTGraphQ(TGraphErrors *g_Q) {
-    std::cout << "Creating TGraph for hit charge..." << std::endl;
-    std::vector<double> Qs;
-    Qs = GetOrderedQ();
-    for (size_t i = 0; i < Qs.size(); i++) {
-      g_Q->SetPoint(i, i, Qs[i]);
-    }
-  }
-
-  // Fill Graph.
-  void HitPlaneAlg::FillTGraphDqds(TGraphErrors *g_Dqds) {
-    std::cout << "Creating TGraph for Dqds..." << std::endl;
-    std::vector<double> dQds;
-    dQds = GetOrderedDqds();
-    for (size_t i = 0; i < dQds.size(); i++) {
-      //if (dQds.size()-1-i >50) continue;
-      g_Dqds->SetPoint(i, i, dQds[i]);
-    }
-  }
-
 } // end of namespace stoppingcosmicmuonselection
 
 #endif

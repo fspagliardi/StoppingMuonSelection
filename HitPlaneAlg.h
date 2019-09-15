@@ -41,12 +41,6 @@ namespace stoppingcosmicmuonselection {
     // Calculate local linearity.
     const std::vector<double> CalculateLocalLinearity(const size_t &Nneighbors);
 
-    // Fill Graph.
-    void FillTGraphQ(TGraphErrors *g_Q);
-
-    // Fill Graph.
-    void FillTGraphDqds(TGraphErrors *g_Dqds);
-
   private:
     const artPtrHitVec &_trackHits;
     const size_t &_start_index;

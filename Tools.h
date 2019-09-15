@@ -32,6 +32,9 @@ namespace stoppingcosmicmuonselection {
   // Print content of a vector.
   void printVec(const std::vector<double> &data);
 
+  // Fill Graph for a single variable.
+  void FillTGraphDqds(TGraphErrors *graph, std::vector<double> v);
+
 }
 #include "Tools.tcxx" // for template functions.
 #endif
