@@ -115,6 +115,8 @@ private:
   TH2D *h_dQdxVsRR_TP075;
   TH2D *h_dQdxVsRR_LTCorr;
   TH2D *h_dQdxVsRR_TP075_LTCorr;
+  TH2D *h_dQdEVsRR_TP075_LTCorr_MC;
+  TH2D *h_dQdEVsRR_TP075_LTCorr_LV;
   // Graphs
   TGraphErrors *g_Q = nullptr;
   TGraphErrors *g_Dqds = nullptr;
@@ -176,6 +178,8 @@ void MichelStudyTmp::beginJob()
   h_dQdxVsRR_TP075 = tfs->make<TH2D>("h_dQdxVsRR_TP075","h_dQdxVsRR_TP075",200,0,200,800,0,800);
   h_dQdxVsRR_LTCorr = tfs->make<TH2D>("h_dQdxVsRR_LTCorr","h_dQdxVsRR_LTCorr",200,0,200,800,0,800);
   h_dQdxVsRR_TP075_LTCorr = tfs->make<TH2D>("h_dQdxVsRR_TP075_LTCorr","h_dQdxVsRR_TP075_LTCorr",200,0,200,800,0,800);
+  h_dQdEVsRR_TP075_LTCorr_MC = tfs->make<TH2D>("h_dQdEVsRR_TP075_LTCorr_MC","h_dQdEVsRR_TP075_LTCorr_MC",200,0,200,800,0,800);
+  h_dQdEVsRR_TP075_LTCorr_LV = tfs->make<TH2D>("h_dQdEVsRR_TP075_LTCorr_LV","h_dQdEVsRR_TP075_LTCorr_LV",200,0,200,800,0,800);
 
   // Graphs
   g_Q = tfs->make<TGraphErrors>();

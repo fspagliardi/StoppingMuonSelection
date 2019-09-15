@@ -82,6 +82,8 @@ namespace stoppingcosmicmuonselection {
       caloHelper.FillHisto_dQdxVsRR(h_dQdxVsRR_TP075,2,_trackPitch-_trackPitchTolerance,_trackPitch+_trackPitchTolerance);
       caloHelper.FillHisto_dQdxVsRR_LTCorr(h_dQdxVsRR_LTCorr,2);
       caloHelper.FillHisto_dQdxVsRR_LTCorr(h_dQdxVsRR_TP075_LTCorr,2,_trackPitch-_trackPitchTolerance,_trackPitch+_trackPitchTolerance);
+      caloHelper.FillHisto_dQdEVsRR_LTCorr_MC(h_dQdEVsRR_TP075_LTCorr_MC,2,_trackPitch-_trackPitchTolerance,_trackPitch+_trackPitchTolerance);
+      caloHelper.FillHisto_dQdEVsRR_LTCorr_LV(h_dQdEVsRR_TP075_LTCorr_LV,2,_trackPitch-_trackPitchTolerance,_trackPitch+_trackPitchTolerance);
 
       size_t trackIndex = hitHelper.GetTrackIndex(track,tracklist);
       auto const &trackHits = hitHelper.GetArtPtrToHitVect(fmht,trackIndex);
