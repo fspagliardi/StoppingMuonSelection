@@ -33,5 +33,5 @@ namespace stoppingcosmicmuonselection {
   void printVec(const std::vector<double> &data);
 
 }
-
+#include "Tools.tcxx" // for template functions.
 #endif
