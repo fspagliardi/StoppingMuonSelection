@@ -29,7 +29,7 @@ michel_study:
   minNumbMichelLikeHit: 3
   trackPitch: 0.75
   trackPitchTolerance: 0.1
-  numberNeighbors: 5
+  numberNeighbors: 3
   SpacePointAlg: @local::spacepointAlg
   StoppingMuonSelectionAlg: @local::stoppingmuonAlg
   CalorimetryHelper: @local::caloHelper
