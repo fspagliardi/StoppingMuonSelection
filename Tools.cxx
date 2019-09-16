@@ -80,7 +80,7 @@ namespace stoppingcosmicmuonselection {
     for (auto const &el : data) {
       result += (el - average)*(el - average);
     }
-    result = TMath::Sqrt(result / ((double)(data.size()-1)));
+    result = TMath::Sqrt(result / ((double)(data.size())));
     return result;
   }
 
