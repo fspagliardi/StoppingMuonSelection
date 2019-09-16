@@ -17,6 +17,7 @@ namespace stoppingcosmicmuonselection {
                            _planeNumber(planeNumber) {
     _hitsOnPlane = hitHelper.GetHitsOnAPlane(_planeNumber,_trackHits);
     OrderHitVec();
+    HitSmoother();
   }
 
   HitPlaneAlg::~HitPlaneAlg() {
@@ -70,11 +71,63 @@ namespace stoppingcosmicmuonselection {
     return;
   }
 
+  // Smooth hits.
+  void HitPlaneAlg::HitSmoother() {
+    if (!_areHitOrdered)
+      OrderHitVec();
+    artPtrHitVec newVector;
+    std::vector<double> newVector_wire;
+    std::vector<double> meanVec;
+    std::vector<double> wireVec;
+    for (const auto &bunch : get_neighbors(_effectiveWireID, 2)) {
+      for (const auto &wire : bunch) {
+        wireVec.push_back(wire);
+      }
+      meanVec.push_back(mean(wireVec));
+      wireVec.clear();
+    }
+    newVector.push_back(_hitsOnPlane.at(0));
+    newVector.push_back(_hitsOnPlane.at(1));
+
+    for (size_t i = 2; i < meanVec.size()-1; i++) {
+      if (std::abs(meanVec.at(i-1) - meanVec.at(i)) < 1    &&
+          _effectiveWireID.at(i-1) !=  _effectiveWireID.at(i)  &&
+          std::abs(meanVec.at(i)   - meanVec.at(i+1)) < 1  &&
+          _effectiveWireID.at(i) !=  _effectiveWireID.at(i+1) ) {
+
+        if (_hitsOnPlane.at(i)->Integral() > _hitsOnPlane.at(i+1)->Integral()) {
+          newVector.push_back(_hitsOnPlane.at(i));
+          newVector_wire.push_back(_effectiveWireID.at(i));
+        }
+        else {
+          newVector.push_back(_hitsOnPlane.at(i+1));
+          newVector_wire.push_back(_effectiveWireID.at(i+1));
+        }
+
+        i++;
+      }
+      else {
+        newVector.push_back(_hitsOnPlane.at(i));
+        newVector_wire.push_back(_effectiveWireID.at(i));
+      }
+    }
+    newVector.push_back(_hitsOnPlane.at(_hitsOnPlane.size()-1));
+    std::swap(newVector, _hitsOnPlane);
+    std::swap(newVector_wire, _effectiveWireID);
+  }
+
   // Get the ordered hit vector.
   const artPtrHitVec HitPlaneAlg::GetOrderedHitVec() {
     if (!_areHitOrdered)
       OrderHitVec();
     return _hitsOnPlane;
+  }
+
+  // Get the ordered wire number.
+  const std::vector<double> HitPlaneAlg::GetOrderedWireNumb() {
+    if (!_areHitOrdered)
+      OrderHitVec();
+    return _effectiveWireID;
   }
 
   // Work out the vector of ordered hit charge.

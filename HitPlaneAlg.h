@@ -26,8 +26,14 @@ namespace stoppingcosmicmuonselection {
     // Order hits based on their 2D (wire-time) position.
     void OrderHitVec();
 
+    // Smooth hits.
+    void HitSmoother();
+
     // Get the ordered hit vector.
     const artPtrHitVec GetOrderedHitVec();
+
+    // Get the ordered wire number.
+    const std::vector<double> GetOrderedWireNumb();
 
     // Work out the vector of ordered hit charge.
     const std::vector<double> GetOrderedQ();
