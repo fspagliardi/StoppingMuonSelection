@@ -210,7 +210,7 @@ void MichelStudyTmp::reconfigure(fhicl::ParameterSet const& p)
   _minNumbMichelLikeHit = p.get<size_t>("minNumbMichelLikeHit", 2);
   _trackPitch = p.get<double>("trackPitch", 0.75);
   _trackPitchTolerance = p.get<double>("trackPitchTolerance", 0.1);
-  _numberNeighbors = p.get<size_t>("numberNeighbors", 3);
+  _numberNeighbors = p.get<size_t>("numberNeighbors", 2);
   spAlg.reconfigure(p.get<fhicl::ParameterSet>("SpacePointAlg"));
   selectorAlg.reconfigure(p.get<fhicl::ParameterSet>("StoppingMuonSelectionAlg"));
   caloHelper.reconfigure(p.get<fhicl::ParameterSet>("CalorimetryHelper"));
