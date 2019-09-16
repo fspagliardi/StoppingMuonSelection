@@ -16,7 +16,12 @@ namespace stoppingcosmicmuonselection {
                            _start_index(start_index),
                            _planeNumber(planeNumber) {
     _hitsOnPlane = hitHelper.GetHitsOnAPlane(_planeNumber,_trackHits);
+    std::cout << "HitPlaneAlg.cxx: " << std::endl;
     OrderHitVec();
+    std::cout << "\tInput HitList Size: " << _hitsOnPlane.size()
+              << std::endl << "\tWireID list size: " << _effectiveWireID.size() << std::endl;
+    if (_effectiveWireID.size() != _hitsOnPlane.size())
+      throw cet::exception("HitPlaneAlg.cxx") << "Hit vector and wire ID vector have different size.";
     HitSmoother();
   }
 
@@ -29,6 +34,8 @@ namespace stoppingcosmicmuonselection {
     artPtrHitVec newVector;
     newVector.reserve(_hitsOnPlane.size());
     newVector.push_back(_hitsOnPlane.at(_start_index));
+    const auto &starthit = _hitsOnPlane.at(_start_index);
+    _effectiveWireID.push_back(starthit->WireID().Wire+geoHelper.GetWireOffset(starthit,_planeNumber));
     _hitsOnPlane.erase(_hitsOnPlane.begin() + _start_index);
 
     double min_dist = DBL_MAX;
@@ -45,9 +52,6 @@ namespace stoppingcosmicmuonselection {
         unsigned int wireID = newVector.back()->WireID().Wire;
         size_t wireOffset = geoHelper.GetWireOffset(newVector.back(), _planeNumber);
         TVector3 pt1(hitPeakTime,wireID+wireOffset,0);
-        if (i==0) {
-          _effectiveWireID.push_back(wireID+wireOffset);
-        }
         // For current hit.
         double hitPeakTime2 = _hitsOnPlane.at(i)->PeakTime();
         unsigned int wireID2 = _hitsOnPlane.at(i)->WireID().Wire;
@@ -67,7 +71,7 @@ namespace stoppingcosmicmuonselection {
     }
     _areHitOrdered = true;
     std::swap(_hitsOnPlane, newVector);
-    std::cout << "Hit vector ordered." << std::endl;
+    std::cout << "\tHit vector ordered." << std::endl;
     return;
   }
 
@@ -75,6 +79,7 @@ namespace stoppingcosmicmuonselection {
   void HitPlaneAlg::HitSmoother() {
     if (!_areHitOrdered)
       OrderHitVec();
+    std::cout << "\tSmoothing hits..." << std::endl;
     artPtrHitVec newVector;
     std::vector<double> newVector_wire;
     std::vector<double> meanVec;
@@ -88,13 +93,19 @@ namespace stoppingcosmicmuonselection {
     }
     newVector.push_back(_hitsOnPlane.at(0));
     newVector.push_back(_hitsOnPlane.at(1));
+    newVector_wire.push_back(_effectiveWireID.at(0));
+    newVector_wire.push_back(_effectiveWireID.at(1));
+    std::cout << "\t\tGot wire mean..." << std::endl;
+    std::cout << "\t\tWireid size: " << _effectiveWireID.size() << std::endl;
+    std::cout << "\t\thitsOnPlane size: " << _hitsOnPlane.size() << std::endl;
+    std::cout << "\t\tmeanVec size: " << meanVec.size() << std::endl;
 
     for (size_t i = 2; i < meanVec.size()-1; i++) {
       if (std::abs(meanVec.at(i-1) - meanVec.at(i)) < 1    &&
           _effectiveWireID.at(i-1) !=  _effectiveWireID.at(i)  &&
           std::abs(meanVec.at(i)   - meanVec.at(i+1)) < 1  &&
           _effectiveWireID.at(i) !=  _effectiveWireID.at(i+1) ) {
-
+        std::cout << "\tIn the if" << std::endl;
         if (_hitsOnPlane.at(i)->Integral() > _hitsOnPlane.at(i+1)->Integral()) {
           newVector.push_back(_hitsOnPlane.at(i));
           newVector_wire.push_back(_effectiveWireID.at(i));
@@ -111,7 +122,9 @@ namespace stoppingcosmicmuonselection {
         newVector_wire.push_back(_effectiveWireID.at(i));
       }
     }
+    std::cout << "\tSorting ok." << std::endl;
     newVector.push_back(_hitsOnPlane.at(_hitsOnPlane.size()-1));
+    newVector_wire.push_back(_effectiveWireID.at(_hitsOnPlane.size()-1));
     std::swap(newVector, _hitsOnPlane);
     std::swap(newVector_wire, _effectiveWireID);
   }
