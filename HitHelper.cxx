@@ -65,7 +65,7 @@ namespace stoppingcosmicmuonselection {
         continue;
       }
       if (vmeta[ii]->Index()>=tracklist[trackIndex]->NumberTrajectoryPoints()){
-        throw cet::exception("Calorimetry_module.cc") << "Requested track trajectory index "<<vmeta[ii]->Index()<<" exceeds the total number of trajectory points "<<tracklist[trackIndex]->NumberTrajectoryPoints()<<" for track index "<<trackIndex<<". Something is wrong";
+        throw cet::exception("HitHelper.cxx") << "Requested track trajectory index "<<vmeta[ii]->Index()<<" exceeds the total number of trajectory points "<<tracklist[trackIndex]->NumberTrajectoryPoints()<<" for track index "<<trackIndex<<". Something is wrong";
       }
       if (!tracklist[trackIndex]->HasValidPoint(vmeta[ii]->Index())){
         continue;
@@ -89,6 +89,9 @@ namespace stoppingcosmicmuonselection {
     }
     auto it_min_element = std::min_element(distanceVec.begin(),distanceVec.end());
     size_t hitIndex = it_min_element - distanceVec.begin();
+    std::cout << "Closest hit to point: " << std::endl << "\tWireID: "
+              << hits[hitIndex]->WireID().Wire+geoHelper.GetWireOffset(hits[hitIndex],2)
+              << "\tTime: " << hits[hitIndex]->PeakTime() << std::endl;
     return hitIndex;
   }
 
