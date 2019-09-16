@@ -118,6 +118,7 @@ private:
   TH2D *h_dQdEVsRR_TP075_LTCorr_MC;
   TH2D *h_dQdEVsRR_TP075_LTCorr_LV;
   // Graphs
+  TGraphErrors *g_wireID = nullptr;
   TGraphErrors *g_Q = nullptr;
   TGraphErrors *g_Dqds = nullptr;
   TGraphErrors *g_QSmooth = nullptr;
@@ -164,6 +165,7 @@ void MichelStudyTmp::beginJob()
   fTrackTree->Branch("isTrueSelectedCathodeCrosser",&fIsTrueSelectedCathodeCrosser);
   fTrackTree->Branch("filename", &filename);
   fTrackTree->Branch("h_imageCollection","TProfile2D",&fh_imageCollection,64000,0);
+  fTrackTree->Branch("g_wireID", &g_wireID);
   fTrackTree->Branch("g_Q", &g_Q);
   fTrackTree->Branch("g_Dqds", &g_Dqds);
   fTrackTree->Branch("g_QSmooth", &g_QSmooth);
@@ -182,6 +184,7 @@ void MichelStudyTmp::beginJob()
   h_dQdEVsRR_TP075_LTCorr_LV = tfs->make<TH2D>("h_dQdEVsRR_TP075_LTCorr_LV","h_dQdEVsRR_TP075_LTCorr_LV",200,0,200,800,0,800);
 
   // Graphs
+  g_wireID = tfs->make<TGraphErrors>();
   g_Q = tfs->make<TGraphErrors>();
   g_Dqds = tfs->make<TGraphErrors>();
   g_QSmooth = tfs->make<TGraphErrors>();
