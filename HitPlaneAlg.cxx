@@ -39,8 +39,8 @@ namespace stoppingcosmicmuonselection {
     _effectiveWireID.push_back(geoHelper.GetWireNumb(starthit));
     _hitsOnPlane.erase(_hitsOnPlane.begin() + _start_index);
 
-    double maxAllowedDistance = 30;
-    double slope_threshold = 3;
+    double maxAllowedDistance = 25;
+    double slope_threshold = 2;
 
     double min_dist = DBL_MAX;
     int min_index = -1;
