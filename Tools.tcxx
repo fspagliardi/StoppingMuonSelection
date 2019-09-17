@@ -13,13 +13,18 @@ namespace stoppingcosmicmuonselection {
   std::vector<std::vector<T>> get_neighbors(const std::vector<T> &object,
                                             const size_t &numbNeighbors) {
 
+    std::vector<std::vector<T>> data;
+    data.clear();
+    if (numbNeighbors <= 0) {
+      std::cout << "Tools.tcxx: " << "Number of neighbors is less or equal to zero. Returning empty vector." << std::endl;
+      return data;
+    }
     if ((2*numbNeighbors+1)>object.size()) {
       std::cout << "Number of neighbors " << numbNeighbors
                 << " is too big. Trying with "
                 << numbNeighbors-1 << " neighbours." << std::endl;
       return get_neighbors(object, numbNeighbors-1);
     }
-    std::vector<std::vector<T>> data;
     size_t objectSize = object.size();
     size_t m = numbNeighbors;
 
