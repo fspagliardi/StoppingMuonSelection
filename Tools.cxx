@@ -98,6 +98,8 @@ namespace stoppingcosmicmuonselection {
 
   // Fill Graph for a single variable.
   void FillTGraph(TGraphErrors *graph, std::vector<double> v) {
+    // Empty the graph.
+    graph->Set(0);
     for (size_t i = 0; i < v.size(); i++)
       graph->SetPoint(i, i, v[i]);
     graph->SetMarkerStyle(20);
