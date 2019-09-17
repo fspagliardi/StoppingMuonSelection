@@ -17,8 +17,9 @@ namespace stoppingcosmicmuonselection {
                            _planeNumber(planeNumber) {
     _hitsOnPlane = hitHelper.GetHitsOnAPlane(_planeNumber,_trackHits);
     std::cout << "HitPlaneAlg.cxx: " << std::endl;
+    std::cout << "\tSize of hits on plane before ordering: " << _hitsOnPlane.size() << std::endl;
     OrderHitVec();
-    std::cout << "\tInput HitList Size: " << _hitsOnPlane.size()
+    std::cout << "\tOrdered HitList Size: " << _hitsOnPlane.size()
               << std::endl << "\tWireID list size: " << _effectiveWireID.size() << std::endl;
     if (_effectiveWireID.size() != _hitsOnPlane.size())
       throw cet::exception("HitPlaneAlg.cxx") << "Hit vector and wire ID vector have different size.";
@@ -39,8 +40,8 @@ namespace stoppingcosmicmuonselection {
     _effectiveWireID.push_back(geoHelper.GetWireNumb(starthit));
     _hitsOnPlane.erase(_hitsOnPlane.begin() + _start_index);
 
-    double maxAllowedDistance = 25;
-    double slope_threshold = 2;
+    //double maxAllowedDistance = 50;
+    //double slope_threshold = 2;
 
     double min_dist = DBL_MAX;
     int min_index = -1;
@@ -67,53 +68,59 @@ namespace stoppingcosmicmuonselection {
       }
 
       auto const &hit = _hitsOnPlane.at(min_index);
-      if (min_dist < maxAllowedDistance) {
-        newVector.push_back(hit);
-        _hitPeakTime.push_back(hit->PeakTime());
-        _effectiveWireID.push_back(geoHelper.GetWireNumb(hit));
-      }
-      else if ((geoHelper.GetWireNumb(hit)) == _effectiveWireID.back()
-                && min_dist < 50) {
-        newVector.push_back(hit);
-        _hitPeakTime.push_back(hit->PeakTime());
-        _effectiveWireID.push_back(geoHelper.GetWireNumb(hit));
-      }
-      else if (newVector.size() > 5) {
-        std::cout << "\t\tThe hit is too far away." << std::endl;
-        // Calculate previous slope.
-        auto iter = newVector.end();
-        auto hit_2 = *(--iter);
-        auto hit_1 = *(iter-5);
-        double previous_slope = (hit_2->PeakTime()-hit_1->PeakTime()) / (geoHelper.GetWireNumb(hit_2)-geoHelper.GetWireNumb(hit_1));
-        std::cout << "\t\tPrevious slope: " << previous_slope << std::endl;
-        // Calculate next slope.
-        double new_slope = ((hit->PeakTime()-hit_2->PeakTime()) / (geoHelper.GetWireNumb(hit)-geoHelper.GetWireNumb(hit_2)));
-        std::cout << "\t\tCurrent slope: " << new_slope << std::endl;
-        // Check the next hit will be in a consecutive wire
-        bool progressive_order = false;
-        if (geoHelper.GetWireNumb(hit_1) < geoHelper.GetWireNumb(hit_2)) {
-          if (geoHelper.GetWireNumb(hit) > geoHelper.GetWireNumb(hit_2)) {
-            progressive_order = true;
-          }
-        }
-        if (geoHelper.GetWireNumb(hit_2) < geoHelper.GetWireNumb(hit_1)) {
-          if (geoHelper.GetWireNumb(hit) < geoHelper.GetWireNumb(hit_2)) {
-            progressive_order = true;
-          }
-        }
-        // If the two slopes are close, then there is
-        // probably a dead region between the point.
-        // If so, increase the min distance by half a meter
-        // and add the hit.
-        if (TMath::Abs(new_slope - previous_slope) < slope_threshold &&
-            min_dist < maxAllowedDistance + 50 &&
-            progressive_order) {
-          std::cout << "\t\tOk, adding hit." << std::endl;
-          newVector.push_back(hit);
-          _hitPeakTime.push_back(hit->PeakTime());
-          _effectiveWireID.push_back(geoHelper.GetWireNumb(hit));
-        }
-      } // newVector.size() > 5
+      newVector.push_back(hit);
+      _hitPeakTime.push_back(hit->PeakTime());
+      _effectiveWireID.push_back(geoHelper.GetWireNumb(hit));
+      // std::cout << "min dist: " << min_dist << std::endl;
+      // if (min_dist < maxAllowedDistance) {
+      //   std::cout << "\t\tOk, adding hit. Dist < max dist." << std::endl;
+      //   newVector.push_back(hit);
+      //   _hitPeakTime.push_back(hit->PeakTime());
+      //   _effectiveWireID.push_back(geoHelper.GetWireNumb(hit));
+      // }
+      // else if ((geoHelper.GetWireNumb(hit)) == _effectiveWireID.back()
+      //           && min_dist < 50) {
+      //   std::cout << "\t\tOk, adding hit." << std::endl;
+      //   newVector.push_back(hit);
+      //   _hitPeakTime.push_back(hit->PeakTime());
+      //   _effectiveWireID.push_back(geoHelper.GetWireNumb(hit));
+      // }
+      // else if (newVector.size() > 5) {
+      //   std::cout << "\t\tThe hit is too far away." << std::endl;
+      //   // Calculate previous slope.
+      //   auto iter = newVector.end();
+      //   auto hit_2 = *(--iter);
+      //   auto hit_1 = *(iter-5);
+      //   double previous_slope = (hit_2->PeakTime()-hit_1->PeakTime()) / (geoHelper.GetWireNumb(hit_2)-geoHelper.GetWireNumb(hit_1));
+      //   std::cout << "\t\tPrevious slope: " << previous_slope << std::endl;
+      //   // Calculate next slope.
+      //   double new_slope = ((hit->PeakTime()-hit_2->PeakTime()) / (geoHelper.GetWireNumb(hit)-geoHelper.GetWireNumb(hit_2)));
+      //   std::cout << "\t\tCurrent slope: " << new_slope << std::endl;
+      //   // Check the next hit will be in a consecutive wire
+      //   bool progressive_order = false;
+      //   if (geoHelper.GetWireNumb(hit_1) < geoHelper.GetWireNumb(hit_2)) {
+      //     if (geoHelper.GetWireNumb(hit) > geoHelper.GetWireNumb(hit_2)) {
+      //       progressive_order = true;
+      //     }
+      //   }
+      //   if (geoHelper.GetWireNumb(hit_2) < geoHelper.GetWireNumb(hit_1)) {
+      //     if (geoHelper.GetWireNumb(hit) < geoHelper.GetWireNumb(hit_2)) {
+      //       progressive_order = true;
+      //     }
+      //   }
+      //   // If the two slopes are close, then there is
+      //   // probably a dead region between the point.
+      //   // If so, increase the min distance by half a meter
+      //   // and add the hit.
+      //   if (TMath::Abs(new_slope - previous_slope) < slope_threshold &&
+      //       min_dist < maxAllowedDistance + 50 &&
+      //       progressive_order) {
+      //     std::cout << "\t\tOk, adding hit." << std::endl;
+      //     newVector.push_back(hit);
+      //     _hitPeakTime.push_back(hit->PeakTime());
+      //     _effectiveWireID.push_back(geoHelper.GetWireNumb(hit));
+      //   }
+      // } // newVector.size() > 5
 
       _hitsOnPlane.erase(_hitsOnPlane.begin() + min_index);
     }
@@ -132,6 +139,7 @@ namespace stoppingcosmicmuonselection {
     std::vector<double> newVector_wire;
     std::vector<double> meanVec;
     std::vector<double> wireVec;
+    if (_effectiveWireID.size()<=2) return;
     for (const auto &bunch : get_neighbors(_effectiveWireID, 2)) {
       for (const auto &wire : bunch) {
         wireVec.push_back(wire);
@@ -153,7 +161,7 @@ namespace stoppingcosmicmuonselection {
           _effectiveWireID.at(i-1) !=  _effectiveWireID.at(i)  &&
           std::abs(meanVec.at(i)   - meanVec.at(i+1)) < 1      &&
           _effectiveWireID.at(i) !=  _effectiveWireID.at(i+1) ) {
-        std::cout << "\tIn the if" << std::endl;
+        //std::cout << "\t\tIn the if" << std::endl;
         if (_hitsOnPlane.at(i)->Integral() > _hitsOnPlane.at(i+1)->Integral()) {
           newVector.push_back(_hitsOnPlane.at(i));
           newVector_wire.push_back(_effectiveWireID.at(i));
@@ -170,7 +178,7 @@ namespace stoppingcosmicmuonselection {
         newVector_wire.push_back(_effectiveWireID.at(i));
       }
     }
-    std::cout << "\tSorting ok." << std::endl;
+    std::cout << "\tSmoothing ok." << std::endl;
     newVector.push_back(_hitsOnPlane.at(_hitsOnPlane.size()-1));
     newVector_wire.push_back(_effectiveWireID.at(_hitsOnPlane.size()-1));
     std::swap(newVector, _hitsOnPlane);
