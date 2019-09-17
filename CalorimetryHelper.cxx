@@ -31,9 +31,9 @@ namespace stoppingcosmicmuonselection {
     _isCalorimetrySet = true;
     if (!IsValid()) return;
     for (size_t itcal = 0; itcal < _calos.size(); itcal++) {
-      if (!(_calos[itcal].PlaneID().isValid)) {std::cout << "plane not valid"<< std::endl;continue;}
+      if (!(_calos[itcal].PlaneID().isValid)) {std::cout << "CalorimetryHelper.cxx: " << "plane not valid"<< std::endl;continue;}
       int planeNumb = _calos[itcal].PlaneID().Plane;
-      if (planeNumb<0 || planeNumb>2) {std::cout << "plane number not valid"<< std::endl;continue;}
+      if (planeNumb<0 || planeNumb>2) {std::cout << "CalorimetryHelper.cxx: " << "plane number not valid"<< std::endl;continue;}
       size_t const Nhits = _calos[itcal].dEdx().size();
       _trackHitNumb[planeNumb] = int(Nhits);
       //geo::PlaneID Plane = _calos[itcal].PlaneID();
@@ -55,7 +55,7 @@ namespace stoppingcosmicmuonselection {
         // Apply Lifetime corrections
         const geo::Point_t HitPoint(TrackPos.X(), TrackPos.Y(), TrackPos.Z());
         geo::TPCID const & tpcid = geom->FindTPCAtPosition(HitPoint);
-        if (!tpcid.isValid) {std::cout << "tpc not valid"<< std::endl;continue;}
+        if (!tpcid.isValid) {std::cout << "CalorimetryHelper.cxx: " << "tpc not valid"<< std::endl;continue;}
         int CryoID = geom->FindCryostatAtPosition(HitPoint);
         double Ticks = detprop->ConvertXToTicks(TrackPos.X(), planeNumb, tpcid.TPC, CryoID);
         _drift_time[planeNumb][itHit] = (Ticks - detprop->TriggerOffset()) * detprop->SamplingRate()*1e-3;
