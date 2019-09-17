@@ -88,14 +88,6 @@ namespace stoppingcosmicmuonselection {
       size_t trackIndex = hitHelper.GetTrackIndex(track,tracklist);
       auto const &trackHits = hitHelper.GetArtPtrToHitVect(fmht,trackIndex);
       size_t numbMichelLikeHits = 0;
-      for (const art::Ptr<recob::Hit> &hitp : trackHits) {
-        if (hitHelper.IsHitMichelLike(hitp,selectorAlg.GetTrackProperties().recoEndPoint,fmthm,tracklist,trackIndex))
-          numbMichelLikeHits++;
-      }
-      if (numbMichelLikeHits > _minNumbMichelLikeHit)
-        hitHelper.FillTrackHitPicture(fh_imageCollection,trackHits,selectorAlg.GetTrackProperties().recoEndPoint,2);
-      else
-        fh_imageCollection->Reset();
 
       // Init HitPlaneAlg.
       const artPtrHitVec &hitsOnCollection = hitHelper.GetHitsOnAPlane(2,trackHits);
@@ -108,6 +100,17 @@ namespace stoppingcosmicmuonselection {
       const std::vector<double> &QsSmooth = hitPlaneAlg.Smoother(Qs,_numberNeighbors);
       const std::vector<double> &DqdsSmooth = hitPlaneAlg.Smoother(Dqds,_numberNeighbors);
       const std::vector<double> &LocalLin = hitPlaneAlg.CalculateLocalLinearity(_numberNeighbors);
+
+      for (const art::Ptr<recob::Hit> &hitp : hitPlaneAlg.GetOrderedHitVec()) {
+        if (hitHelper.IsHitMichelLike(hitp,selectorAlg.GetTrackProperties().recoEndPoint,fmthm,tracklist,trackIndex))
+          numbMichelLikeHits++;
+      }
+      if (numbMichelLikeHits > _minNumbMichelLikeHit)
+        hitHelper.FillTrackHitPicture(fh_imageCollection,hitPlaneAlg.GetOrderedHitVec(),
+                                      selectorAlg.GetTrackProperties().recoEndPoint,2);
+      else
+        fh_imageCollection->Reset();
+
       // Fill the graphs.
       FillTGraph(g_wireID, WireIDs);
       FillTGraph(g_Q,Qs);
