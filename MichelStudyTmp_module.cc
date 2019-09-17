@@ -91,6 +91,7 @@ namespace stoppingcosmicmuonselection {
 
       // Init HitPlaneAlg.
       const artPtrHitVec &hitsOnCollection = hitHelper.GetHitsOnAPlane(2,trackHits);
+      std::cout << "Hits on collection size: " << hitsOnCollection.size() << std::endl;
       const size_t &hitIndex = hitHelper.GetIndexClosestHitToPoint(selectorAlg.GetTrackProperties().recoStartPoint,hitsOnCollection,fmthm,tracklist,trackIndex);
       HitPlaneAlg hitPlaneAlg(trackHits,hitIndex,2);
       // Get the vectors.
@@ -100,8 +101,9 @@ namespace stoppingcosmicmuonselection {
       const std::vector<double> &QsSmooth = hitPlaneAlg.Smoother(Qs,_numberNeighbors);
       const std::vector<double> &DqdsSmooth = hitPlaneAlg.Smoother(Dqds,_numberNeighbors);
       const std::vector<double> &LocalLin = hitPlaneAlg.CalculateLocalLinearity(_numberNeighbors);
+      std::cout << "Ordered hit size: " << hitPlaneAlg.GetOrderedHitVec().size() << std::endl;
 
-      for (const art::Ptr<recob::Hit> &hitp : hitPlaneAlg.GetOrderedHitVec()) {
+      for (const art::Ptr<recob::Hit> &hitp : trackHits) {
         if (hitHelper.IsHitMichelLike(hitp,selectorAlg.GetTrackProperties().recoEndPoint,fmthm,tracklist,trackIndex))
           numbMichelLikeHits++;
       }
