@@ -90,7 +90,7 @@ namespace stoppingcosmicmuonselection {
     auto it_min_element = std::min_element(distanceVec.begin(),distanceVec.end());
     size_t hitIndex = it_min_element - distanceVec.begin();
     std::cout << "Closest hit to point: " << std::endl << "\tWireID: "
-              << hits[hitIndex]->WireID().Wire+geoHelper.GetWireOffset(hits[hitIndex],2)
+              << geoHelper.GetWireNumb(hits[hitIndex])
               << "\tTime: " << hits[hitIndex]->PeakTime() << std::endl;
     return hitIndex;
   }

@@ -56,7 +56,10 @@ namespace stoppingcosmicmuonselection {
 
     // Constant to add to number of wires.
     size_t GetWireOffset(const unsigned int &hit_tpcid, const size_t &planeNumber);
-    size_t GetWireOffset(const art::Ptr<recob::Hit> &hit, const size_t &planeNumber);
+    size_t GetWireOffset(const art::Ptr<recob::Hit> &hit);
+
+    // Get wire number.
+    size_t GetWireNumb(const art::Ptr<recob::Hit> &hit);
 
     // Get the wire pitch.
     double GetWirePitch(const size_t &planeNumb);
