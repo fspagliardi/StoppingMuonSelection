@@ -3,7 +3,7 @@
 <!-- Production Project -->
 
 <!DOCTYPE project [
-    <!ENTITY release "v08_21_00">
+    <!ENTITY release "v08_30_02">
     <!ENTITY file_type "mc">
     <!ENTITY run_type "physics">
     <!ENTITY name "MichelStudy_3ms">
@@ -38,7 +38,7 @@
 <check>1</check>
 
 <stage name = "createTTree5.0GeV">
-  <fcl>/pnfs/dune/resilient/users/fspaglia/runMichelStudy.fcl</fcl>
+  <fcl>runMichelStudy.fcl</fcl>
     <inputdef>jhugon_mcc11_pd_sp_reco_3ms_5.0GeV</inputdef>
     <outdir>/pnfs/dune/scratch/users/fspaglia/&release;/&name;5.0GeV</outdir>
     <workdir>/pnfs/dune/scratch/users/fspaglia/&release;/&name;5.0GeV</workdir>
@@ -46,18 +46,6 @@
     <!--schema>root</schema-->
     <anadatatier>full-reconstructed</anadatatier>
 <jobsub>--memory=4000 --expected-lifetime=2h</jobsub>
-</stage>
-
-<stage name = "createTTree5.0_6.0_7.0GeV">
-  <fcl>/pnfs/dune/resilient/users/fspaglia/runMichelStudy.fcl</fcl>
-    <inputdef>fspaglia_mcc11_reco_3ms_5.0_6.0_7.0</inputdef>
-    <outdir>/pnfs/dune/scratch/users/fspaglia/&release;/&name;5.0_6.0_7.0GeV</outdir>
-    <workdir>/pnfs/dune/scratch/users/fspaglia/&release;/&name;5.0_6.0_7.0GeV</workdir>
-    <numjobs>355</numjobs>
-    <schema>root</schema>
-    <maxfilesperjob>10</maxfilesperjob>
-    <anadatatier>full-reconstructed</anadatatier>
-    <jobsub>-f /pnfs/dune/persistent/users/fspaglia/MCdEdxSuperBinning.root --memory=8000 --expected-lifetime=2h</jobsub>
 </stage>
 
 <filetype>&file_type;</filetype>
