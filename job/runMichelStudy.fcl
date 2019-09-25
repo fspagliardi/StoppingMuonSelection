@@ -18,6 +18,7 @@ services:
   FileCatalogMetadata: @local::art_file_catalog_mc
   #@table::protodune_services
   @table::protodune_reco_services
+  Geometry: @local::protodunev6_geo
 }
 
 michel_study:
