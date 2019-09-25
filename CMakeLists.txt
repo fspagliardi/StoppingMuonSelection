@@ -47,8 +47,6 @@ art_make(BASENAME_ONLY
     larsim_MCCheater_ParticleInventoryService_service
     larreco_RecoAlg
     larreco_Calorimetry
-    larreco_Deprecated
-    nutools_ParticleNavigation
     larevt_Filters
     larpandora_LArPandoraInterface
     SignalShapingServiceDUNE10kt_service
@@ -99,8 +97,6 @@ art_make(BASENAME_ONLY
     larsim_MCCheater_ParticleInventoryService_service
     larreco_RecoAlg
     larreco_Calorimetry
-    larreco_Deprecated
-    nutools_ParticleNavigation
     larevt_Filters
     larpandora_LArPandoraInterface
     SignalShapingServiceDUNE10kt_service
