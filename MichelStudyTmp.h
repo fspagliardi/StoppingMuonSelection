@@ -26,6 +26,7 @@
 #include "StoppingMuonSelectionAlg.h"
 #include "HitHelper.h"
 #include "HitPlaneAlg.h"
+#include "MichelHelper.h"
 
 namespace stoppingcosmicmuonselection {
 
@@ -67,6 +68,7 @@ private:
   StoppingMuonSelectionAlg selectorAlg;  // need configuration
   CalorimetryHelper        caloHelper;   // need configuration
   HitHelper                hitHelper;    // need configuration
+  MichelHelper             michelHelper;
 
   // Parameters form FHICL File
   size_t _minNumbMichelLikeHit;
@@ -74,6 +76,7 @@ private:
   double _trackPitchTolerance;
   size_t _numberNeighbors;
   std::string fPFParticleTag, fSpacePointTag, fTrackerTag;
+  std::string fNNetTag;
 
   // Utils
   protoana::ProtoDUNEPFParticleUtils   pfpUtil;
@@ -124,6 +127,7 @@ private:
   TGraphErrors *g_QSmooth = nullptr;
   TGraphErrors *g_DqdsSmooth = nullptr;
   TGraphErrors *g_LocalLin = nullptr;
+  TGraphErrors *g_CnnScore = nullptr;
 };
 
 MichelStudyTmp::MichelStudyTmp(fhicl::ParameterSet const & p)
@@ -171,6 +175,7 @@ void MichelStudyTmp::beginJob()
   fTrackTree->Branch("g_QSmooth", &g_QSmooth);
   fTrackTree->Branch("g_DqdsSmooth", &g_DqdsSmooth);
   fTrackTree->Branch("g_LocalLin", &g_LocalLin);
+  fTrackTree->Branch("g_CnnScore", &g_CnnScore);
 
   // Init the Image for the hits
   hitHelper.InitHitImageHisto(fh_imageCollection, 2, "h_imageCollection");
@@ -190,6 +195,7 @@ void MichelStudyTmp::beginJob()
   g_QSmooth = tfs->make<TGraphErrors>();
   g_DqdsSmooth = tfs->make<TGraphErrors>();
   g_LocalLin = tfs->make<TGraphErrors>();
+  g_CnnScore = tfs->make<TGraphErrors>();
 }
 
 void MichelStudyTmp::endJob()
@@ -210,6 +216,7 @@ void MichelStudyTmp::reconfigure(fhicl::ParameterSet const& p)
   fTrackerTag = p.get<std::string>("TrackerTag");
   fPFParticleTag = p.get<std::string>("PFParticleTag");
   fSpacePointTag = p.get<std::string>("SpacePointTag");
+  fNNetTag = p.get<std::string>("NNetTag");
   _minNumbMichelLikeHit = p.get<size_t>("minNumbMichelLikeHit", 2);
   _trackPitch = p.get<double>("trackPitch", 0.75);
   _trackPitchTolerance = p.get<double>("trackPitchTolerance", 0.1);

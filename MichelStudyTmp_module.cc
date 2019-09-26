@@ -113,6 +113,11 @@ namespace stoppingcosmicmuonselection {
       else
         fh_imageCollection->Reset();
 
+      // Get the CNN tagging results.
+      anab::MVAReader<recob::Hit,4> hitResults(evt, fNNetTag);
+      // Store vector of ordered scores.
+      std::vector<double> scores = michelHelper.GetScoreVector(hitResults,hitPlaneAlg.GetOrderedHitVec());
+
       // Fill the graphs.
       FillTGraph(g_wireID, WireIDs);
       FillTGraph(g_Q,Qs);
@@ -120,6 +125,7 @@ namespace stoppingcosmicmuonselection {
       FillTGraph(g_QSmooth,QsSmooth);
       FillTGraph(g_DqdsSmooth,DqdsSmooth);
       FillTGraph(g_LocalLin,LocalLin);
+      FillTGraph(g_CnnScore, scores);
 
       // Fill TTree
       fTrackTree->Fill();
