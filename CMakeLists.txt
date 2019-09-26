@@ -40,6 +40,7 @@ art_make(BASENAME_ONLY
     lardataobj_RawData
     lardataobj_Simulation
     lardata_RecoObjects
+    lardata_ArtDataHelper
     dune-raw-data_Services_ChannelMap_PdspChannelMapService_service
     dune_DuneObj
     larsim_MCCheater_PhotonBackTrackerService_service
@@ -90,6 +91,7 @@ art_make(BASENAME_ONLY
     lardataobj_RawData
     lardataobj_Simulation
     lardata_RecoObjects
+    lardata_ArtDataHelper
     dune-raw-data_Services_ChannelMap_PdspChannelMapService_service
     dune_DuneObj
     larsim_MCCheater_PhotonBackTrackerService_service
