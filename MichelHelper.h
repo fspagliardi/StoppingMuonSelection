@@ -25,6 +25,8 @@ namespace stoppingcosmicmuonselection {
 
     size_t GetNumbMichelHits(const anab::MVAReader<recob::Hit,4> &hitResults, const artPtrHitVec &hits, float threshold);
 
+    std::vector<double> GetScoreVector(const anab::MVAReader<recob::Hit,4> &hitResults, const artPtrHitVec &hits); 
+
   private:
 
 

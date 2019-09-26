@@ -46,6 +46,24 @@ namespace stoppingcosmicmuonselection {
 
   }
 
+  std::vector<double> MichelHelper::GetScoreVector(const anab::MVAReader<recob::Hit,4> &hitResults, const artPtrHitVec &hits) {
+
+    std::vector<double> scores;
+    scores.clear();
+
+    for (size_t i = 0; i < hits.size(); i++) {
+      
+      // Get hit score.
+      double score = GetHitMichelScore(hitResults, hits[i]);
+
+      // Store score.
+      scores.push_back(score);
+    }
+
+    return scores;
+
+  }
+
 } // end of namespace stoppingcosmicmuonselection
 
 #endif
