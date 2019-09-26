@@ -27,6 +27,7 @@ michel_study:
   PFParticleTag: "pandora"
   SpacePointTag: "reco3d"
   TrackerTag:    "pandoraTrack"
+  NNetTag:       "emtrkmichelid:emtrkmichel"
   minNumbMichelLikeHit: 3
   trackPitch: 0.75
   trackPitchTolerance: 0.1
