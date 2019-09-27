@@ -32,17 +32,17 @@
 <larsoft>
 <tag>&release;</tag>
 <qual>e17:prof</qual>
-<local>/pnfs/dune/resilient/users/fspaglia/localLarsoftv08_21_00.tar</local>
+<local>/pnfs/dune/resilient/users/fspaglia/localLarsoftv08_30_02.tar</local>
 </larsoft>
 
 <check>1</check>
 
-<stage name = "createTTree5.0GeV">
+<stage name = "michelStudyAidanFiles">
   <fcl>runMichelStudy.fcl</fcl>
-    <inputdef>jhugon_mcc11_pd_sp_reco_3ms_5.0GeV</inputdef>
-    <outdir>/pnfs/dune/scratch/users/fspaglia/&release;/&name;5.0GeV</outdir>
-    <workdir>/pnfs/dune/scratch/users/fspaglia/&release;/&name;5.0GeV</workdir>
-    <numjobs>1123</numjobs>
+  <inputlist>/pnfs/dune/resilient/users/fspaglia/listAidan.txt</inputlist>
+    <outdir>/pnfs/dune/scratch/users/fspaglia/&release;/AidanFiles</outdir>
+    <workdir>/pnfs/dune/scratch/users/fspaglia/&release;/&name;/AidanFiles</workdir>
+    <numjobs>100</numjobs>
     <!--schema>root</schema-->
     <anadatatier>full-reconstructed</anadatatier>
 <jobsub>--memory=4000 --expected-lifetime=2h</jobsub>
