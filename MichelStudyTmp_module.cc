@@ -37,7 +37,7 @@ namespace stoppingcosmicmuonselection {
       selectorAlg.Reset();
 
       // Get the PFParticle
-      const recob::PFParticle thisParticle = recoParticles[p];
+      const recob::PFParticle &thisParticle = recoParticles[p];
 
       // Only consider primary particles
       if (!thisParticle.IsPrimary()) continue;
@@ -104,6 +104,7 @@ namespace stoppingcosmicmuonselection {
       std::cout << "Ordered hit size: " << hitPlaneAlg.GetOrderedHitVec().size() << std::endl;
 
       for (const art::Ptr<recob::Hit> &hitp : trackHits) {
+        if (hitp->WireID().Plane != 2) continue;
         if (hitHelper.IsHitMichelLike(hitp,selectorAlg.GetTrackProperties().recoEndPoint,fmthm,tracklist,trackIndex))
           numbMichelLikeHits++;
       }
