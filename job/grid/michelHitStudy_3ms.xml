@@ -40,12 +40,12 @@
 <stage name = "michelStudyAidanFiles">
   <fcl>runMichelStudy.fcl</fcl>
   <inputlist>/pnfs/dune/resilient/users/fspaglia/listAidan.txt</inputlist>
-    <outdir>/pnfs/dune/scratch/users/fspaglia/&release;/AidanFiles</outdir>
+  <outdir>/pnfs/dune/scratch/users/fspaglia/&release;/&name;/AidanFiles</outdir>
     <workdir>/pnfs/dune/scratch/users/fspaglia/&release;/&name;/AidanFiles</workdir>
     <numjobs>100</numjobs>
     <!--schema>root</schema-->
     <anadatatier>full-reconstructed</anadatatier>
-<jobsub>--memory=4000 --expected-lifetime=2h</jobsub>
+    <jobsub>-f /pnfs/dune/persistent/users/fspaglia/MCdEdxSuperBinning.root --memory=8000 --expected-lifetime=2h</jobsub>
 </stage>
 
 <filetype>&file_type;</filetype>
