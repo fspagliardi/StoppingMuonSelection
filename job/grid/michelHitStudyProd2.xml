@@ -40,8 +40,8 @@
 <stage name = "runProd2">
   <fcl>runMichelStudyProd2.fcl</fcl>
   <inputdef>MC_PDSPProd2_reco_35ms_1GeV</inputdef>
-  <outdir>/pnfs/dune/scratch/users/fspaglia/&release;/&name;/AidanFiles</outdir>
-    <workdir>/pnfs/dune/scratch/users/fspaglia/&release;/&name;/AidanFiles</workdir>
+  <outdir>/pnfs/dune/scratch/users/fspaglia/&release;/&name;</outdir>
+    <workdir>/pnfs/dune/scratch/users/fspaglia/&release;/&name;</workdir>
     <numjobs>1000</numjobs>
     <!--schema>root</schema-->
     <anadatatier>full-reconstructed</anadatatier>
