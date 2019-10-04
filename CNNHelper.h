@@ -37,6 +37,9 @@ namespace stoppingcosmicmuonselection {
                                       const anab::MVAReader<recob::Hit,4> &hitResults,
                                       const artPtrHitVec &hits);
 
+    // Fill 1D histogram with the score for a given vector.
+    void FillScoreDistribution(TH1D *h, const anab::MVAReader<recob::Hit,4> &hitResults, const artPtrHitVec &hits);
+
   private:
     GeometryHelper geoHelper;
 

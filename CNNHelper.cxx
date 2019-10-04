@@ -82,6 +82,20 @@ namespace stoppingcosmicmuonselection {
     }
   }
 
+  // Fill 1D histogram with the score for a given vector.
+  void CNNHelper::FillScoreDistribution(TH1D *h, const anab::MVAReader<recob::Hit,4> &hitResults, const artPtrHitVec &hits) {
+
+    h->Reset();
+
+    if (hits.size() == 0) return;
+
+    for (const art::Ptr<recob::Hit> &hitp : hits) {
+      double score = GetHitMichelScore(hitResults, hitp);
+      h->Fill(score);
+    }
+    return;
+  }
+
 } // end of namespace stoppingcosmicmuonselection
 
 #endif
