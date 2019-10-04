@@ -103,6 +103,9 @@ namespace stoppingcosmicmuonselection {
       const std::vector<double> &LocalLin = hitPlaneAlg.CalculateLocalLinearity(_numberNeighbors);
       std::cout << "Ordered hit size: " << hitPlaneAlg.GetOrderedHitVec().size() << std::endl;
 
+      // Get the CNN tagging results.
+      anab::MVAReader<recob::Hit,4> hitResults(evt, fNNetTag);
+
       for (const art::Ptr<recob::Hit> &hitp : trackHits) {
         if (hitp->WireID().Plane != 2) continue;
         if (hitHelper.IsHitMichelLike(hitp,selectorAlg.GetTrackProperties().recoEndPoint,fmthm,tracklist,trackIndex))
@@ -114,20 +117,18 @@ namespace stoppingcosmicmuonselection {
       else
         fh_imageCollection->Reset();
 
-      // Get the CNN tagging results.
-      anab::MVAReader<recob::Hit,4> hitResults(evt, fNNetTag);
       // Store vector of ordered scores.
       std::vector<double> scores = cnnHelper.GetScoreVector(hitResults,hitPlaneAlg.GetOrderedHitVec());
       cnnHelper.FillHitScoreImage(fh_imageScore, hitResults, hitPlaneAlg.GetOrderedHitVec());
 
       // Fill the graphs.
-      FillTGraph(g_wireID, WireIDs);
-      FillTGraph(g_Q,Qs);
-      FillTGraph(g_Dqds,Dqds);
-      FillTGraph(g_QSmooth,QsSmooth);
-      FillTGraph(g_DqdsSmooth,DqdsSmooth);
-      FillTGraph(g_LocalLin,LocalLin);
-      FillTGraph(g_CnnScore, scores);
+      FillTGraph(fg_wireID, WireIDs);
+      FillTGraph(fg_Q,Qs);
+      FillTGraph(fg_Dqds,Dqds);
+      FillTGraph(fg_QSmooth,QsSmooth);
+      FillTGraph(fg_DqdsSmooth,DqdsSmooth);
+      FillTGraph(fg_LocalLin,LocalLin);
+      FillTGraph(fg_CnnScore, scores);
 
       // Fill TTree
       fTrackTree->Fill();

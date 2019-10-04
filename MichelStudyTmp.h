@@ -14,6 +14,7 @@
 #include <fstream>
 #include <string>
 #include "TTree.h"
+#include "TH1.h"
 #include "TH2.h"
 #include "TProfile2D.h"
 #include "TMath.h"
@@ -110,9 +111,21 @@ private:
   double fMaxHitPeakTime = INV_DBL;
   bool fIsRecoSelectedCathodeCrosser = false;
   bool fIsTrueSelectedCathodeCrosser = false;
+  // Objects for TTree
   std::string filename;
+  // TH1s
+  //TH1D *
+  // TProfiles
   TProfile2D *fh_imageCollection = nullptr;
   TProfile2D *fh_imageScore = nullptr;
+  // Graphs
+  TGraphErrors *fg_wireID = nullptr;
+  TGraphErrors *fg_Q = nullptr;
+  TGraphErrors *fg_Dqds = nullptr;
+  TGraphErrors *fg_QSmooth = nullptr;
+  TGraphErrors *fg_DqdsSmooth = nullptr;
+  TGraphErrors *fg_LocalLin = nullptr;
+  TGraphErrors *fg_CnnScore = nullptr;
 
   // Histos
   TH2D *h_dQdxVsRR;
@@ -121,14 +134,6 @@ private:
   TH2D *h_dQdxVsRR_TP075_LTCorr;
   TH2D *h_dQdEVsRR_TP075_LTCorr_MC;
   TH2D *h_dQdEVsRR_TP075_LTCorr_LV;
-  // Graphs
-  TGraphErrors *g_wireID = nullptr;
-  TGraphErrors *g_Q = nullptr;
-  TGraphErrors *g_Dqds = nullptr;
-  TGraphErrors *g_QSmooth = nullptr;
-  TGraphErrors *g_DqdsSmooth = nullptr;
-  TGraphErrors *g_LocalLin = nullptr;
-  TGraphErrors *g_CnnScore = nullptr;
 };
 
 MichelStudyTmp::MichelStudyTmp(fhicl::ParameterSet const & p)
@@ -171,13 +176,13 @@ void MichelStudyTmp::beginJob()
   fTrackTree->Branch("filename", &filename);
   fTrackTree->Branch("h_imageCollection","TProfile2D",&fh_imageCollection,64000,0);
   fTrackTree->Branch("h_imageScore","TProfile2D",&fh_imageScore,64000,0);
-  fTrackTree->Branch("g_wireID", &g_wireID);
-  fTrackTree->Branch("g_Q", &g_Q);
-  fTrackTree->Branch("g_Dqds", &g_Dqds);
-  fTrackTree->Branch("g_QSmooth", &g_QSmooth);
-  fTrackTree->Branch("g_DqdsSmooth", &g_DqdsSmooth);
-  fTrackTree->Branch("g_LocalLin", &g_LocalLin);
-  fTrackTree->Branch("g_CnnScore", &g_CnnScore);
+  fTrackTree->Branch("g_wireID", &fg_wireID);
+  fTrackTree->Branch("g_Q", &fg_Q);
+  fTrackTree->Branch("g_Dqds", &fg_Dqds);
+  fTrackTree->Branch("g_QSmooth", &fg_QSmooth);
+  fTrackTree->Branch("g_DqdsSmooth", &fg_DqdsSmooth);
+  fTrackTree->Branch("g_LocalLin", &fg_LocalLin);
+  fTrackTree->Branch("g_CnnScore", &fg_CnnScore);
 
   // Init the Image for the hits
   hitHelper.InitHitImageHisto(fh_imageCollection, 2, "h_imageCollection");
@@ -192,13 +197,13 @@ void MichelStudyTmp::beginJob()
   h_dQdEVsRR_TP075_LTCorr_LV = tfs->make<TH2D>("h_dQdEVsRR_TP075_LTCorr_LV","h_dQdEVsRR_TP075_LTCorr_LV",200,0,200,800,0,800);
 
   // Graphs
-  g_wireID = tfs->make<TGraphErrors>();
-  g_Q = tfs->make<TGraphErrors>();
-  g_Dqds = tfs->make<TGraphErrors>();
-  g_QSmooth = tfs->make<TGraphErrors>();
-  g_DqdsSmooth = tfs->make<TGraphErrors>();
-  g_LocalLin = tfs->make<TGraphErrors>();
-  g_CnnScore = tfs->make<TGraphErrors>();
+  fg_wireID = tfs->make<TGraphErrors>();
+  fg_Q = tfs->make<TGraphErrors>();
+  fg_Dqds = tfs->make<TGraphErrors>();
+  fg_QSmooth = tfs->make<TGraphErrors>();
+  fg_DqdsSmooth = tfs->make<TGraphErrors>();
+  fg_LocalLin = tfs->make<TGraphErrors>();
+  fg_CnnScore = tfs->make<TGraphErrors>();
 }
 
 void MichelStudyTmp::endJob()
