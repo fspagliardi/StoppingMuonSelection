@@ -2,8 +2,8 @@
   Class containing useful functions for Michel electron selection.
 
 */
-#ifndef MICHEL_HELPER_H
-#define MICHEL_HELPER_H
+#ifndef CNN_HELPER_H
+#define CNN_HELPER_H
 
 #include "lardataobj/RecoBase/Hit.h"
 #include "art/Framework/Core/EDAnalyzer.h"
@@ -15,17 +15,17 @@
 
 namespace stoppingcosmicmuonselection {
 
-  class MichelHelper {
+  class CNNHelper {
 
   public:
-    MichelHelper();
-    ~MichelHelper();
+    CNNHelper();
+    ~CNNHelper();
 
     float GetHitMichelScore(const anab::MVAReader<recob::Hit,4> &hitResults, const art::Ptr<recob::Hit> &hit);
 
     size_t GetNumbMichelHits(const anab::MVAReader<recob::Hit,4> &hitResults, const artPtrHitVec &hits, float threshold);
 
-    std::vector<double> GetScoreVector(const anab::MVAReader<recob::Hit,4> &hitResults, const artPtrHitVec &hits); 
+    std::vector<double> GetScoreVector(const anab::MVAReader<recob::Hit,4> &hitResults, const artPtrHitVec &hits);
 
   private:
 

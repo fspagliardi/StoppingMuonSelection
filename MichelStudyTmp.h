@@ -26,7 +26,7 @@
 #include "StoppingMuonSelectionAlg.h"
 #include "HitHelper.h"
 #include "HitPlaneAlg.h"
-#include "MichelHelper.h"
+#include "CNNHelper.h"
 
 namespace stoppingcosmicmuonselection {
 
@@ -68,7 +68,7 @@ private:
   StoppingMuonSelectionAlg selectorAlg;  // need configuration
   CalorimetryHelper        caloHelper;   // need configuration
   HitHelper                hitHelper;    // need configuration
-  MichelHelper             michelHelper;
+  CNNHelper             cnnHelper;
 
   // Parameters form FHICL File
   size_t _minNumbMichelLikeHit;

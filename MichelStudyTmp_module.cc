@@ -117,7 +117,7 @@ namespace stoppingcosmicmuonselection {
       // Get the CNN tagging results.
       anab::MVAReader<recob::Hit,4> hitResults(evt, fNNetTag);
       // Store vector of ordered scores.
-      std::vector<double> scores = michelHelper.GetScoreVector(hitResults,hitPlaneAlg.GetOrderedHitVec());
+      std::vector<double> scores = cnnHelper.GetScoreVector(hitResults,hitPlaneAlg.GetOrderedHitVec());
 
       // Fill the graphs.
       FillTGraph(g_wireID, WireIDs);
