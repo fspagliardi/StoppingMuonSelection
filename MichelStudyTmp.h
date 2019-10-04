@@ -112,6 +112,7 @@ private:
   bool fIsTrueSelectedCathodeCrosser = false;
   std::string filename;
   TProfile2D *fh_imageCollection = nullptr;
+  TProfile2D *fh_imageScore = nullptr;
 
   // Histos
   TH2D *h_dQdxVsRR;
@@ -169,6 +170,7 @@ void MichelStudyTmp::beginJob()
   fTrackTree->Branch("isTrueSelectedCathodeCrosser",&fIsTrueSelectedCathodeCrosser);
   fTrackTree->Branch("filename", &filename);
   fTrackTree->Branch("h_imageCollection","TProfile2D",&fh_imageCollection,64000,0);
+  fTrackTree->Branch("h_imageScore","TProfile2D",&fh_imageScore,64000,0);
   fTrackTree->Branch("g_wireID", &g_wireID);
   fTrackTree->Branch("g_Q", &g_Q);
   fTrackTree->Branch("g_Dqds", &g_Dqds);
@@ -179,6 +181,7 @@ void MichelStudyTmp::beginJob()
 
   // Init the Image for the hits
   hitHelper.InitHitImageHisto(fh_imageCollection, 2, "h_imageCollection");
+  hitHelper.InitHitImageHisto(fh_imageScore, 2, "h_imageScore");
 
   // Histograms
   h_dQdxVsRR = tfs->make<TH2D>("h_dQdxVsRR","h_dQdxVsRR",200,0,200,800,0,800);

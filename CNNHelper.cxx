@@ -17,6 +17,7 @@ namespace stoppingcosmicmuonselection {
 
   }
 
+  // Get the score for a given hit.
   float CNNHelper::GetHitMichelScore(const anab::MVAReader<recob::Hit,4> &hitResults, const art::Ptr<recob::Hit> &hit)  {
 
     // Get CNN output for this hit.
@@ -30,6 +31,7 @@ namespace stoppingcosmicmuonselection {
 
   }
 
+  // Get the number of michel hits according to a threshold.
   size_t CNNHelper::GetNumbMichelHits(const anab::MVAReader<recob::Hit,4> &hitResults, const artPtrHitVec &hits, float threshold) {
 
     size_t counter = 0;
@@ -46,6 +48,7 @@ namespace stoppingcosmicmuonselection {
 
   }
 
+  // Get the vector of scores.
   std::vector<double> CNNHelper::GetScoreVector(const anab::MVAReader<recob::Hit,4> &hitResults, const artPtrHitVec &hits) {
 
     std::vector<double> scores;
@@ -62,6 +65,21 @@ namespace stoppingcosmicmuonselection {
 
     return scores;
 
+  }
+
+  // Fill the 2D image of hits in the plane according to the score from the CNN.
+  void CNNHelper::FillHitScoreImage(TProfile2D *image,
+                                    const anab::MVAReader<recob::Hit,4> &hitResults,
+                                    const artPtrHitVec &hits) {
+    image->Reset();
+
+    for (const art::Ptr<recob::Hit> &hitp : hits) {
+      if (!hitp->WireID().isValid) continue;
+      double hitPeakTime = hitp->PeakTime();
+      unsigned int wireID = geoHelper.GetWireNumb(hitp);
+      double score = GetHitMichelScore(hitResults,hitp);
+      image->Fill(wireID,hitPeakTime,score);
+    }
   }
 
 } // end of namespace stoppingcosmicmuonselection

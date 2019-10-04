@@ -118,6 +118,7 @@ namespace stoppingcosmicmuonselection {
       anab::MVAReader<recob::Hit,4> hitResults(evt, fNNetTag);
       // Store vector of ordered scores.
       std::vector<double> scores = cnnHelper.GetScoreVector(hitResults,hitPlaneAlg.GetOrderedHitVec());
+      cnnHelper.FillHitScoreImage(fh_imageScore, hitResults, hitPlaneAlg.GetOrderedHitVec());
 
       // Fill the graphs.
       FillTGraph(g_wireID, WireIDs);

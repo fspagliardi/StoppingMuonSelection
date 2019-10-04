@@ -10,8 +10,10 @@
 #include "lardata/ArtDataHelper/MVAReader.h"
 #include "TVector3.h"
 #include "TMath.h"
+#include "TProfile2D.h"
 
 #include "DataTypes.h"
+#include "GeometryHelper.h"
 
 namespace stoppingcosmicmuonselection {
 
@@ -21,14 +23,22 @@ namespace stoppingcosmicmuonselection {
     CNNHelper();
     ~CNNHelper();
 
+    // Get the score for a given hit.
     float GetHitMichelScore(const anab::MVAReader<recob::Hit,4> &hitResults, const art::Ptr<recob::Hit> &hit);
 
+    // Get the number of michel hits according to a threshold.
     size_t GetNumbMichelHits(const anab::MVAReader<recob::Hit,4> &hitResults, const artPtrHitVec &hits, float threshold);
 
+    // Get the vector of scores.
     std::vector<double> GetScoreVector(const anab::MVAReader<recob::Hit,4> &hitResults, const artPtrHitVec &hits);
 
-  private:
+    // Fill the 2D image of hits in the plane according to the score from the CNN.
+    void FillHitScoreImage(TProfile2D *image,
+                                      const anab::MVAReader<recob::Hit,4> &hitResults,
+                                      const artPtrHitVec &hits);
 
+  private:
+    GeometryHelper geoHelper;
 
   };
 }
