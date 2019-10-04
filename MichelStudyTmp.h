@@ -114,7 +114,8 @@ private:
   // Objects for TTree
   std::string filename;
   // TH1s
-  //TH1D *
+  TH1D *fh_michelHitsMichelScore = nullptr;
+  TH1D *fh_muonHitsMichelScore = nullptr;
   // TProfiles
   TProfile2D *fh_imageCollection = nullptr;
   TProfile2D *fh_imageScore = nullptr;
@@ -176,6 +177,8 @@ void MichelStudyTmp::beginJob()
   fTrackTree->Branch("filename", &filename);
   fTrackTree->Branch("h_imageCollection","TProfile2D",&fh_imageCollection,64000,0);
   fTrackTree->Branch("h_imageScore","TProfile2D",&fh_imageScore,64000,0);
+  fTrackTree->Branch("h_michelHitsMichelScore","TH1D",&fh_michelHitsMichelScore,64000,0);
+  fTrackTree->Branch("h_muonHitsMichelScore","TH1D",&fh_muonHitsMichelScore,64000,0);
   fTrackTree->Branch("g_wireID", &fg_wireID);
   fTrackTree->Branch("g_Q", &fg_Q);
   fTrackTree->Branch("g_Dqds", &fg_Dqds);
@@ -187,6 +190,10 @@ void MichelStudyTmp::beginJob()
   // Init the Image for the hits
   hitHelper.InitHitImageHisto(fh_imageCollection, 2, "h_imageCollection");
   hitHelper.InitHitImageHisto(fh_imageScore, 2, "h_imageScore");
+
+  // Init score histos.
+  fh_michelHitsMichelScore = tfs->make<TH1D>("fh_michelHitsMichelScore","fh_michelHitsMichelScore",100,0,1);
+  fh_muonHitsMichelScore = tfs->make<TH1D>("fh_muonHitsMichelScore","fh_muonHitsMichelScore",100,0,1);
 
   // Histograms
   h_dQdxVsRR = tfs->make<TH2D>("h_dQdxVsRR","h_dQdxVsRR",200,0,200,800,0,800);

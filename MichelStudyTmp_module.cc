@@ -103,9 +103,6 @@ namespace stoppingcosmicmuonselection {
       const std::vector<double> &LocalLin = hitPlaneAlg.CalculateLocalLinearity(_numberNeighbors);
       std::cout << "Ordered hit size: " << hitPlaneAlg.GetOrderedHitVec().size() << std::endl;
 
-      // Get the CNN tagging results.
-      anab::MVAReader<recob::Hit,4> hitResults(evt, fNNetTag);
-
       for (const art::Ptr<recob::Hit> &hitp : trackHits) {
         if (hitp->WireID().Plane != 2) continue;
         if (hitHelper.IsHitMichelLike(hitp,selectorAlg.GetTrackProperties().recoEndPoint,fmthm,tracklist,trackIndex))
@@ -114,12 +111,19 @@ namespace stoppingcosmicmuonselection {
       if (numbMichelLikeHits > _minNumbMichelLikeHit)
         hitHelper.FillTrackHitPicture(fh_imageCollection,hitPlaneAlg.GetOrderedHitVec(),
                                       selectorAlg.GetTrackProperties().recoEndPoint,2);
-      else
+      else {
         fh_imageCollection->Reset();
+      }
 
+      // Get the CNN tagging results.
+      anab::MVAReader<recob::Hit,4> hitResults(evt, fNNetTag);
       // Store vector of ordered scores.
       std::vector<double> scores = cnnHelper.GetScoreVector(hitResults,hitPlaneAlg.GetOrderedHitVec());
       cnnHelper.FillHitScoreImage(fh_imageScore, hitResults, hitPlaneAlg.GetOrderedHitVec());
+      const artPtrHitVec &michelLikeHits = hitHelper.GetMichelLikeHits(hitPlaneAlg.GetOrderedHitVec(),selectorAlg.GetTrackProperties().recoEndPoint,fmthm,tracklist,trackIndex);
+      const artPtrHitVec &muonLikeHits = hitHelper.GetMuonLikeHits(hitPlaneAlg.GetOrderedHitVec(),selectorAlg.GetTrackProperties().recoEndPoint,fmthm,tracklist,trackIndex);
+      cnnHelper.FillScoreDistribution(fh_michelHitsMichelScore,hitResults,michelLikeHits);
+      cnnHelper.FillScoreDistribution(fh_muonHitsMichelScore,hitResults,muonLikeHits);
 
       // Fill the graphs.
       FillTGraph(fg_wireID, WireIDs);
