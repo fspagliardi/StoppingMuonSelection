@@ -39,7 +39,7 @@
 
 <stage name = "runProd2">
   <fcl>runMichelStudyProd2.fcl</fcl>
-  <inputdef>MC_PDSPProd2_reco_35ms_1GeV</inputdef>
+  <inputdef>PDSPProd2_MC_3GeV_reco_sce_off</inputdef>
   <outdir>/pnfs/dune/scratch/users/fspaglia/&release;/&name;</outdir>
     <workdir>/pnfs/dune/scratch/users/fspaglia/&release;/&name;</workdir>
     <numjobs>1000</numjobs>
