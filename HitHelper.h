@@ -78,11 +78,18 @@ namespace stoppingcosmicmuonselection {
                          const size_t &trackIndex);
 
     // Get subvector of michel-like hits.
-    std::vector<art::Ptr<recob::Hit>> GetMichelLikeHits(const artPtrHitVec &hits,
-                                                        const TVector3 &recoEndPoint,
-                                                        art::FindManyP<recob::Hit,recob::TrackHitMeta> &fmthm,
-                                                        const std::vector<art::Ptr<recob::Track>> &tracklist,
-                                                        const size_t &trackIndex);
+    artPtrHitVec GetMichelLikeHits(const artPtrHitVec &hits,
+                                   const TVector3 &recoEndPoint,
+                                   art::FindManyP<recob::Hit,recob::TrackHitMeta> &fmthm,
+                                   const std::vector<art::Ptr<recob::Track>> &tracklist,
+                                   const size_t &trackIndex);
+
+    // Get subvector of michel-like hits.
+    artPtrHitVec GetMuonLikeHits(const artPtrHitVec &hits,
+                                 const TVector3 &recoEndPoint,
+                                 art::FindManyP<recob::Hit,recob::TrackHitMeta> &fmthm,
+                                 const std::vector<art::Ptr<recob::Track>> &tracklist,
+                                 const size_t &trackIndex);
 
     // Get a TProfile2D filled with hit peak times and wire number
     void FillTrackHitPicture(TProfile2D* image,

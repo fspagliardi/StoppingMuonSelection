@@ -125,11 +125,11 @@ namespace stoppingcosmicmuonselection {
   }
 
   // Get subvector of michel-like hits.
-  std::vector<art::Ptr<recob::Hit>> HitHelper::GetMichelLikeHits(const artPtrHitVec &hits,
-                                                                 const TVector3 &recoEndPoint,
-                                                                 art::FindManyP<recob::Hit,recob::TrackHitMeta> &fmthm,
-                                                                 const std::vector<art::Ptr<recob::Track>> &tracklist,
-                                                                 const size_t &trackIndex) {
+  artPtrHitVec HitHelper::GetMichelLikeHits(const artPtrHitVec &hits,
+                                            const TVector3 &recoEndPoint,
+                                            art::FindManyP<recob::Hit,recob::TrackHitMeta> &fmthm,
+                                            const std::vector<art::Ptr<recob::Track>> &tracklist,
+                                            const size_t &trackIndex) {
 
     std::vector<art::Ptr<recob::Hit>> result;
     result.clear();
@@ -142,6 +142,27 @@ namespace stoppingcosmicmuonselection {
 
     if (result.size() == 0)
       std::cout << "HitHelper.cxx: " << "HitHelper::GetMichelLikeHits " << "is returning an empty vector." << std::endl;
+    return result;
+  }
+
+  // Get subvector of muon-like hits.
+  artPtrHitVec HitHelper::GetMuonLikeHits(const artPtrHitVec &hits,
+                                          const TVector3 &recoEndPoint,
+                                          art::FindManyP<recob::Hit,recob::TrackHitMeta> &fmthm,
+                                          const std::vector<art::Ptr<recob::Track>> &tracklist,
+                                          const size_t &trackIndex) {
+
+    std::vector<art::Ptr<recob::Hit>> result;
+    result.clear();
+
+    for (const art::Ptr<recob::Hit> &hitp : hits) {
+      if (IsHitMichelLike(hitp,recoEndPoint,fmthm,tracklist,trackIndex))
+        continue;
+      result.push_back(hitp);
+    }
+
+    if (result.size() == 0)
+      std::cout << "HitHelper.cxx: " << "HitHelper::GetMuonlLikeHits " << "is returning an empty vector." << std::endl;
     return result;
   }
 
