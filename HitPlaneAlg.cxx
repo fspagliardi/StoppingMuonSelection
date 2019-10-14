@@ -45,6 +45,7 @@ namespace stoppingcosmicmuonselection {
 
     double min_dist = DBL_MAX;
     int min_index = -1;
+    std::vector<double> distances;
 
     while (_hitsOnPlane.size() != 0) {
 
@@ -68,9 +69,13 @@ namespace stoppingcosmicmuonselection {
       }
 
       auto const &hit = _hitsOnPlane.at(min_index);
-      newVector.push_back(hit);
-      _hitPeakTime.push_back(hit->PeakTime());
-      _effectiveWireID.push_back(geoHelper.GetWireNumb(hit));
+
+      if (distances.size() > 3 && min_dist > (10*mean(distances))) {
+        newVector.push_back(hit);
+        _hitPeakTime.push_back(hit->PeakTime());
+        _effectiveWireID.push_back(geoHelper.GetWireNumb(hit));
+      }
+      
       // std::cout << "min dist: " << min_dist << std::endl;
       // if (min_dist < maxAllowedDistance) {
       //   std::cout << "\t\tOk, adding hit. Dist < max dist." << std::endl;
