@@ -48,6 +48,9 @@ namespace stoppingcosmicmuonselection {
     // Calculate local linearity.
     const std::vector<double> CalculateLocalLinearity(const size_t &Nneighbors);
 
+    // Return distances.
+    const std::vector<double> GetDistances();
+
   private:
     const artPtrHitVec &_trackHits;
     const size_t &_start_index;
@@ -56,6 +59,7 @@ namespace stoppingcosmicmuonselection {
     artPtrHitVec _hitsOnPlane;
     std::vector<double> _hitPeakTime;
     std::vector<double> _effectiveWireID;
+    std::vector<double> _distances;
 
     bool _areHitOrdered = false;
     bool _isLinearityCalculated = false;
