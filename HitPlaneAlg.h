@@ -13,6 +13,7 @@
 #include "DataTypes.h"
 #include "HitHelper.h"
 #include "GeometryHelper.h"
+#include "CNNHelper.h"
 #include "Tools.h"
 
 namespace stoppingcosmicmuonselection {
@@ -62,6 +63,7 @@ namespace stoppingcosmicmuonselection {
     // Helpers.
     GeometryHelper geoHelper;
     HitHelper      hitHelper;
+    CNNHelper      cnnHelper;
 
     // Declare handle for detector properties
     const detinfo::DetectorProperties *detprop = lar::providerFrom<detinfo::DetectorPropertiesService>();

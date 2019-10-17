@@ -70,12 +70,20 @@ namespace stoppingcosmicmuonselection {
 
       auto const &hit = _hitsOnPlane.at(min_index);
 
-      if (distances.size() > 3 && min_dist > (10*mean(distances))) {
+      //if (distances.size() <= 3) {
+        //std::cout << geoHelper.GetWireNumb(hit) << " " << hit->PeakTime() << std::endl;
         newVector.push_back(hit);
         _hitPeakTime.push_back(hit->PeakTime());
         _effectiveWireID.push_back(geoHelper.GetWireNumb(hit));
-      }
-      
+      //}
+/*
+      if (distances.size() > 3 && min_dist < (10*mean(distances))) {
+        std::cout << geoHelper.GetWireNumb(hit) << " " << hit->PeakTime() << std::endl;
+        newVector.push_back(hit);
+        _hitPeakTime.push_back(hit->PeakTime());
+        _effectiveWireID.push_back(geoHelper.GetWireNumb(hit));
+      }  */
+      distances.push_back(min_dist);
       // std::cout << "min dist: " << min_dist << std::endl;
       // if (min_dist < maxAllowedDistance) {
       //   std::cout << "\t\tOk, adding hit. Dist < max dist." << std::endl;
@@ -131,7 +139,7 @@ namespace stoppingcosmicmuonselection {
     }
     _areHitOrdered = true;
     std::swap(_hitsOnPlane, newVector);
-    std::cout << "\tHit vector ordered." << std::endl;
+    std::cout << "\tHit vector ordered. " << "Number of hits: " << _hitsOnPlane.size() << std::endl;
     return;
   }
 
@@ -263,8 +271,7 @@ namespace stoppingcosmicmuonselection {
       double covariance = cov(time,wire);
       double stdevTime = stdev(time);
       double stdevWire = stdev(wire);
-      double N = time.size();
-      double lin = TMath::Abs(covariance) / N / (stdevTime*stdevWire);
+      double lin = TMath::Abs(covariance) / (stdevTime*stdevWire);
       if (std::isnan(lin)) lin = 0.0;
       linearity.push_back(lin);
       time.clear();
@@ -273,6 +280,19 @@ namespace stoppingcosmicmuonselection {
     _isLinearityCalculated = true;
     return linearity;
   }
+
+  // Cut Michel Electrons
+  //const artPtrHitVec HitPlaneAlg::GetHitVecNoMichel(const std::vector<double> &scores, const double &threshold) {
+
+  //  size_t size = scores.size();
+  //  artPtrHitVec newVector;
+
+    // Iterate over the vector in the inverse order.
+  //  for (size_t it = size-1; it >= 0; it--) {
+  //    if
+  //  }
+
+  //}
 
 } // end of namespace stoppingcosmicmuonselection
 
