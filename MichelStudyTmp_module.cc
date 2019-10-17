@@ -134,6 +134,11 @@ namespace stoppingcosmicmuonselection {
       FillTGraph(fg_LocalLin,LocalLin);
       FillTGraph(fg_CnnScore, scores);
 
+      fh_progressiveDistnace->Reset();
+      for (const auto &el : hitPlaneAlg.GetDistances()) {
+        fh_progressiveDistnace->Fill(el);
+      }
+
       // Fill TTree
       fTrackTree->Fill();
 
