@@ -116,7 +116,7 @@ private:
   // TH1s
   TH1D *fh_michelHitsMichelScore = nullptr;
   TH1D *fh_muonHitsMichelScore = nullptr;
-  TH1D *fh_progressiveDistnace = nullptr;
+  TH1D *fh_progressiveDistance = nullptr;
   // TProfiles
   TProfile2D *fh_imageCollection = nullptr;
   TProfile2D *fh_imageScore = nullptr;
@@ -180,7 +180,7 @@ void MichelStudyTmp::beginJob()
   fTrackTree->Branch("h_imageScore","TProfile2D",&fh_imageScore,64000,0);
   fTrackTree->Branch("h_michelHitsMichelScore","TH1D",&fh_michelHitsMichelScore,64000,0);
   fTrackTree->Branch("h_muonHitsMichelScore","TH1D",&fh_muonHitsMichelScore,64000,0);
-  fTrackTree->Branch("h_progressiveDistnace","TH1D",&fh_progressiveDistnace,64000,0);
+  fTrackTree->Branch("h_progressiveDistance","TH1D",&fh_progressiveDistance,64000,0);
   fTrackTree->Branch("g_wireID", &fg_wireID);
   fTrackTree->Branch("g_Q", &fg_Q);
   fTrackTree->Branch("g_Dqds", &fg_Dqds);
@@ -192,6 +192,8 @@ void MichelStudyTmp::beginJob()
   // Init the Image for the hits
   hitHelper.InitHitImageHisto(fh_imageCollection, 2, "h_imageCollection");
   hitHelper.InitHitImageHisto(fh_imageScore, 2, "h_imageScore");
+
+  fh_progressiveDistance = new TH1D("h_progressiveDistance","h_progressiveDistance",200,0,200);
 
   // Histograms
   h_dQdxVsRR = tfs->make<TH2D>("h_dQdxVsRR","h_dQdxVsRR",200,0,200,800,0,800);
