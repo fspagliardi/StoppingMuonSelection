@@ -40,10 +40,12 @@ namespace stoppingcosmicmuonselection {
     _effectiveWireID.push_back(geoHelper.GetWireNumb(starthit));
     _hitsOnPlane.erase(_hitsOnPlane.begin() + _start_index);
 
-    //double maxAllowedDistance = 50;
+    double maxAllowedDistance = 50;
+    int maxWireDistance = 5;
     //double slope_threshold = 2;
 
     double min_dist = DBL_MAX;
+    int min_wire_dist = 999;
     int min_index = -1;
 
     while (_hitsOnPlane.size() != 0) {
@@ -61,20 +63,22 @@ namespace stoppingcosmicmuonselection {
         size_t wireNumb2 = geoHelper.GetWireNumb(_hitsOnPlane.at(i));
         TVector3 pt2(hitPeakTime2,wireNumb2,0);
         double dist = (pt1-pt2).Mag();
+        int wire_dist = TMath::Abs((int)wireNumb1 - (int)wireNumb2);
         if (dist < min_dist) {
           min_index = i;
           min_dist = dist;
+          min_wire_dist = wire_dist;
         }
       }
 
       auto const &hit = _hitsOnPlane.at(min_index);
 
-      //if (distances.size() <= 3) {
+      if (min_dist < maxAllowedDistance && min_wire_dist < maxWireDistance)  {
         //std::cout << geoHelper.GetWireNumb(hit) << " " << hit->PeakTime() << std::endl;
         newVector.push_back(hit);
         _hitPeakTime.push_back(hit->PeakTime());
         _effectiveWireID.push_back(geoHelper.GetWireNumb(hit));
-      //}
+      }
 /*
       if (distances.size() > 3 && min_dist < (10*mean(distances))) {
         std::cout << geoHelper.GetWireNumb(hit) << " " << hit->PeakTime() << std::endl;
