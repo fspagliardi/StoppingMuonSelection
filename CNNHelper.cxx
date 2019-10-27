@@ -67,6 +67,26 @@ namespace stoppingcosmicmuonselection {
 
   }
 
+  // Remove hits with score above a threshold and return the remaining in a vector.
+  const artPtrHitVec CNNHelper::RemoveMichelHits(const anab::MVAReader<recob::Hit,4> &hitResults, const artPtrHitVec &hits, const double &thr) {
+
+    artPtrHitVec result;
+    result.clear();
+
+    for (size_t i = 0; i < hits.size(); i++) {
+
+      // Get hit score.
+      double score = GetHitMichelScore(hitResults, hits[i]);
+
+      if (score <= thr)
+        result.push_back(hits[i]);
+    }
+
+    if (result.size() == 0) std::cout << "CNNHelper.cxx: " << "CNNHelper::RemoveMichelHits is returning an empty vector" << std::endl;
+
+    return result;
+  }
+
   // Fill the 2D image of hits in the plane according to the score from the CNN.
   void CNNHelper::FillHitScoreImage(TProfile2D *image,
                                     const anab::MVAReader<recob::Hit,4> &hitResults,

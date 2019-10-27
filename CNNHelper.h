@@ -32,6 +32,9 @@ namespace stoppingcosmicmuonselection {
     // Get the vector of scores.
     std::vector<double> GetScoreVector(const anab::MVAReader<recob::Hit,4> &hitResults, const artPtrHitVec &hits);
 
+    // Remove hits with score above a threshold and return the remaining in a vector.
+    const artPtrHitVec RemoveMichelHits(const anab::MVAReader<recob::Hit,4> &hitResults, const artPtrHitVec &hits, const double &thr);
+
     // Fill the 2D image of hits in the plane according to the score from the CNN.
     void FillHitScoreImage(TProfile2D *image,
                                       const anab::MVAReader<recob::Hit,4> &hitResults,
