@@ -40,7 +40,7 @@ namespace stoppingcosmicmuonselection {
     _effectiveWireID.push_back(geoHelper.GetWireNumb(starthit));
     _hitsOnPlane.erase(_hitsOnPlane.begin() + _start_index);
 
-    double maxAllowedDistance = 50;
+    //double maxAllowedDistance = 50;
     int maxWireDistance = 10;
     //double slope_threshold = 2;
 
@@ -73,7 +73,10 @@ namespace stoppingcosmicmuonselection {
 
       auto const &hit = _hitsOnPlane.at(min_index);
 
-      if (min_dist < maxAllowedDistance && min_wire_dist < maxWireDistance)  {
+      std::cout << geoHelper.GetWireNumb(hit) << " " << hit->PeakTime() << std::endl;
+      std::cout << "dist: " << min_dist << " wire dist: " << min_wire_dist << std::endl;
+
+      if (min_wire_dist < maxWireDistance)  {
         std::cout << geoHelper.GetWireNumb(hit) << " " << hit->PeakTime() << std::endl;
         newVector.push_back(hit);
         _hitPeakTime.push_back(hit->PeakTime());
