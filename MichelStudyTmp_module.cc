@@ -122,8 +122,8 @@ namespace stoppingcosmicmuonselection {
       cnnHelper.FillHitScoreImage(fh_imageScore, hitResults, hitPlaneAlg.GetOrderedHitVec());
       const artPtrHitVec &michelLikeHits = hitHelper.GetMichelLikeHits(hitPlaneAlg.GetOrderedHitVec(),selectorAlg.GetTrackProperties().recoEndPoint,fmthm,tracklist,trackIndex);
       const artPtrHitVec &muonLikeHits = hitHelper.GetMuonLikeHits(hitPlaneAlg.GetOrderedHitVec(),selectorAlg.GetTrackProperties().recoEndPoint,fmthm,tracklist,trackIndex);
-      cnnHelper.FillScoreDistribution(fh_michelHitsMichelScore,hitResults,michelLikeHits);
-      cnnHelper.FillScoreDistribution(fh_muonHitsMichelScore,hitResults,muonLikeHits);
+      f_michelHitsMichelScore = cnnHelper.GetScoreVector(hitResults, michelLikeHits);
+      f_muonHitsMichelScore = cnnHelper.GetScoreVector(hitResults, muonLikeHits);
 
       // Fill the graphs.
       FillTGraph(fg_wireID, WireIDs);

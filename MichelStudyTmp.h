@@ -111,11 +111,11 @@ private:
   double fMaxHitPeakTime = INV_DBL;
   bool fIsRecoSelectedCathodeCrosser = false;
   bool fIsTrueSelectedCathodeCrosser = false;
+  std::vector<double> f_michelHitsMichelScore;
+  std::vector<double> f_muonHitsMichelScore;
   // Objects for TTree
   std::string filename;
   // TH1s
-  TH1D *fh_michelHitsMichelScore = nullptr;
-  TH1D *fh_muonHitsMichelScore = nullptr;
   TH1D *fh_progressiveDistance = nullptr;
   // TProfiles
   TProfile2D *fh_imageCollection = nullptr;
@@ -178,9 +178,6 @@ void MichelStudyTmp::beginJob()
   fTrackTree->Branch("filename", &filename);
   fTrackTree->Branch("h_imageCollection","TProfile2D",&fh_imageCollection,64000,0);
   fTrackTree->Branch("h_imageScore","TProfile2D",&fh_imageScore,64000,0);
-  fTrackTree->Branch("h_michelHitsMichelScore","TH1D",&fh_michelHitsMichelScore,64000,0);
-  fTrackTree->Branch("h_muonHitsMichelScore","TH1D",&fh_muonHitsMichelScore,64000,0);
-  fTrackTree->Branch("h_progressiveDistance","TH1D",&fh_progressiveDistance,64000,0);
   fTrackTree->Branch("g_wireID", &fg_wireID);
   fTrackTree->Branch("g_Q", &fg_Q);
   fTrackTree->Branch("g_Dqds", &fg_Dqds);
@@ -188,6 +185,8 @@ void MichelStudyTmp::beginJob()
   fTrackTree->Branch("g_DqdsSmooth", &fg_DqdsSmooth);
   fTrackTree->Branch("g_LocalLin", &fg_LocalLin);
   fTrackTree->Branch("g_CnnScore", &fg_CnnScore);
+  fTrackTree->Branch("michelHitsMichelScore", &f_michelHitsMichelScore);
+  fTrackTree->Branch("muonHitsMichelScore", &f_muonHitsMichelScore);
 
   // Init the Image for the hits
   hitHelper.InitHitImageHisto(fh_imageCollection, 2, "h_imageCollection");
