@@ -120,6 +120,7 @@ private:
   // TProfiles
   TProfile2D *fh_imageCollection = nullptr;
   TProfile2D *fh_imageScore = nullptr;
+  TProfile2D *fh_imageCollectionNoMichel = nullptr;
   // Graphs
   TGraphErrors *fg_wireID = nullptr;
   TGraphErrors *fg_Q = nullptr;
@@ -177,6 +178,7 @@ void MichelStudyTmp::beginJob()
   fTrackTree->Branch("isTrueSelectedCathodeCrosser",&fIsTrueSelectedCathodeCrosser);
   fTrackTree->Branch("filename", &filename);
   fTrackTree->Branch("h_imageCollection","TProfile2D",&fh_imageCollection,64000,0);
+  fTrackTree->Branch("h_imageCollectionNoMichel","TProfile2D",&fh_imageCollectionNoMichel,64000,0);
   fTrackTree->Branch("h_imageScore","TProfile2D",&fh_imageScore,64000,0);
   fTrackTree->Branch("g_wireID", &fg_wireID);
   fTrackTree->Branch("g_Q", &fg_Q);
@@ -191,6 +193,7 @@ void MichelStudyTmp::beginJob()
   // Init the Image for the hits
   hitHelper.InitHitImageHisto(fh_imageCollection, 2, "h_imageCollection");
   hitHelper.InitHitImageHisto(fh_imageScore, 2, "h_imageScore");
+  hitHelper.InitHitImageHisto(fh_imageCollectionNoMichel, 2, "h_imageCollectionNoMichel");
 
   fh_progressiveDistance = new TH1D("h_progressiveDistance","h_progressiveDistance",200,0,200);
 

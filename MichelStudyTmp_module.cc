@@ -108,12 +108,6 @@ namespace stoppingcosmicmuonselection {
         if (hitHelper.IsHitMichelLike(hitp,selectorAlg.GetTrackProperties().recoEndPoint,fmthm,tracklist,trackIndex))
           numbMichelLikeHits++;
       }
-      if (numbMichelLikeHits > _minNumbMichelLikeHit)
-        hitHelper.FillTrackHitPicture(fh_imageCollection,hitPlaneAlg.GetOrderedHitVec(),
-                                      selectorAlg.GetTrackProperties().recoEndPoint,2);
-      else {
-        fh_imageCollection->Reset();
-      }
 
       // Get the CNN tagging results.
       anab::MVAReader<recob::Hit,4> hitResults(evt, fNNetTag);
@@ -124,6 +118,18 @@ namespace stoppingcosmicmuonselection {
       const artPtrHitVec &muonLikeHits = hitHelper.GetMuonLikeHits(hitPlaneAlg.GetOrderedHitVec(),selectorAlg.GetTrackProperties().recoEndPoint,fmthm,tracklist,trackIndex);
       f_michelHitsMichelScore = cnnHelper.GetScoreVector(hitResults, michelLikeHits);
       f_muonHitsMichelScore = cnnHelper.GetScoreVector(hitResults, muonLikeHits);
+      const artPtrHitVec &hitsNoMichel = cnnHelper.RemoveMichelHits(hitResults,hitPlaneAlg.GetOrderedHitVec(),0.7);
+
+      if (numbMichelLikeHits > _minNumbMichelLikeHit) {
+        hitHelper.FillTrackHitPicture(fh_imageCollection,hitPlaneAlg.GetOrderedHitVec(),
+                                      selectorAlg.GetTrackProperties().recoEndPoint,2);
+        hitHelper.FillTrackHitPicture(fh_imageCollectionNoMichel,hitsNoMichel,
+                                      selectorAlg.GetTrackProperties().recoEndPoint,2);
+      }
+      else {
+        fh_imageCollection->Reset();
+        fh_imageCollectionNoMichel->Reset();
+      }
 
       // Fill the graphs.
       FillTGraph(fg_wireID, WireIDs);
