@@ -51,6 +51,7 @@ namespace stoppingcosmicmuonselection {
         //const size_t & hitIndex = (_calos[itcal].TpIndices())[itHit];
         //const auto & thisHit = allHits[hitIndex];
         //hitPeakTime[planeNumb][itHit] = thisHit.PeakTime();
+        _hitIndex[planeNumb][itHit] = (_calos[itcal].TpIndices())[itHit];
         _hitPeakTime[planeNumb][itHit] = INV_DBL; // For now in MCC11
         // Apply Lifetime corrections
         const geo::Point_t HitPoint(TrackPos.X(), TrackPos.Y(), TrackPos.Z());
@@ -154,6 +155,10 @@ namespace stoppingcosmicmuonselection {
   // Get track pitches
   double *CalorimetryHelper::GetTrackPitch(const int &planeNumb) {
     return _track_pitch[planeNumb];
+  }
+  // Get hit indeces.
+  size_t *CalorimetryHelper::GetHitIndex(const int &planeNumb) {
+    return _hitIndex[planeNumb];
   }
 
   // Get the lifetime correction

@@ -70,6 +70,8 @@ namespace stoppingcosmicmuonselection {
     double *GetDriftTime(const int &planeNumb);
     // Get track pitches
     double *GetTrackPitch(const int &planeNumb);
+    // Get track indeces
+    size_t *GetHitIndex(const int &planeNumb);
 
     // Get the lifetime correction
     double LifeTimeCorr(double &ticks, const double &T0);
@@ -109,6 +111,7 @@ namespace stoppingcosmicmuonselection {
     double _corr_factors[3][3000];
     double _drift_time[3][3000];
     double _track_pitch[3][3000];
+    size_t _hitIndex[3][3000];
 
     bool _isValid = false;
     bool _isCalorimetrySet = false;
