@@ -31,27 +31,6 @@ namespace stoppingcosmicmuonselection {
     art::FindManyP<recob::Hit, recob::TrackHitMeta> fmthm(trackListHandle, evt, fTrackerTag);
     art::FindManyP<recob::Hit> fmht(trackListHandle, evt, fTrackerTag);
 
-    ///////////// PROVA
-    // art::Handle<std::vector<recob::Hit>> hitHandle;
-    // std::vector<art::Ptr<recob::Hit>> allHits;
-    // if (evt.getByLabel("hitpdune",hitHandle))
-    //   art::fill_ptr_vector(allHits, hitHandle);
-    //
-    // auto const hitHandle2 = evt.getValidHandle<std::vector<recob::Hit>>("hitpdune");
-    // const std::vector<recob::Hit> allHits2 = *hitHandle2;
-    //
-    // std::cout << "Size allHits: " << allHits.size() << " Size allHits2: " << allHits2.size() << std::endl;
-    //
-    // for (size_t i = 0; i < allHits.size(); i++) {
-    //
-    //   std::cout << "PeakTime allHits: " << allHits[i]->PeakTime() << " PeakTime allHits2: " << allHits2[i].PeakTime() << std::endl;
-    //
-    //   std::cout << "Index: " << i << " Key allHits: " << allHits[i].key() << std::endl;
-    // }
-    //
-    // return;
-    /////////////
-
     // Iterates over the vector of PFParticles
     for (unsigned int p = 0; p < recoParticles.size(); ++p) {
       // Prepare the selector to digest a new PFParticle
