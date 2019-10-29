@@ -34,11 +34,11 @@ namespace stoppingcosmicmuonselection {
 
   public:
     CalorimetryHelper();
-    CalorimetryHelper(const recob::PFParticle &thisParticle, art::Event const &evt);
+    CalorimetryHelper(const recob::PFParticle &thisParticle, art::Event const &evt, const int &plane);
     ~CalorimetryHelper();
 
     // Get the calorimetry from the PFParticle
-    void Set(const recob::PFParticle &thisParticle, art::Event const &evt);
+    void Set(const recob::PFParticle &thisParticle, art::Event const &evt, const int &plane);
 
     // Check if the calorimetry is valid
     bool IsValid();
@@ -47,48 +47,48 @@ namespace stoppingcosmicmuonselection {
     void OrderResRange();
 
     // Get hit numb
-    int GetHitNumb(const int &planeNumb);
+    int GetHitNumb();
     // Get dQdx
-    double *GetdQdx(const int &planeNumb);
+    const std::vector<double> GetdQdx();
     // Get dEdx
-    double *GetdEdx(const int &planeNumb);
+    const std::vector<double> GetdEdx();
     // Get Residual range
-    double *GetResRange(const int &planeNumb);
+    const std::vector<double> GetResRange();
     // Get Ordered residual range
-    double *GetResRangeOrdered(const int &planeNumb);
+    const std::vector<double> GetResRangeOrdered();
     // Get HitX
-    double *GetHitX(const int &planeNumb);
+    const std::vector<double> GetHitX();
     // Get HitY
-    double *GetHitY(const int &planeNumb);
+    const std::vector<double> GetHitY();
     // Get HitZ
-    double *GetHitZ(const int &planeNumb);
+    const std::vector<double> GetHitZ();
     // Get HitPeakTime
-    double *GetHitPeakTime(const int &planeNumb);
+    const std::vector<double> GetHitPeakTime();
     // Get lifetime correction factors
-    double *GetCorrFactor(const int &planeNumb);
+    const std::vector<double> GetCorrFactor();
     // Get drift times
-    double *GetDriftTime(const int &planeNumb);
+    const std::vector<double> GetDriftTime();
     // Get track pitches
-    double *GetTrackPitch(const int &planeNumb);
+    const std::vector<double> GetTrackPitch();
     // Get track indeces
-    size_t *GetHitIndex(const int &planeNumb);
+    const std::vector<size_t> GetHitIndex();
 
     // Get the lifetime correction
     double LifeTimeCorr(double &ticks, const double &T0);
 
     // Fill 2D histo of dQdx vs residual range for hits in a given plane
-    void FillHisto_dQdxVsRR(TH2D *h_dQdxVsRR, const int &planeNumb);
-    void FillHisto_dQdxVsRR(TH2D *h_dQdxVsRR, const int &planeNumb, const double &tp_min, const double &tp_max);
+    void FillHisto_dQdxVsRR(TH2D *h_dQdxVsRR);
+    void FillHisto_dQdxVsRR(TH2D *h_dQdxVsRR, const double &tp_min, const double &tp_max);
 
     // Fill 2D histo of dQdx vs residual range for hits in a given plane. Correct by MC lifetime
-    void FillHisto_dQdxVsRR_LTCorr(TH2D *h_dQdxVsRR, const int &planeNumb);
-    void FillHisto_dQdxVsRR_LTCorr(TH2D *h_dQdxVsRR, const int &planeNumb, const double &tp_min, const double &tp_max);
+    void FillHisto_dQdxVsRR_LTCorr(TH2D *h_dQdxVsRR);
+    void FillHisto_dQdxVsRR_LTCorr(TH2D *h_dQdxVsRR, const double &tp_min, const double &tp_max);
 
     // Fill 2D histo for dQdx/dEdx with lifetime correction. dEdx taken from MC.
-    void FillHisto_dQdEVsRR_LTCorr_MC(TH2D *h_dQdEVsRR, const int &planeNumb, const double &tp_min, const double &tp_max);
+    void FillHisto_dQdEVsRR_LTCorr_MC(TH2D *h_dQdEVsRR, const double &tp_min, const double &tp_max);
 
     // Fill 2D histo for dQdx/dEdx with lifetime correction. dEdx taken from LandauVav.
-    void FillHisto_dQdEVsRR_LTCorr_LV(TH2D *h_dQdEVsRR, const int &planeNumb, const double &tp_min, const double &tp_max);
+    void FillHisto_dQdEVsRR_LTCorr_LV(TH2D *h_dQdEVsRR, const double &tp_min, const double &tp_max);
 
     // Set the parameters from the FHICL file
     void reconfigure(fhicl::ParameterSet const &p);
@@ -99,19 +99,19 @@ namespace stoppingcosmicmuonselection {
 
   private:
     std::vector<anab::Calorimetry> _calos;
-    int _trackHitNumb[3];
-    double _dqdx[3][3000];
-    double _dedx[3][3000];
-    double _resrange[3][3000];
-    double _resrange_ord[3][3000];
-    double _hitx[3][3000];
-    double _hity[3][3000];
-    double _hitz[3][3000];
-    double _hitPeakTime[3][3000];
-    double _corr_factors[3][3000];
-    double _drift_time[3][3000];
-    double _track_pitch[3][3000];
-    size_t _hitIndex[3][3000];
+    int _trackHitNumb;
+    std::vector<double> _dqdx;
+    std::vector<double> _dedx;
+    std::vector<double> _resrange;
+    std::vector<double> _resrange_ord;
+    std::vector<double> _hitx;
+    std::vector<double> _hity;
+    std::vector<double> _hitz;
+    std::vector<double> _hitPeakTime;
+    std::vector<double> _corr_factors;
+    std::vector<double> _drift_time;
+    std::vector<double> _track_pitch;
+    std::vector<size_t> _hitIndex;
 
     bool _isValid = false;
     bool _isCalorimetrySet = false;
