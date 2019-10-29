@@ -121,6 +121,8 @@ private:
   TProfile2D *fh_imageCollection = nullptr;
   TProfile2D *fh_imageScore = nullptr;
   TProfile2D *fh_imageCollectionNoMichel = nullptr;
+  TProfile2D *fh_imageCollectionNoMichel2 = nullptr;
+
   // Graphs
   TGraphErrors *fg_wireID = nullptr;
   TGraphErrors *fg_Q = nullptr;
@@ -179,6 +181,7 @@ void MichelStudyTmp::beginJob()
   fTrackTree->Branch("filename", &filename);
   fTrackTree->Branch("h_imageCollection","TProfile2D",&fh_imageCollection,64000,0);
   fTrackTree->Branch("h_imageCollectionNoMichel","TProfile2D",&fh_imageCollectionNoMichel,64000,0);
+  fTrackTree->Branch("h_imageCollectionNoMichel2","TProfile2D",&fh_imageCollectionNoMichel2,64000,0);
   fTrackTree->Branch("h_imageScore","TProfile2D",&fh_imageScore,64000,0);
   fTrackTree->Branch("h_progressiveDistance","TH1D",&fh_progressiveDistance,64000,0);
   fTrackTree->Branch("g_wireID", &fg_wireID);
@@ -195,6 +198,7 @@ void MichelStudyTmp::beginJob()
   hitHelper.InitHitImageHisto(fh_imageCollection, 2, "h_imageCollection");
   hitHelper.InitHitImageHisto(fh_imageScore, 2, "h_imageScore");
   hitHelper.InitHitImageHisto(fh_imageCollectionNoMichel, 2, "h_imageCollectionNoMichel");
+  hitHelper.InitHitImageHisto(fh_imageCollectionNoMichel2, 2, "h_imageCollectionNoMichel2");
 
   fh_progressiveDistance = new TH1D("h_progressiveDistance","h_progressiveDistance",200,0,200);
 

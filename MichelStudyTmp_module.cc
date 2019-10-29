@@ -119,16 +119,20 @@ namespace stoppingcosmicmuonselection {
       f_michelHitsMichelScore = cnnHelper.GetScoreVector(hitResults, michelLikeHits);
       f_muonHitsMichelScore = cnnHelper.GetScoreVector(hitResults, muonLikeHits);
       const artPtrHitVec &hitsNoMichel = cnnHelper.RemoveMichelHits(hitResults,hitPlaneAlg.GetOrderedHitVec(),0.7);
+      const artPtrHitVec &hitsNoMichel2 = hitPlaneAlg.GetHitVecNoMichel(hitResults,0.7,0.5);
 
       if (numbMichelLikeHits > _minNumbMichelLikeHit) {
         hitHelper.FillTrackHitPicture(fh_imageCollection,hitPlaneAlg.GetOrderedHitVec(),
                                       selectorAlg.GetTrackProperties().recoEndPoint,2);
         hitHelper.FillTrackHitPicture(fh_imageCollectionNoMichel,hitsNoMichel,
                                       selectorAlg.GetTrackProperties().recoEndPoint,2);
+        hitHelper.FillTrackHitPicture(fh_imageCollectionNoMichel2,hitsNoMichel2,
+                                      selectorAlg.GetTrackProperties().recoEndPoint,2);
       }
       else {
         fh_imageCollection->Reset();
         fh_imageCollectionNoMichel->Reset();
+        fh_imageCollectionNoMichel2->Reset();
       }
 
       // Fill the graphs.
