@@ -180,6 +180,7 @@ void MichelStudyTmp::beginJob()
   fTrackTree->Branch("h_imageCollection","TProfile2D",&fh_imageCollection,64000,0);
   fTrackTree->Branch("h_imageCollectionNoMichel","TProfile2D",&fh_imageCollectionNoMichel,64000,0);
   fTrackTree->Branch("h_imageScore","TProfile2D",&fh_imageScore,64000,0);
+  fTrackTree->Branch("h_progressiveDistance","TH1D",&fh_progressiveDistance,64000,0);
   fTrackTree->Branch("g_wireID", &fg_wireID);
   fTrackTree->Branch("g_Q", &fg_Q);
   fTrackTree->Branch("g_Dqds", &fg_Dqds);
