@@ -45,7 +45,7 @@
     <numjobs>1100</numjobs>
     <schema>root</schema>
     <anadatatier>full-reconstructed</anadatatier>
-    <jobsub>-f /pnfs/dune/persistent/users/fspaglia/MCdEdxSuperBinning.root --memory=4000 --expected-lifetime=1h</jobsub>
+    <jobsub>-f /pnfs/dune/persistent/users/fspaglia/MCdEdxSuperBinning.root --memory=6000 --expected-lifetime=1h</jobsub>
 </stage>
 
 <filetype>&file_type;</filetype>
