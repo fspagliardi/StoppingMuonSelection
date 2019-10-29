@@ -292,18 +292,42 @@ namespace stoppingcosmicmuonselection {
     return _distances;
   }
 
-  // Cut Michel Electrons
-  //const artPtrHitVec HitPlaneAlg::GetHitVecNoMichel(const std::vector<double> &scores, const double &threshold) {
+  //Cut Michel Electrons
+  const artPtrHitVec HitPlaneAlg::GetHitVecNoMichel(const anab::MVAReader<recob::Hit,4> &hitResults, const double &thr, const double &thr_mean) {
 
-  //  size_t size = scores.size();
-  //  artPtrHitVec newVector;
+    if (!_areHitOrdered) {
+      OrderHitVec();
+      HitSmoother();
+    }
 
-    // Iterate over the vector in the inverse order.
-  //  for (size_t it = size-1; it >= 0; it--) {
-  //    if
-  //  }
+    artPtrHitVec newVector;
 
-  //}
+    // Define alias for short.
+    const artPtrHitVec &hits = _hitsOnPlane;
+
+    for (size_t i = 0; i < hits.size(); i++) {
+
+      const double &score = cnnHelper.GetHitMichelScore(hitResults,hits[i]);
+      // Store the hit and continue if the score is below threshold.
+      if (score <= thr) {
+        newVector.push_back(hits[i]);
+        continue;
+      }
+
+      std::vector<double> scoreNextFive;
+      for (size_t j = i+1; (j<i+5) || (j<hits.size()); j++) {
+        const double &score2 = cnnHelper.GetHitMichelScore(hitResults,hits[j]);
+        scoreNextFive.push_back(score2);
+      }
+
+      if (mean(scoreNextFive) > thr_mean)
+        return newVector;
+
+    }
+
+    return newVector;
+
+  }
 
 } // end of namespace stoppingcosmicmuonselection
 

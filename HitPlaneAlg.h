@@ -51,6 +51,9 @@ namespace stoppingcosmicmuonselection {
     // Return distances.
     const std::vector<double> GetDistances();
 
+    //Cut Michel Electrons
+    const artPtrHitVec GetHitVecNoMichel(const anab::MVAReader<recob::Hit,4> &hitResults, const double &thr, const double &thr_mean);
+
   private:
     const artPtrHitVec &_trackHits;
     const size_t &_start_index;
