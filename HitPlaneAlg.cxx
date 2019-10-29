@@ -315,7 +315,7 @@ namespace stoppingcosmicmuonselection {
       }
 
       std::vector<double> scoreNextFive;
-      for (size_t j = i+1; (j<i+5) || (j<hits.size()); j++) {
+      for (size_t j = i+1; (j<=i+5) || (j<hits.size()); j++) {
         const double &score2 = cnnHelper.GetHitMichelScore(hitResults,hits[j]);
         scoreNextFive.push_back(score2);
       }
