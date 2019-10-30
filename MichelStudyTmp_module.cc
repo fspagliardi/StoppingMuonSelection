@@ -113,7 +113,7 @@ namespace stoppingcosmicmuonselection {
       anab::MVAReader<recob::Hit,4> hitResults(evt, fNNetTag);
       // Store vector of ordered scores.
       std::vector<double> scores = cnnHelper.GetScoreVector(hitResults,hitPlaneAlg.GetOrderedHitVec());
-      cnnHelper.FillHitScoreImage(fh_imageScore, hitResults, hitPlaneAlg.GetOrderedHitVec());
+      cnnHelper.FillHitScoreGraph2D(fg_imageScore, hitResults, hitPlaneAlg.GetOrderedHitVec());
       const artPtrHitVec &michelLikeHits = hitHelper.GetMichelLikeHits(hitPlaneAlg.GetOrderedHitVec(),selectorAlg.GetTrackProperties().recoEndPoint,fmthm,tracklist,trackIndex);
       const artPtrHitVec &muonLikeHits = hitHelper.GetMuonLikeHits(hitPlaneAlg.GetOrderedHitVec(),selectorAlg.GetTrackProperties().recoEndPoint,fmthm,tracklist,trackIndex);
       f_michelHitsMichelScore = cnnHelper.GetScoreVector(hitResults, michelLikeHits);
@@ -122,17 +122,17 @@ namespace stoppingcosmicmuonselection {
       const artPtrHitVec &hitsNoMichel2 = hitPlaneAlg.GetHitVecNoMichel(hitResults,0.7,0.5);
 
       if (numbMichelLikeHits > _minNumbMichelLikeHit) {
-        hitHelper.FillTrackHitPicture(fh_imageCollection,hitPlaneAlg.GetOrderedHitVec(),
-                                      selectorAlg.GetTrackProperties().recoEndPoint,2);
-        hitHelper.FillTrackHitPicture(fh_imageCollectionNoMichel,hitsNoMichel,
-                                      selectorAlg.GetTrackProperties().recoEndPoint,2);
-        hitHelper.FillTrackHitPicture(fh_imageCollectionNoMichel2,hitsNoMichel2,
-                                      selectorAlg.GetTrackProperties().recoEndPoint,2);
+        hitHelper.FillTrackGraph2D(fg_imageCollection,hitPlaneAlg.GetOrderedHitVec(),
+                                   selectorAlg.GetTrackProperties().recoEndPoint,2);
+        hitHelper.FillTrackGraph2D(fg_imageCollectionNoMichel,hitsNoMichel,
+                                   selectorAlg.GetTrackProperties().recoEndPoint,2);
+        hitHelper.FillTrackGraph2D(fg_imageCollectionNoMichel2,hitsNoMichel2,
+                                   selectorAlg.GetTrackProperties().recoEndPoint,2);
       }
       else {
-        fh_imageCollection->Reset();
-        fh_imageCollectionNoMichel->Reset();
-        fh_imageCollectionNoMichel2->Reset();
+        fg_imageCollection->Set(0);
+        fg_imageCollectionNoMichel->Set(0);
+        fg_imageCollectionNoMichel2->Set(0);
       }
 
       // Fill the graphs.

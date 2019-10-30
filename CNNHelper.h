@@ -11,6 +11,7 @@
 #include "TVector3.h"
 #include "TMath.h"
 #include "TProfile2D.h"
+#include "TGraph2D.h"
 
 #include "DataTypes.h"
 #include "GeometryHelper.h"
@@ -35,10 +36,15 @@ namespace stoppingcosmicmuonselection {
     // Remove hits with score above a threshold and return the remaining in a vector.
     const artPtrHitVec RemoveMichelHits(const anab::MVAReader<recob::Hit,4> &hitResults, const artPtrHitVec &hits, const double &thr);
 
+    // Fill the 2D graph of hits in the plane according to the score from the CNN.
+    void FillHitScoreGraph2D(TGraph2D *graph,
+                             const anab::MVAReader<recob::Hit,4> &hitResults,
+                             const artPtrHitVec &hits);
+
     // Fill the 2D image of hits in the plane according to the score from the CNN.
     void FillHitScoreImage(TProfile2D *image,
-                                      const anab::MVAReader<recob::Hit,4> &hitResults,
-                                      const artPtrHitVec &hits);
+                           const anab::MVAReader<recob::Hit,4> &hitResults,
+                           const artPtrHitVec &hits);
 
     // Fill 1D histogram with the score for a given vector.
     void FillScoreDistribution(TH1D *h, const anab::MVAReader<recob::Hit,4> &hitResults, const artPtrHitVec &hits);

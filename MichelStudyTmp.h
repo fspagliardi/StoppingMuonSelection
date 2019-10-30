@@ -19,6 +19,7 @@
 #include "TProfile2D.h"
 #include "TMath.h"
 #include "TGraphErrors.h"
+#include "TGraph2D.h"
 
 #include "DataTypes.h"
 #include "GeometryHelper.h"
@@ -118,10 +119,10 @@ private:
   // TH1s
   TH1D *fh_progressiveDistance = nullptr;
   // TProfiles
-  TProfile2D *fh_imageCollection = nullptr;
-  TProfile2D *fh_imageScore = nullptr;
-  TProfile2D *fh_imageCollectionNoMichel = nullptr;
-  TProfile2D *fh_imageCollectionNoMichel2 = nullptr;
+  TGraph2D *fg_imageCollection = nullptr;
+  TGraph2D *fg_imageScore = nullptr;
+  TGraph2D *fg_imageCollectionNoMichel = nullptr;
+  TGraph2D *fg_imageCollectionNoMichel2 = nullptr;
 
   // Graphs
   TGraphErrors *fg_wireID = nullptr;
@@ -179,11 +180,11 @@ void MichelStudyTmp::beginJob()
   fTrackTree->Branch("isRecoSelectedCathodeCrosser",&fIsRecoSelectedCathodeCrosser);
   fTrackTree->Branch("isTrueSelectedCathodeCrosser",&fIsTrueSelectedCathodeCrosser);
   fTrackTree->Branch("filename", &filename);
-  fTrackTree->Branch("h_imageCollection","TProfile2D",&fh_imageCollection,64000,0);
-  fTrackTree->Branch("h_imageCollectionNoMichel","TProfile2D",&fh_imageCollectionNoMichel,64000,0);
-  fTrackTree->Branch("h_imageCollectionNoMichel2","TProfile2D",&fh_imageCollectionNoMichel2,64000,0);
-  fTrackTree->Branch("h_imageScore","TProfile2D",&fh_imageScore,64000,0);
-  fTrackTree->Branch("h_progressiveDistance","TH1D",&fh_progressiveDistance,64000,0);
+  fTrackTree->Branch("g_imageCollection",&fg_imageCollection);
+  fTrackTree->Branch("g_imageCollectionNoMichel",&fg_imageCollectionNoMichel);
+  fTrackTree->Branch("g_imageCollectionNoMichel2",&fg_imageCollectionNoMichel2);
+  fTrackTree->Branch("g_imageScore",&fg_imageScore);
+  fTrackTree->Branch("g_progressiveDistance","TH1D",&fh_progressiveDistance);
   fTrackTree->Branch("g_wireID", &fg_wireID);
   fTrackTree->Branch("g_Q", &fg_Q);
   fTrackTree->Branch("g_Dqds", &fg_Dqds);
@@ -194,11 +195,11 @@ void MichelStudyTmp::beginJob()
   fTrackTree->Branch("michelHitsMichelScore", &f_michelHitsMichelScore);
   fTrackTree->Branch("muonHitsMichelScore", &f_muonHitsMichelScore);
 
-  // Init the Image for the hits
-  hitHelper.InitHitImageHisto(fh_imageCollection, 2, "h_imageCollection");
-  hitHelper.InitHitImageHisto(fh_imageScore, 2, "h_imageScore");
-  hitHelper.InitHitImageHisto(fh_imageCollectionNoMichel, 2, "h_imageCollectionNoMichel");
-  hitHelper.InitHitImageHisto(fh_imageCollectionNoMichel2, 2, "h_imageCollectionNoMichel2");
+  // Init the graph for the hits
+  fg_imageCollection = new TGraph2D();
+  fg_imageScore = new TGraph2D();
+  fg_imageCollectionNoMichel = new TGraph2D();
+  fg_imageCollectionNoMichel2 = new TGraph2D();
 
   fh_progressiveDistance = new TH1D("h_progressiveDistance","h_progressiveDistance",200,0,200);
 

@@ -166,6 +166,40 @@ namespace stoppingcosmicmuonselection {
     return result;
   }
 
+  // Fill the TGraph2D for the images.
+  void HitHelper::FillTrackGraph2D(TGraph2D *graph,
+                                   const artPtrHitVec &trackHits,
+                                   const TVector3 &recoEndPoint,
+                                   const size_t &planeNumber) {
+    graph->Set(0);
+    const geo::GeometryCore *geom = lar::providerFrom<geo::Geometry>();
+    const geo::Point_t EndPoint(recoEndPoint.X(), recoEndPoint.Y(), recoEndPoint.Z());
+    geo::TPCID const & tpcid = geom->FindTPCAtPosition(EndPoint);
+    if (!tpcid.isValid) {
+      std::cout << "Track End Point is in invalid TPC. Return empty Graph." << std::endl;
+      return;
+    }
+    for (size_t i = 0; i < trackHits.size(); i++) {
+      const art::Ptr<recob::Hit> &hitp = trackHits[i];
+      // Get only hit in the collection plane
+      if (!hitp->WireID().isValid) continue;
+      if (hitp->WireID().Plane != planeNumber) continue;
+      unsigned int hit_tpcid = hitp->WireID().TPC;
+      double hitPeakTime = hitp->PeakTime();
+      unsigned int wireID = hitp->WireID().Wire;
+      double electron_perc = 0;
+      for(const sim::TrackIDE& ide : bt_serv->HitToTrackIDEs(*hitp)) {
+        if (TMath::Abs(pi_serv->TrackIdToParticle_P(ide.trackID)->PdgCode())==11) {//contribution from electron
+          electron_perc += ide.energyFrac;
+          //std::cout << "Electron perc: " << electron_perc << std::endl;
+        }
+      }
+      size_t wireOffset = geoHelper.GetWireOffset(hit_tpcid, planeNumber);
+      graph->SetPoint(i,wireID+wireOffset,hitPeakTime,electron_perc);
+    }
+    return;
+  }
+
   // Get a TProfile2D filled with hit peak times and wire number
   void HitHelper::FillTrackHitPicture(TProfile2D* image,
                                      const artPtrHitVec &trackHits,

@@ -87,6 +87,22 @@ namespace stoppingcosmicmuonselection {
     return result;
   }
 
+  // Fill the 2D graph of hits in the plane according to the score from the CNN.
+  void CNNHelper::FillHitScoreGraph2D(TGraph2D *graph,
+                                    const anab::MVAReader<recob::Hit,4> &hitResults,
+                                    const artPtrHitVec &hits) {
+    graph->Set(0);
+
+    for (size_t i = 0; i < hits.size(); i++) {
+      const art::Ptr<recob::Hit> &hitp = hits[i];
+      if (!hitp->WireID().isValid) continue;
+      double hitPeakTime = hitp->PeakTime();
+      unsigned int wireID = geoHelper.GetWireNumb(hitp);
+      double score = GetHitMichelScore(hitResults,hitp);
+      graph->SetPoint(i,wireID,hitPeakTime,score);
+    }
+  }
+
   // Fill the 2D image of hits in the plane according to the score from the CNN.
   void CNNHelper::FillHitScoreImage(TProfile2D *image,
                                     const anab::MVAReader<recob::Hit,4> &hitResults,

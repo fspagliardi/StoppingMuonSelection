@@ -27,6 +27,7 @@
 #include "TH2D.h"
 #include "TProfile2D.h"
 #include "TMath.h"
+#include "TGraph2D.h"
 
 #include "DataTypes.h"
 #include "GeometryHelper.h"
@@ -90,6 +91,12 @@ namespace stoppingcosmicmuonselection {
                                  art::FindManyP<recob::Hit,recob::TrackHitMeta> &fmthm,
                                  const std::vector<art::Ptr<recob::Track>> &tracklist,
                                  const size_t &trackIndex);
+
+    // Fill the TGraph2D for the images.
+    void FillTrackGraph2D(TGraph2D *graph,
+                          const artPtrHitVec &trackHits,
+                          const TVector3 &recoEndPoint,
+                          const size_t &planeNumber);
 
     // Get a TProfile2D filled with hit peak times and wire number
     void FillTrackHitPicture(TProfile2D* image,
