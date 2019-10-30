@@ -9,6 +9,7 @@
 namespace stoppingcosmicmuonselection {
 
   constexpr int INV_INT = -999;
+  constexpr size_t INV_SIZE = 9999999;
   constexpr double INV_DBL = -9999999;
 
   typedef std::vector<art::Ptr<recob::Hit>> artPtrHitVec;
