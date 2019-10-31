@@ -110,6 +110,8 @@ private:
   double ftheta_yz = INV_DBL;
   double fMinHitPeakTime = INV_DBL;
   double fMaxHitPeakTime = INV_DBL;
+  double fDistEndPoint = INV_DBL;
+  double fDistEndPointNoMichel = INV_DBL;
   bool fIsRecoSelectedCathodeCrosser = false;
   bool fIsTrueSelectedCathodeCrosser = false;
   std::vector<double> f_michelHitsMichelScore;
@@ -177,6 +179,8 @@ void MichelStudyTmp::beginJob()
   fTrackTree->Branch("maxHitPeakTime", &fMaxHitPeakTime, "fMaxHitPeakTime/d");
   fTrackTree->Branch("theta_xz", &ftheta_xz, "ftheta_xz/d");
   fTrackTree->Branch("theta_yz", &ftheta_yz, "ftheta_yz/d");
+  fTrackTree->Branch("distEndPoint", &fDistEndPoint, "fDistEndPoint/d");
+  fTrackTree->Branch("distEndPointNoMichel", &fDistEndPointNoMichel, "fDistEndPointNoMichel/d");
   fTrackTree->Branch("isRecoSelectedCathodeCrosser",&fIsRecoSelectedCathodeCrosser);
   fTrackTree->Branch("isTrueSelectedCathodeCrosser",&fIsTrueSelectedCathodeCrosser);
   fTrackTree->Branch("filename", &filename);
@@ -212,13 +216,13 @@ void MichelStudyTmp::beginJob()
   h_dQdEVsRR_TP075_LTCorr_LV = tfs->make<TH2D>("h_dQdEVsRR_TP075_LTCorr_LV","h_dQdEVsRR_TP075_LTCorr_LV",200,0,200,800,0,800);
 
   // Graphs
-  fg_wireID = tfs->make<TGraphErrors>();
-  fg_Q = tfs->make<TGraphErrors>();
-  fg_Dqds = tfs->make<TGraphErrors>();
-  fg_QSmooth = tfs->make<TGraphErrors>();
-  fg_DqdsSmooth = tfs->make<TGraphErrors>();
-  fg_LocalLin = tfs->make<TGraphErrors>();
-  fg_CnnScore = tfs->make<TGraphErrors>();
+  fg_wireID = new TGraphErrors();
+  fg_Q = new TGraphErrors();
+  fg_Dqds = new TGraphErrors();
+  fg_QSmooth = new TGraphErrors();
+  fg_DqdsSmooth = new TGraphErrors();
+  fg_LocalLin = new TGraphErrors();
+  fg_CnnScore = new TGraphErrors();
 }
 
 void MichelStudyTmp::endJob()

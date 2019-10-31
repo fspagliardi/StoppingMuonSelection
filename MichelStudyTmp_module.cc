@@ -128,11 +128,17 @@ namespace stoppingcosmicmuonselection {
                                    selectorAlg.GetTrackProperties().recoEndPoint,2);
         hitHelper.FillTrackGraph2D(fg_imageCollectionNoMichel2,hitsNoMichel2,
                                    selectorAlg.GetTrackProperties().recoEndPoint,2);
+        fDistEndPoint = (selectorAlg.GetTrackProperties().recoEndPoint - selectorAlg.GetTrackProperties().trueEndPoint).Mag();
+
+        TVector3 lastHitPos = hitHelper.GetHitXYZ(hitsNoMichel2.back(),fmthm,tracklist,trackIndex);
+        fDistEndPointNoMichel = (selectorAlg.GetTrackProperties().trueEndPoint - lastHitPos).Mag();
       }
       else {
         fg_imageCollection->Set(0);
         fg_imageCollectionNoMichel->Set(0);
         fg_imageCollectionNoMichel2->Set(0);
+        fDistEndPoint = INV_DBL;
+        fDistEndPointNoMichel = INV_DBL;
       }
 
       // Fill the graphs.
