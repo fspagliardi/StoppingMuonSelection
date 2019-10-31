@@ -53,7 +53,10 @@ namespace stoppingcosmicmuonselection {
                                 const size_t &trackIndex) {
 
     TVector3 hitLoc(INV_DBL,INV_DBL,INV_DBL);
-    if (!fmthm.isValid()) return hitLoc;
+    if (!fmthm.isValid()) {
+      std::cout << "HitHelper.cxx: " << "HitHelper::GetHitXYZ is returning an invalid vector the association to TrackHitMeta is invalid." << std::endl; 
+      return hitLoc;
+    }
 
     const artPtrHitVec vhit = fmthm.at(trackIndex);
     const std::vector<const recob::TrackHitMeta*> vmeta = fmthm.data(trackIndex);
