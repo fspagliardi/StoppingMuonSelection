@@ -188,7 +188,7 @@ void MichelStudyTmp::beginJob()
   fTrackTree->Branch("g_imageCollectionNoMichel",&fg_imageCollectionNoMichel);
   fTrackTree->Branch("g_imageCollectionNoMichel2",&fg_imageCollectionNoMichel2);
   fTrackTree->Branch("g_imageScore",&fg_imageScore);
-  fTrackTree->Branch("g_progressiveDistance","TH1D",&fh_progressiveDistance);
+  fTrackTree->Branch("h_progressiveDistance","TH1D",&fh_progressiveDistance);
   fTrackTree->Branch("g_wireID", &fg_wireID);
   fTrackTree->Branch("g_Q", &fg_Q);
   fTrackTree->Branch("g_Dqds", &fg_Dqds);
