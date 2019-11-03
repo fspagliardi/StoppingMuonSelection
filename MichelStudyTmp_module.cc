@@ -132,6 +132,11 @@ namespace stoppingcosmicmuonselection {
 
         TVector3 lastHitPos = hitHelper.GetHitXYZ(hitsNoMichel2.back(),fmthm,tracklist,trackIndex);
         fDistEndPointNoMichel = (selectorAlg.GetTrackProperties().trueEndPoint - lastHitPos).Mag();
+
+        std::cout << "Reco End Point: " << selectorAlg.GetTrackProperties().recoEndPoint.X() << " " << selectorAlg.GetTrackProperties().recoEndPoint.Y() << " " << selectorAlg.GetTrackProperties().recoEndPoint.Z() << std::endl;
+        std::cout << "True End Point: " << selectorAlg.GetTrackProperties().trueEndPoint.X() << " " << selectorAlg.GetTrackProperties().trueEndPoint.Y() << " " << selectorAlg.GetTrackProperties().trueEndPoint.Z() << std::endl;
+        std::cout << "Last hit: " << lastHitPos.X() << " " << lastHitPos.Y() << " " << lastHitPos.Z() << std::endl;
+        std::cout << "Wire: " << geoHelper.GetWireNumb(hitsNoMichel2.back()) << " Time: " << hitsNoMichel2.back()->PeakTime() << std::endl;
       }
       else {
         fg_imageCollection->Set(0);
