@@ -21,7 +21,7 @@ namespace stoppingcosmicmuonselection {
   class HitPlaneAlg {
 
   public:
-    HitPlaneAlg(const artPtrHitVec &trackHits, const size_t &start_index, const size_t &planeNumber);
+    HitPlaneAlg(const artPtrHitVec &trackHits, const size_t &start_index, const size_t &planeNumber, const double &_t0);
     ~HitPlaneAlg();
 
     // Order hits based on their 2D (wire-time) position.
@@ -58,6 +58,7 @@ namespace stoppingcosmicmuonselection {
     const artPtrHitVec &_trackHits;
     const size_t &_start_index;
     const size_t &_planeNumber;
+    const double &_t0;
 
     artPtrHitVec _hitsOnPlane;
     std::vector<double> _hitPeakTime;

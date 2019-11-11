@@ -93,7 +93,7 @@ namespace stoppingcosmicmuonselection {
       const artPtrHitVec &hitsOnCollection = hitHelper.GetHitsOnAPlane(2,trackHits);
       std::cout << "Hits on collection size: " << hitsOnCollection.size() << std::endl;
       const size_t &hitIndex = hitHelper.GetIndexClosestHitToPoint(selectorAlg.GetTrackProperties().recoStartPoint,hitsOnCollection,fmthm,tracklist,trackIndex);
-      HitPlaneAlg hitPlaneAlg(trackHits,hitIndex,2);
+      HitPlaneAlg hitPlaneAlg(trackHits,hitIndex,2,selectorAlg.GetTrackProperties().trackT0);
       // Get the vectors.
       const std::vector<double> &WireIDs = hitPlaneAlg.GetOrderedWireNumb();
       const std::vector<double> &Qs = hitPlaneAlg.GetOrderedQ();
