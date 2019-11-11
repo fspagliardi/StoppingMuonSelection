@@ -25,7 +25,7 @@ namespace stoppingcosmicmuonselection {
               << std::endl << "\tWireID list size: " << _effectiveWireID.size() << std::endl;
     if (_effectiveWireID.size() != _hitsOnPlane.size())
       throw cet::exception("HitPlaneAlg.cxx") << "Hit vector and wire ID vector have different size.";
-    HitSmoother();
+    //HitSmoother();
   }
 
   HitPlaneAlg::~HitPlaneAlg() {
@@ -279,7 +279,7 @@ namespace stoppingcosmicmuonselection {
     return _distances;
   }
 
-  //Cut Michel Electrons
+  // Cut Michel Electrons
   const artPtrHitVec HitPlaneAlg::GetHitVecNoMichel(const anab::MVAReader<recob::Hit,4> &hitResults, const double &thr, const double &thr_mean) {
 
     if (!_areHitOrdered) {
@@ -314,6 +314,17 @@ namespace stoppingcosmicmuonselection {
 
     return newVector;
 
+  }
+
+  // Check if there are michel hits.
+  bool HitPlaneAlg::AreThereMichelHits(const anab::MVAReader<recob::Hit,4> &hitResults, const double &thr, const double &thr_mean) {
+
+    const artPtrHitVec hitsNoMichel = GetHitVecNoMichel(hitResults,thr,thr_mean);
+
+    if (hitsNoMichel.size() == _hitsOnPlane.size())
+      return false;
+    else
+      return true;
   }
 
 } // end of namespace stoppingcosmicmuonselection
