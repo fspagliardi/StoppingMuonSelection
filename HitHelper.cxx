@@ -54,7 +54,7 @@ namespace stoppingcosmicmuonselection {
 
     TVector3 hitLoc(INV_DBL,INV_DBL,INV_DBL);
     if (!fmthm.isValid()) {
-      std::cout << "HitHelper.cxx: " << "HitHelper::GetHitXYZ is returning an invalid vector the association to TrackHitMeta is invalid." << std::endl; 
+      std::cout << "HitHelper.cxx: " << "HitHelper::GetHitXYZ is returning an invalid vector the association to TrackHitMeta is invalid." << std::endl;
       return hitLoc;
     }
 
@@ -71,6 +71,7 @@ namespace stoppingcosmicmuonselection {
         throw cet::exception("HitHelper.cxx") << "Requested track trajectory index "<<vmeta[ii]->Index()<<" exceeds the total number of trajectory points "<<tracklist[trackIndex]->NumberTrajectoryPoints()<<" for track index "<<trackIndex<<". Something is wrong";
       }
       if (!tracklist[trackIndex]->HasValidPoint(vmeta[ii]->Index())){
+        std::cout << "HitHelper.cxx -> HitHelper::GetHitXYZ(): Track doesn't have a valid point." << std::endl;
         continue;
       }
       hitLoc = tracklist[trackIndex]->LocationAtPoint<TVector3>(vmeta[ii]->Index());
