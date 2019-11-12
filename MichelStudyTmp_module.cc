@@ -140,6 +140,8 @@ namespace stoppingcosmicmuonselection {
       fDistEndPoint = (selectorAlg.GetTrackProperties().recoEndPoint - selectorAlg.GetTrackProperties().trueEndPoint).Mag();
       if (!hitPlaneAlg.AreThereMichelHits(hitResults,0.7,0.5)) {
         fDistEndPointNoMichel = (selectorAlg.GetTrackProperties().recoEndPoint - selectorAlg.GetTrackProperties().trueEndPoint).Mag();
+        caloHelper.FillHisto_dQdxVsRR(h_dQdxVsRR_NoMichel);
+        caloHelper.FillHisto_dQdxVsRR(h_dQdxVsRR_NoMichelTP,_trackPitch-_trackPitchTolerance,_trackPitch+_trackPitchTolerance);
       }
       else
         fDistEndPointNoMichel = INV_DBL;
