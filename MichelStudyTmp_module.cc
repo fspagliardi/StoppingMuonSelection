@@ -118,15 +118,12 @@ namespace stoppingcosmicmuonselection {
       const artPtrHitVec &muonLikeHits = hitHelper.GetMuonLikeHits(hitPlaneAlg.GetOrderedHitVec(),selectorAlg.GetTrackProperties().recoEndPoint,fmthm,tracklist,trackIndex);
       f_michelHitsMichelScore = cnnHelper.GetScoreVector(hitResults, michelLikeHits);
       f_muonHitsMichelScore = cnnHelper.GetScoreVector(hitResults, muonLikeHits);
-      const artPtrHitVec &hitsNoMichel = cnnHelper.RemoveMichelHits(hitResults,hitPlaneAlg.GetOrderedHitVec(),0.7);
-      const artPtrHitVec &hitsNoMichel2 = hitPlaneAlg.GetHitVecNoMichel(hitResults,0.7,0.5);
+      const artPtrHitVec &hitsNoMichel = hitPlaneAlg.GetHitVecNoMichel(hitResults,0.7,0.5);
 
       if (numbMichelLikeHits > _minNumbMichelLikeHit) {
         hitHelper.FillTrackGraph2D(fg_imageCollection,hitPlaneAlg.GetOrderedHitVec(),
                                    selectorAlg.GetTrackProperties().recoEndPoint,2);
         hitHelper.FillTrackGraph2D(fg_imageCollectionNoMichel,hitsNoMichel,
-                                   selectorAlg.GetTrackProperties().recoEndPoint,2);
-        hitHelper.FillTrackGraph2D(fg_imageCollectionNoMichel2,hitsNoMichel2,
                                    selectorAlg.GetTrackProperties().recoEndPoint,2);
 
         // std::cout << "Reco End Point: " << selectorAlg.GetTrackProperties().recoEndPoint.X() << " " << selectorAlg.GetTrackProperties().recoEndPoint.Y() << " " << selectorAlg.GetTrackProperties().recoEndPoint.Z() << std::endl;
@@ -137,14 +134,15 @@ namespace stoppingcosmicmuonselection {
       else {
         fg_imageCollection->Set(0);
         fg_imageCollectionNoMichel->Set(0);
-        fg_imageCollectionNoMichel2->Set(0);
       }
 
       // Fill distance end points.
       fDistEndPoint = (selectorAlg.GetTrackProperties().recoEndPoint - selectorAlg.GetTrackProperties().trueEndPoint).Mag();
       if (!hitPlaneAlg.AreThereMichelHits(hitResults,0.7,0.5)) {
-        fDistEndPointNoMichel = fDistEndPoint = (selectorAlg.GetTrackProperties().recoEndPoint - selectorAlg.GetTrackProperties().trueEndPoint).Mag();
+        fDistEndPointNoMichel = (selectorAlg.GetTrackProperties().recoEndPoint - selectorAlg.GetTrackProperties().trueEndPoint).Mag();
       }
+      else
+        fDistEndPointNoMichel = INV_DBL;
 
       // Fill the graphs.
       FillTGraph(fg_wireID, WireIDs);

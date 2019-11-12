@@ -124,7 +124,6 @@ private:
   TGraph2D *fg_imageCollection = nullptr;
   TGraph2D *fg_imageScore = nullptr;
   TGraph2D *fg_imageCollectionNoMichel = nullptr;
-  TGraph2D *fg_imageCollectionNoMichel2 = nullptr;
 
   // Graphs
   TGraphErrors *fg_wireID = nullptr;
@@ -186,7 +185,6 @@ void MichelStudyTmp::beginJob()
   fTrackTree->Branch("filename", &filename);
   fTrackTree->Branch("g_imageCollection",&fg_imageCollection);
   fTrackTree->Branch("g_imageCollectionNoMichel",&fg_imageCollectionNoMichel);
-  fTrackTree->Branch("g_imageCollectionNoMichel2",&fg_imageCollectionNoMichel2);
   fTrackTree->Branch("g_imageScore",&fg_imageScore);
   fTrackTree->Branch("h_progressiveDistance","TH1D",&fh_progressiveDistance);
   fTrackTree->Branch("g_wireID", &fg_wireID);
@@ -203,7 +201,6 @@ void MichelStudyTmp::beginJob()
   fg_imageCollection = new TGraph2D();
   fg_imageScore = new TGraph2D();
   fg_imageCollectionNoMichel = new TGraph2D();
-  fg_imageCollectionNoMichel2 = new TGraph2D();
 
   fh_progressiveDistance = new TH1D("h_progressiveDistance","h_progressiveDistance",200,0,200);
 
