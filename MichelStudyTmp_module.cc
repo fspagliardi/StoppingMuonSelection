@@ -122,9 +122,9 @@ namespace stoppingcosmicmuonselection {
 
       if (numbMichelLikeHits > _minNumbMichelLikeHit) {
         hitHelper.FillTrackGraph2D(fg_imageCollection,hitPlaneAlg.GetOrderedHitVec(),
-                                   selectorAlg.GetTrackProperties().recoEndPoint,2);
+                                   selectorAlg.GetTrackProperties().recoEndPoint,2,selectorAlg.GetTrackProperties().trackT0);
         hitHelper.FillTrackGraph2D(fg_imageCollectionNoMichel,hitsNoMichel,
-                                   selectorAlg.GetTrackProperties().recoEndPoint,2);
+                                   selectorAlg.GetTrackProperties().recoEndPoint,2,selectorAlg.GetTrackProperties().trackT0);
 
         // std::cout << "Reco End Point: " << selectorAlg.GetTrackProperties().recoEndPoint.X() << " " << selectorAlg.GetTrackProperties().recoEndPoint.Y() << " " << selectorAlg.GetTrackProperties().recoEndPoint.Z() << std::endl;
         // std::cout << "True End Point: " << selectorAlg.GetTrackProperties().trueEndPoint.X() << " " << selectorAlg.GetTrackProperties().trueEndPoint.Y() << " " << selectorAlg.GetTrackProperties().trueEndPoint.Z() << std::endl;

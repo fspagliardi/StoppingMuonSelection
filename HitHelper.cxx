@@ -174,7 +174,8 @@ namespace stoppingcosmicmuonselection {
   void HitHelper::FillTrackGraph2D(TGraph2D *graph,
                                    const artPtrHitVec &trackHits,
                                    const TVector3 &recoEndPoint,
-                                   const size_t &planeNumber) {
+                                   const size_t &planeNumber,
+                                   const double &t0) {
     graph->Set(0);
     const geo::GeometryCore *geom = lar::providerFrom<geo::Geometry>();
     const geo::Point_t EndPoint(recoEndPoint.X(), recoEndPoint.Y(), recoEndPoint.Z());
@@ -188,9 +189,9 @@ namespace stoppingcosmicmuonselection {
       // Get only hit in the collection plane
       if (!hitp->WireID().isValid) continue;
       if (hitp->WireID().Plane != planeNumber) continue;
-      unsigned int hit_tpcid = hitp->WireID().TPC;
       double hitPeakTime = hitp->PeakTime();
-      unsigned int wireID = hitp->WireID().Wire;
+      double tickT0 = t0 / detprop->SamplingRate();
+      double x = detprop->ConvertTicksToX(hitPeakTime-tickT0, hitp->WireID().Plane, hitp->WireID().TPC,hitp->WireID().Cryostat);
       double electron_perc = 0;
       for(const sim::TrackIDE& ide : bt_serv->HitToTrackIDEs(*hitp)) {
         if (TMath::Abs(pi_serv->TrackIdToParticle_P(ide.trackID)->PdgCode())==11) {//contribution from electron
@@ -198,8 +199,8 @@ namespace stoppingcosmicmuonselection {
           //std::cout << "Electron perc: " << electron_perc << std::endl;
         }
       }
-      size_t wireOffset = geoHelper.GetWireOffset(hit_tpcid, planeNumber);
-      graph->SetPoint(i,wireID+wireOffset,hitPeakTime,electron_perc);
+      size_t wireEff = geoHelper.GetWireNumb(hitp);
+      graph->SetPoint(i,wireEff,x,electron_perc);
     }
     return;
   }

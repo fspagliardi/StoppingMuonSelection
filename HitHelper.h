@@ -96,7 +96,8 @@ namespace stoppingcosmicmuonselection {
     void FillTrackGraph2D(TGraph2D *graph,
                           const artPtrHitVec &trackHits,
                           const TVector3 &recoEndPoint,
-                          const size_t &planeNumber);
+                          const size_t &planeNumber,
+                          const double &t0);
 
     // Get a TProfile2D filled with hit peak times and wire number
     void FillTrackHitPicture(TProfile2D* image,
