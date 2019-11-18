@@ -113,7 +113,9 @@ private:
   double fDistEndPoint = INV_DBL;
   double fDistEndPointNoMichel = INV_DBL;
   bool fIsRecoSelectedCathodeCrosser = false;
+  bool fIsRecoSelectedAnodeCrosser = false;
   bool fIsTrueSelectedCathodeCrosser = false;
+  bool fIsTrueSelectedAnodeCrosser = false;
   std::vector<double> f_michelHitsMichelScore;
   std::vector<double> f_muonHitsMichelScore;
   // Objects for TTree

@@ -124,6 +124,16 @@ namespace stoppingcosmicmuonselection {
     return IsPointInSlice(point_V);
   }
 
+  // Check if the YZ projection of a point is contained in an area in the YZ face of the fiducial volume.
+  bool GeometryHelper::IsPointYZProjectionInArea(TVector3 const &p, double const &offsetYStartPoint, double const &offsetZStartPoint) {
+    if (!_isActiveBoundsInitialised)
+      InitActiveVolumeBounds();
+    return ( (p.Y()>=(_activeBounds[2]+offsetYStartPoint)) &&
+             (p.Y()<=(_activeBounds[3]-offsetYStartPoint)) &&
+             (p.Z()>=(_activeBounds[4]+offsetZStartPoint)) &&
+             (p.Z()<=(_activeBounds[5]-offsetZStartPoint)));
+  }
+
   // Get the APA boundaries (simple version)
   double *GeometryHelper::GetAPABoundaries() {
     if (!_isActiveBoundsInitialised)
@@ -198,6 +208,21 @@ namespace stoppingcosmicmuonselection {
         return planeHandle.WirePitch();
 
     } // end iteration on planes
+    return INV_DBL;
+  }
+
+  // Get plane coordinate in world coordinate.
+  double GeometryHelper::GetAbsolutePlaneCoordinate(const size_t &planeNumber) {
+
+    for (geo::PlaneID const &pID : geom->IteratePlaneIDs()) {
+      geo::PlaneGeo const &planeHandle = geom->Plane(pID);
+      if (pID.Plane != planeNumber) continue;
+      if (pID.TPC==tpcIndecesBL[0] || pID.TPC==tpcIndecesBL[1] || pID.TPC==tpcIndecesBL[2] ||
+          pID.TPC==tpcIndecesBR[0] || pID.TPC==tpcIndecesBR[1] || pID.TPC==tpcIndecesBR[2] )
+        return TMath::Abs(planeHandle.GetCenter().X());
+    }
+
+    throw cet::exception("GeometryHelper.cxx") << "GeometryHelper::GetAbsolutePlaneCoordinate(): plane not found.";
     return INV_DBL;
   }
 

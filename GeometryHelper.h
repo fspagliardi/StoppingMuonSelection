@@ -48,6 +48,9 @@ namespace stoppingcosmicmuonselection {
     bool IsPointInSlice(TVector3 const &Point);
     bool IsPointInSlice(double *Point);
 
+    // Check if the YZ projection of a point is contained in an area in the YZ face of the fiducial volume.
+    bool IsPointYZProjectionInArea(TVector3 const &p, double const &offsetYStartPoint, double const &offsetZStartPoint);
+
     // Get the APA boundaries (simple version)
     double *GetAPABoundaries();
 
@@ -63,6 +66,9 @@ namespace stoppingcosmicmuonselection {
 
     // Get the wire pitch.
     double GetWirePitch(const size_t &planeNumb);
+
+    // Get plane coordinate in world coordinate.
+    double GetAbsolutePlaneCoordinate(const size_t &planeNumber);
 
     // Arrays with TPC number info
     const unsigned int tpcIndecesBL[3] = {2,6,10};

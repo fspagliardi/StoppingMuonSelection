@@ -24,6 +24,7 @@
 #include "larsim/MCCheater/ParticleInventoryService.h"
 #include "nusimdata/SimulationBase/MCParticle.h"
 #include "nusimdata/SimulationBase/MCTruth.h"
+#include "lardata/DetectorInfoServices/DetectorPropertiesService.h"
 
 #include "GeometryHelper.h"
 #include "SpacePointAlg.h"
@@ -42,6 +43,12 @@ namespace stoppingcosmicmuonselection {
 
     // Read parameters from FHICL file
     void reconfigure(fhicl::ParameterSet const &p);
+
+    // Determine if the PFParticle is a selected anode crosser
+    bool IsStoppingAnodeCrosser(art::Event const &evt, recob::PFParticle const &thisParticle);
+
+    // Work out t0 for anode crossers.
+    double CorrectPosAndGetT0(TVector3 &_recoStartPoint, TVector3 &_recoEndPoint);
 
     // Determine if the PFParticle is a selected cathode crosser
     bool IsStoppingCathodeCrosser(art::Event const &evt, recob::PFParticle const &thisParticle);
@@ -62,7 +69,10 @@ namespace stoppingcosmicmuonselection {
     void SetMCParticleProperties(art::Event const &evt, recob::PFParticle const &thisParticle);
 
     // Check if the true track associated with that PFParticle is a stopping muon
-    bool IsTrueParticleAStoppingMuon(art::Event const &evt, recob::PFParticle const &thisParticle);
+    bool IsTrueParticleAnAnodeCrossingStoppingMuon(art::Event const &evt, recob::PFParticle const &thisParticle);
+
+    // Check if the true track associated with that PFParticle is a stopping muon
+    bool IsTrueParticleACathodeCrossingStoppingMuon(art::Event const &evt, recob::PFParticle const &thisParticle);
 
     // Get the property for this track.
     const trackProperties GetTrackProperties();
@@ -72,6 +82,7 @@ namespace stoppingcosmicmuonselection {
 
   private:
     bool _isACathodeCrosser = false;
+    bool _isAnAnodeCrosser = false;
     bool _isPFParticleATrack = false;
     bool _areMCParticlePropertiesSet = false;
 
@@ -94,10 +105,12 @@ namespace stoppingcosmicmuonselection {
 
     // Helpers and algorithms
     GeometryHelper geoHelper;
-    SpacePointAlg  spAlg;
 
     // Declare handle for particle inventory service
     art::ServiceHandle<cheat::ParticleInventoryService> pi_serv;
+    // Declare handle for detector properties
+    const detinfo::DetectorProperties *detprop = lar::providerFrom<detinfo::DetectorPropertiesService>();
+
     // Declare analysis utils
     protoana::ProtoDUNETruthUtils        truthUtil;
     protoana::ProtoDUNETrackUtils        trackUtil;
@@ -106,7 +119,7 @@ namespace stoppingcosmicmuonselection {
     // Parameters from FHICL
     std::string fTrackerTag;
     std::string fPFParticleTag;
-          // Define cuts
+    // Define cuts
     double length_cutoff_CC;
     double offsetFiducialBounds_CC;
     double thicknessStartVolume_CC;
@@ -116,6 +129,17 @@ namespace stoppingcosmicmuonselection {
     double cutCosAngleBrokenTracks_CC;
     double cutCosAngleAlignment_CC;
     double cutContourAPA_CC;
+    double length_cutoff_AC;
+    double offsetYStartPoint_AC;
+    double offsetZStartPoint_AC;
+    double cutMinHitPeakTime_AC;
+    double cutMaxHitPeakTime_AC;
+    double cutEndPointsAlignment_AC;
+    double radiusBrokenTracksSearch_AC;
+    double cutCosAngleBrokenTracks_AC;
+    double cutCosAngleAlignment_AC;
+    double cutContourAPA_AC;
+    double offsetFiducialBounds_AC;
 
   };
 }

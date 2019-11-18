@@ -33,6 +33,12 @@ namespace stoppingcosmicmuonselection {
 
     // Iterates over the vector of PFParticles
     for (unsigned int p = 0; p < recoParticles.size(); ++p) {
+
+      fIsRecoSelectedCathodeCrosser = false;
+      fIsRecoSelectedAnodeCrosser = false;
+      fIsTrueSelectedCathodeCrosser = false;
+      fIsTrueSelectedAnodeCrosser = false;
+
       // Prepare the selector to digest a new PFParticle
       selectorAlg.Reset();
 
@@ -50,22 +56,26 @@ namespace stoppingcosmicmuonselection {
       if (!evt.isRealData() && !selectorAlg.IsTrackMatchedToTrueCosmicTrack(evt,thisParticle))
         continue;
 
-      // Check if this PFParticle is a stopping cathode crosser
-      if (!selectorAlg.IsStoppingCathodeCrosser(evt,thisParticle))
+      // Check if this PFParticle is a stopping muon.
+      if (selectorAlg.IsStoppingCathodeCrosser(evt,thisParticle))
+        fIsRecoSelectedCathodeCrosser = true;
+      else if (selectorAlg.IsStoppingAnodeCrosser(evt,thisParticle))
+        fIsRecoSelectedAnodeCrosser = true;
+      else
         continue;
 
       // Check if the track is missing some space points (need to get
       // an handle on the track)
       const recob::Track &track = selectorAlg.GetTrackFromPFParticle(evt,thisParticle);
       spAlg.SetT0(selectorAlg.GetTrackProperties().trackT0);
-      if(!spAlg.IsGoodTrack(track,spacePoints))
+      if(!spAlg.IsGoodTrack(track,spacePoints,fIsRecoSelectedAnodeCrosser))
         continue;
 
-      // At this point we have selected a cathode crossing stopping muon
-      fIsRecoSelectedCathodeCrosser = true;
-
-      // Check if the matched PFParticle is a cathode-crossing stopping muon
-      fIsTrueSelectedCathodeCrosser = selectorAlg.IsTrueParticleAStoppingMuon(evt,thisParticle);
+      // Check if the matched PFParticle is a true stopping muon
+      if (fIsRecoSelectedCathodeCrosser)
+        fIsTrueSelectedCathodeCrosser = selectorAlg.IsTrueParticleACathodeCrossingStoppingMuon(evt,thisParticle);
+      else if (fIsRecoSelectedAnodeCrosser)
+        fIsTrueSelectedAnodeCrosser = selectorAlg.IsTrueParticleAnAnodeCrossingStoppingMuon(evt,thisParticle);
 
       std::cout << "**************************" << std::endl;
       std::cout << "Track accepted." << std::endl;

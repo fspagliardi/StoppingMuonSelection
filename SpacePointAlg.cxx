@@ -35,7 +35,8 @@ void SpacePointAlg::reconfigure(fhicl::ParameterSet const &p) {
 
 // Check if the track correctly fit the space points around the end points
 bool SpacePointAlg::IsGoodTrack(const recob::Track &track,
-                                const std::vector<recob::SpacePoint> &spacePoints) {
+                                const std::vector<recob::SpacePoint> &spacePoints,
+                                const bool &isAnodeCrosser) {
   // Check if the track is valid
   bool isTrackValid = false;
   size_t nValidPointsCounter(0);
@@ -79,7 +80,7 @@ bool SpacePointAlg::IsGoodTrack(const recob::Track &track,
     }
 
     bool badTrack = true;
-    if (_T0 == INV_DBL)
+    if (isAnodeCrosser)
       badTrack = (IsTrackNotFittingSpacePoints(posLastValidPoint,pos20cmLastValidPoint,spacePoints,_bottom)
            || IsTrackNotFittingSpacePoints(posFirstValidPoint,pos20cmFirstValidPoint,spacePoints,_top));
     else
