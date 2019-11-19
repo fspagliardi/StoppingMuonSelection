@@ -77,6 +77,9 @@ private:
   double _trackPitch;
   double _trackPitchTolerance;
   size_t _numberNeighbors;
+  double _michelScoreThreshold;
+  double _michelScoreThresholdAvg;
+  bool _selectAC, _selectCC;
   std::string fPFParticleTag, fSpacePointTag, fTrackerTag;
   std::string fNNetTag;
 
@@ -253,6 +256,10 @@ void MichelStudyTmp::reconfigure(fhicl::ParameterSet const& p)
   _trackPitch = p.get<double>("trackPitch", 0.75);
   _trackPitchTolerance = p.get<double>("trackPitchTolerance", 0.1);
   _numberNeighbors = p.get<size_t>("numberNeighbors", 2);
+  _michelScoreThreshold = p.get<double>("michelScoreThreshold", 0.7);
+  _michelScoreThresholdAvg = p.get<double>("michelScoreThresholdAvg", 0.5);
+  _selectAC = p.get<bool>("selectAC", true);
+  _selectCC = p.get<bool>("selectCC", true);
   spAlg.reconfigure(p.get<fhicl::ParameterSet>("SpacePointAlg"));
   selectorAlg.reconfigure(p.get<fhicl::ParameterSet>("StoppingMuonSelectionAlg"));
   caloHelper.reconfigure(p.get<fhicl::ParameterSet>("CalorimetryHelper"));

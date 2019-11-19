@@ -27,14 +27,18 @@ michel_study:
   SpacePointTag: "reco3d"
   TrackerTag:    "pandoraTrack"
   NNetTag:       "emtrkmichelid:emtrkmichel"
-  minNumbMichelLikeHit: 5
-  trackPitch: 0.75
-  trackPitchTolerance: 0.1
-  numberNeighbors: 2
-  SpacePointAlg: @local::spacepointAlg
+  minNumbMichelLikeHit:     5
+  trackPitch:               0.75
+  trackPitchTolerance:      0.1
+  numberNeighbors:          2
+  michelScoreThreshold:     0.7
+  michelScoreThresholdAvg:  0.5
+  selectAC:                 true
+  selectCC:                 false
+  SpacePointAlg:            @local::spacepointAlg
   StoppingMuonSelectionAlg: @local::stoppingmuonAlg
-  CalorimetryHelper: @local::caloHelper
-  HitHelper: @local::hitHelper
+  CalorimetryHelper:        @local::caloHelper
+  HitHelper:                @local::hitHelper
 }
 
 source:

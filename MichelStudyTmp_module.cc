@@ -57,9 +57,9 @@ namespace stoppingcosmicmuonselection {
         continue;
 
       // Check if this PFParticle is a stopping muon.
-      if (selectorAlg.IsStoppingCathodeCrosser(evt,thisParticle))
+      if (_selectCC && selectorAlg.IsStoppingCathodeCrosser(evt,thisParticle))
         fIsRecoSelectedCathodeCrosser = true;
-      else if (selectorAlg.IsStoppingAnodeCrosser(evt,thisParticle))
+      else if (_selectAC && selectorAlg.IsStoppingAnodeCrosser(evt,thisParticle))
         fIsRecoSelectedAnodeCrosser = true;
       else
         continue;
@@ -132,7 +132,7 @@ namespace stoppingcosmicmuonselection {
       const artPtrHitVec &muonLikeHits = hitHelper.GetMuonLikeHits(hitPlaneAlg.GetOrderedHitVec(),selectorAlg.GetTrackProperties().recoEndPoint,fmthm,tracklist,trackIndex);
       f_michelHitsMichelScore = cnnHelper.GetScoreVector(hitResults, michelLikeHits);
       f_muonHitsMichelScore = cnnHelper.GetScoreVector(hitResults, muonLikeHits);
-      const artPtrHitVec &hitsNoMichel = hitPlaneAlg.GetHitVecNoMichel(hitResults,0.7,0.5);
+      const artPtrHitVec &hitsNoMichel = hitPlaneAlg.GetHitVecNoMichel(hitResults,_michelScoreThreshold,_michelScoreThresholdAvg);
 
       if (numbMichelLikeHits > _minNumbMichelLikeHit) {
         hitHelper.FillTrackGraph2D(fg_imageCollection,hitPlaneAlg.GetOrderedHitVec(),

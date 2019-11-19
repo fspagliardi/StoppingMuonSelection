@@ -15,5 +15,16 @@ stoppingmuonAlg:
   cutCosAngleBrokenTracks_CC:     0.995
   cutCosAngleAlignment_CC:        0.995
   cutContourAPA_CC:               10
+
+  length_cutoff_AC :              100
+  offsetYStartPoint_AC:           30
+  offsetZStartPoint_AC:           50
+  cutMinHitPeakTime_AC:           700
+  cutMaxHitPeakTime_AC:           4800
+  radiusBrokenTracksSearch_AC:    10
+  cutCosAngleBrokenTracks_AC:     0.995
+  cutCosAngleAlignment_AC:        0.995
+  cutContourAPA_AC:               10
+  offsetFiducialBounds_AC:        50
 }
 END_PROLOG
