@@ -134,7 +134,6 @@ namespace stoppingcosmicmuonselection {
     double offsetZStartPoint_AC;
     double cutMinHitPeakTime_AC;
     double cutMaxHitPeakTime_AC;
-    double cutEndPointsAlignment_AC;
     double radiusBrokenTracksSearch_AC;
     double cutCosAngleBrokenTracks_AC;
     double cutCosAngleAlignment_AC;

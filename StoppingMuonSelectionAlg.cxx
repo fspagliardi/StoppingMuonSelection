@@ -34,22 +34,21 @@ namespace stoppingcosmicmuonselection {
     fTrackerTag = p.get<std::string>("TrackerTag");
     fPFParticleTag = p.get<std::string>("PFParticleTag");
     // Set cuts for CC.
-    length_cutoff_CC = p.get<double>("length_cutoff_CC",100);
-    offsetFiducialBounds_CC = p.get<double>("offsetFiducialBounds_CC",50);
-    thicknessStartVolume_CC = p.get<double>("thicknessStartVolume_CC",40);
-    cutMinHitPeakTime_CC = p.get<double>("cutMinHitPeakTime_CC",500);
-    cutMaxHitPeakTime_CC = p.get<double>("cutMaxHitPeakTime_CC",4800);
-    radiusBrokenTracksSearch_CC = p.get<double>("radiusBrokenTracksSearch_CC",50);
-    cutCosAngleBrokenTracks_CC = p.get<double>("cutCosAngleBrokenTracks_CC",0.995);
-    cutCosAngleAlignment_CC = p.get<double>("cutCosAngleAlignment_CC",0.995);
-    cutContourAPA_CC = p.get<double>("cutContourAPA_CC",10);
+    length_cutoff_CC               = p.get<double>("length_cutoff_CC",100);
+    offsetFiducialBounds_CC        = p.get<double>("offsetFiducialBounds_CC",50);
+    thicknessStartVolume_CC        = p.get<double>("thicknessStartVolume_CC",40);
+    cutMinHitPeakTime_CC           = p.get<double>("cutMinHitPeakTime_CC",500);
+    cutMaxHitPeakTime_CC           = p.get<double>("cutMaxHitPeakTime_CC",4800);
+    radiusBrokenTracksSearch_CC    = p.get<double>("radiusBrokenTracksSearch_CC",50);
+    cutCosAngleBrokenTracks_CC     = p.get<double>("cutCosAngleBrokenTracks_CC",0.995);
+    cutCosAngleAlignment_CC        = p.get<double>("cutCosAngleAlignment_CC",0.995);
+    cutContourAPA_CC               = p.get<double>("cutContourAPA_CC",10);
     // Set cuts for AC.
-    length_cutoff_AC = p.get<double>("length_cutoff_AC",100);
+    length_cutoff_AC               = p.get<double>("length_cutoff_AC",100);
     offsetYStartPoint_AC           = p.get<double>("offsetYStartPoint_AC", 30);
     offsetZStartPoint_AC           = p.get<double>("offsetZStartPoint_AC", 50);
     cutMinHitPeakTime_AC           = p.get<double>("cutMinHitPeakTime_AC", 700);
     cutMaxHitPeakTime_AC           = p.get<double>("cutMaxHitPeakTime_AC", 4800);
-    cutEndPointsAlignment_AC       = p.get<double>("cutEndPointsAlignment_AC", 0.98);
     radiusBrokenTracksSearch_AC    = p.get<double>("radiusBrokenTracksSearch_AC", 10);
     cutCosAngleBrokenTracks_AC     = p.get<double>("cutCosAngleBrokenTracks_AC", 0.995);
     cutCosAngleAlignment_AC        = p.get<double>("cutCosAngleAlignment_AC", 0.995);
@@ -88,6 +87,7 @@ namespace stoppingcosmicmuonselection {
 
     bool goodTrack = geoHelper.IsPointYZProjectionInArea(_recoStartPoint,offsetYStartPoint_AC,offsetZStartPoint_AC);
     if (!goodTrack) return false;
+
     if (_minHitPeakTime <= cutMinHitPeakTime_AC) return false;
     if (_maxHitPeakTime >= cutMaxHitPeakTime_AC) return false;
 
@@ -152,7 +152,7 @@ namespace stoppingcosmicmuonselection {
     bool goodEndPoint = geoHelper.IsPointInVolume(geoHelper.GetFiducialVolumeBounds(),_recoEndPoint);
     if (!goodEndPoint) return false;
 
-    // All cuts passed, this is likely a anode-crossing stopping muon.
+    // All cuts passed, this is likely an anode-crossing stopping muon.
     _isAnAnodeCrosser = true;
     return true;
   }
