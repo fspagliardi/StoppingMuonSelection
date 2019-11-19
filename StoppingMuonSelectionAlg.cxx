@@ -31,8 +31,8 @@ namespace stoppingcosmicmuonselection {
 
   // Read parameters from FHICL file
   void StoppingMuonSelectionAlg::reconfigure(fhicl::ParameterSet const &p) {
-    fTrackerTag = p.get<std::string>("TrackerTag");
-    fPFParticleTag = p.get<std::string>("PFParticleTag");
+    fTrackerTag = p.get<std::string>("TrackerTag", "pandoraTrack");
+    fPFParticleTag = p.get<std::string>("PFParticleTag", "pandora");
     // Set cuts for CC.
     length_cutoff_CC               = p.get<double>("length_cutoff_CC",100);
     offsetFiducialBounds_CC        = p.get<double>("offsetFiducialBounds_CC",50);
@@ -161,7 +161,9 @@ namespace stoppingcosmicmuonselection {
   double StoppingMuonSelectionAlg::CorrectPosAndGetT0(TVector3 &_recoStartPoint, TVector3 &_recoEndPoint) {
 
     double drift_velocity = detprop->DriftVelocity()*1e-3; // in cm/ns.
+    std::cout << "StoppingMuonSelectionAlg::CorrectPosAndGetT0: " << "drift velocity = " << drift_velocity << std::endl;
     double drift_distance = geoHelper.GetAbsolutePlaneCoordinate(0); // First induction plane coordinate.
+    std::cout << "StoppingMuonSelectionAlg::CorrectPosAndGetT0: " << "drift distance = " << drift_distance << std::endl;
 
     if (_recoStartPoint.X() <= _recoEndPoint.X()) {
       if (_recoStartPoint.X() <= 0) {
