@@ -79,6 +79,7 @@ namespace stoppingcosmicmuonselection {
     // Declare handle for detector properties
     const detinfo::DetectorProperties *detprop = lar::providerFrom<detinfo::DetectorPropertiesService>();
 
+    const bool DEBUG = false;
   };
 }
 

@@ -18,10 +18,10 @@ namespace stoppingcosmicmuonselection {
                            _planeNumber(planeNumber),
                            _t0(t0) {
     _hitsOnPlane = hitHelper.GetHitsOnAPlane(_planeNumber,_trackHits);
-    std::cout << "HitPlaneAlg.cxx: " << std::endl;
-    std::cout << "\tSize of hits on plane before ordering: " << _hitsOnPlane.size() << std::endl;
+    if (DEBUG) std::cout << "HitPlaneAlg.cxx: " << std::endl;
+    if (DEBUG) std::cout << "\tSize of hits on plane before ordering: " << _hitsOnPlane.size() << std::endl;
     OrderHitVec();
-    std::cout << "\tOrdered HitList Size: " << _hitsOnPlane.size()
+    if (DEBUG) std::cout << "\tOrdered HitList Size: " << _hitsOnPlane.size()
               << std::endl << "\tWireID list size: " << _effectiveWireID.size() << std::endl;
     if (_effectiveWireID.size() != _hitsOnPlane.size())
       throw cet::exception("HitPlaneAlg.cxx") << "Hit vector and wire ID vector have different size.";
@@ -79,9 +79,11 @@ namespace stoppingcosmicmuonselection {
 
       auto const &hit = _hitsOnPlane.at(min_index);
 
+      if (DEBUG) {
       std::cout << "Numb of hits filled so far: " << newVector.size() << std::endl;
       std::cout << geoHelper.GetWireNumb(hit) << " " << hit->PeakTime() << std::endl;
       std::cout << "dist: " << min_dist << " wire dist: " << min_wire_dist << std::endl;
+      }
 
       if (min_wire_dist < maxWireDistance)  {
         //std::cout << geoHelper.GetWireNumb(hit) << " " << hit->PeakTime() << std::endl;
@@ -90,16 +92,16 @@ namespace stoppingcosmicmuonselection {
         _effectiveWireID.push_back(geoHelper.GetWireNumb(hit));
       }
       else if (newVector.size() > 5) {
-        std::cout << "\t\tThe hit is too far away." << std::endl;
+        if (DEBUG) std::cout << "\t\tThe hit is too far away." << std::endl;
         // Calculate previous slope.
         auto iter = newVector.end();
         auto hit_2 = *(--iter);
         auto hit_1 = *(iter-5);
         double previous_slope = (hit_2->PeakTime()-hit_1->PeakTime()) / (geoHelper.GetWireNumb(hit_2)-geoHelper.GetWireNumb(hit_1));
-        std::cout << "\t\tPrevious slope: " << previous_slope << std::endl;
+        if (DEBUG) std::cout << "\t\tPrevious slope: " << previous_slope << std::endl;
         // Calculate next slope.
         double new_slope = ((hit->PeakTime()-hit_2->PeakTime()) / (geoHelper.GetWireNumb(hit)-geoHelper.GetWireNumb(hit_2)));
-        std::cout << "\t\tCurrent slope: " << new_slope << std::endl;
+        if (DEBUG) std::cout << "\t\tCurrent slope: " << new_slope << std::endl;
         // Check the next hit will be in a consecutive wire
         bool progressive_order = false;
         if (geoHelper.GetWireNumb(hit_1) < geoHelper.GetWireNumb(hit_2)) {
@@ -132,7 +134,7 @@ namespace stoppingcosmicmuonselection {
     }
     _areHitOrdered = true;
     std::swap(_hitsOnPlane, newVector);
-    std::cout << "\tHit vector ordered. " << "Number of hits: " << _hitsOnPlane.size() << std::endl;
+    if (DEBUG) std::cout << "\tHit vector ordered. " << "Number of hits: " << _hitsOnPlane.size() << std::endl;
     return;
   }
 
