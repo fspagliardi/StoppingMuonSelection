@@ -186,6 +186,8 @@ void MichelStudyTmp::beginJob()
   fTrackTree->Branch("distEndPointNoMichel", &fDistEndPointNoMichel, "fDistEndPointNoMichel/d");
   fTrackTree->Branch("isRecoSelectedCathodeCrosser",&fIsRecoSelectedCathodeCrosser);
   fTrackTree->Branch("isTrueSelectedCathodeCrosser",&fIsTrueSelectedCathodeCrosser);
+  fTrackTree->Branch("isRecoSelectedAnodeCrosser",&fIsRecoSelectedAnodeCrosser);
+  fTrackTree->Branch("isTrueSelectedAnodeCrosser",&fIsTrueSelectedAnodeCrosser);
   fTrackTree->Branch("filename", &filename);
   fTrackTree->Branch("g_imageCollection",&fg_imageCollection);
   fTrackTree->Branch("g_imageCollectionNoMichel",&fg_imageCollectionNoMichel);
