@@ -6,7 +6,7 @@ process_name: CosmicStudy
 services:
 {
   IFDH: {}
-  TFileService: {fileName: "%ifb_result.root"}
+  #TFileService: {fileName: "%ifb_result.root"}
   TimeTracker: {}
   MemoryTracker: {}
   RandomNumberGenerator: {}

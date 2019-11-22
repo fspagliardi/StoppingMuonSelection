@@ -231,6 +231,10 @@ void MichelStudyTmp::beginJob()
   fg_DqdsSmooth = new TGraphErrors();
   fg_LocalLin = new TGraphErrors();
   fg_CnnScore = new TGraphErrors();
+
+  // Print active volume bounds.
+  geoHelper.PrintActiveVolumeBounds();
+
 }
 
 void MichelStudyTmp::endJob()

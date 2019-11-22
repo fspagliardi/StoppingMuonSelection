@@ -55,6 +55,17 @@ namespace stoppingcosmicmuonselection {
     return _activeBounds;
   }
 
+  // Print active volume
+  void GeometryHelper::PrintActiveVolumeBounds() {
+    auto const &bounds = GetActiveVolumeBounds();
+    std::cout << "***************************************" << std::endl;
+    std::cout << "Active volume bounds:" << std::endl;
+    std::cout << "X: " << bounds[0] << " - " << bounds[1] << std::endl;
+    std::cout << "Y: " << bounds[2] << " - " << bounds[3] << std::endl;
+    std::cout << "Z: " << bounds[4] << " - " << bounds[5] << std::endl;
+    std::cout << "***************************************" << std::endl;
+  }
+
   // Set fiducial bounds offset from active volume bounds
   void GeometryHelper::SetFiducialBoundOffset(const double &offset) {
     _fiducialBoundOffset = offset;

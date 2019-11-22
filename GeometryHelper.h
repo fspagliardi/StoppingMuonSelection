@@ -28,6 +28,9 @@ namespace stoppingcosmicmuonselection {
     // Get active volume
     double *GetActiveVolumeBounds();
 
+    // Print active volume
+    void PrintActiveVolumeBounds();
+
     // Set fiducial bounds offset from active volume bounds
     void SetFiducialBoundOffset(const double &offset);
 
