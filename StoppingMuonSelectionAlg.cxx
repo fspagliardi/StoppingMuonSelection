@@ -161,9 +161,9 @@ namespace stoppingcosmicmuonselection {
   double StoppingMuonSelectionAlg::CorrectPosAndGetT0(TVector3 &_recoStartPoint, TVector3 &_recoEndPoint) {
 
     double drift_velocity = detprop->DriftVelocity()*1e-3; // in cm/ns.
-    std::cout << "StoppingMuonSelectionAlg::CorrectPosAndGetT0: " << "drift velocity = " << drift_velocity << std::endl;
+    //std::cout << "StoppingMuonSelectionAlg::CorrectPosAndGetT0: " << "drift velocity = " << drift_velocity << std::endl;
     double drift_distance = geoHelper.GetAbsolutePlaneCoordinate(0); // First induction plane coordinate.
-    std::cout << "StoppingMuonSelectionAlg::CorrectPosAndGetT0: " << "drift distance = " << drift_distance << std::endl;
+    //std::cout << "StoppingMuonSelectionAlg::CorrectPosAndGetT0: " << "drift distance = " << drift_distance << std::endl;
 
     if (_recoStartPoint.X() <= _recoEndPoint.X()) {
       if (_recoStartPoint.X() <= 0) {
