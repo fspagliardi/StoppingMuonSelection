@@ -128,9 +128,9 @@ namespace stoppingcosmicmuonselection {
         endPointHigherTrack = recoEndPointSecond;
       }
 
-      TVector3 middePointLowerTrack = (startPointLowerTrack + endPointLowerTrack) * 0.5;
+      TVector3 middlePointLowerTrack = (startPointLowerTrack + endPointLowerTrack) * 0.5;
       TVector3 dirHigherTrack_YZ(0., dirHigherTrack.Y(), dirHigherTrack.Z());
-      TVector3 dirJoiningSegment(0., middePointLowerTrack.Y()-endPointHigherTrack.Y(), middePointLowerTrack.Z()-endPointHigherTrack.Z());
+      TVector3 dirJoiningSegment(0., middlePointLowerTrack.Y()-endPointHigherTrack.Y(), middlePointLowerTrack.Z()-endPointHigherTrack.Z());
       double cosBeta = TMath::Cos(dirHigherTrack_YZ.Angle(dirJoiningSegment));
       double absCosAlpha = TMath::Abs(TMath::Cos(dirFirstTrack.Angle(dirSecondTrack)));
 
@@ -258,9 +258,9 @@ namespace stoppingcosmicmuonselection {
       }
       else
         continue;
-      TVector3 middePointLowerTrack = (startPointLowerTrack + endPointLowerTrack) * 0.5;
+      TVector3 middlePointLowerTrack = (startPointLowerTrack + endPointLowerTrack) * 0.5;
       TVector3 dirHigherTrack_YZ(0., dirHigherTrack.Y(), dirHigherTrack.Z());
-      TVector3 dirJoiningSegment(0., middePointLowerTrack.Y()-endPointHigherTrack.Y(), middePointLowerTrack.Z()-endPointHigherTrack.Z());
+      TVector3 dirJoiningSegment(0., middlePointLowerTrack.Y()-endPointHigherTrack.Y(), middlePointLowerTrack.Z()-endPointHigherTrack.Z());
       double cosBeta = TMath::Cos(dirHigherTrack_YZ.Angle(dirJoiningSegment));
       double absCosAlpha = TMath::Abs(TMath::Cos(dirFirstTrack.Angle(dirSecondTrack)));
 
