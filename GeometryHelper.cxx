@@ -193,8 +193,8 @@ namespace stoppingcosmicmuonselection {
       return nWires/3.;
     else if (hit_tpcid == tpcIndecesBL[2] || hit_tpcid == tpcIndecesBR[2])
       return 2*nWires/3;
-    else
-      throw cet::exception("GeometryHelper.cxx") << "TPC ID for the hit is not valid.";
+    //else
+      //throw cet::exception("GeometryHelper.cxx") << "TPC ID for the hit is not valid.";
     return -(INV_INT);
   }
   size_t GeometryHelper::GetWireOffset(const art::Ptr<recob::Hit> &hit) {
