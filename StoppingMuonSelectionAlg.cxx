@@ -147,7 +147,17 @@ namespace stoppingcosmicmuonselection {
     }
     if (isBrokenTrack) return false;
 
-    if (CorrectPosAndGetT0(_recoStartPoint,_recoEndPoint) == INV_DBL) return false;
+    // Get the T0
+    std::vector<anab::T0> pfparticleT0s = pfpUtil.GetPFParticleT0(thisParticle,evt,fPFParticleTag);
+    if (pfparticleT0s.size() == 0) {
+      _trackT0 = INV_DBL;
+      return false;
+    }
+    else
+      _trackT0 = pfparticleT0s[0].Time();
+
+    if (_trackT0 == INV_DBL)
+      if (CorrectPosAndGetT0(_recoStartPoint,_recoEndPoint) == INV_DBL) return false;
 
     bool goodEndPoint = geoHelper.IsPointInVolume(geoHelper.GetFiducialVolumeBounds(),_recoEndPoint);
     if (!goodEndPoint) return false;
