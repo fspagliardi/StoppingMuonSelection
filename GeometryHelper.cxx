@@ -193,6 +193,13 @@ namespace stoppingcosmicmuonselection {
       return nWires/3.;
     else if (hit_tpcid == tpcIndecesBL[2] || hit_tpcid == tpcIndecesBR[2])
       return 2*nWires/3;
+    // Now case for cryostat side hits.
+    else if (hit_tpcid == tpcIndecesBLout[0] || hit_tpcid == tpcIndecesBRout[0])
+      return 0;
+    else if (hit_tpcid == tpcIndecesBLout[1] || hit_tpcid == tpcIndecesBRout[1])
+      return nWires/3;
+    else if (hit_tpcid == tpcIndecesBLout[2] || hit_tpcid == tpcIndecesBRout[2])
+      return 2*nWires/3;
     //else
       //throw cet::exception("GeometryHelper.cxx") << "TPC ID for the hit is not valid.";
     return -(INV_INT);

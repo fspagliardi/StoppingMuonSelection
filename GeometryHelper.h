@@ -76,6 +76,8 @@ namespace stoppingcosmicmuonselection {
     // Arrays with TPC number info
     const unsigned int tpcIndecesBL[3] = {2,6,10};
     const unsigned int tpcIndecesBR[3] = {1,5,9};
+    const unsigned int tpcIndecesBLout[3] = {3, 7, 11};
+    const unsigned int tpcIndecesBRout[3] = {0, 4, 8};
 
   private:
     bool _isActiveBoundsInitialised = false;
