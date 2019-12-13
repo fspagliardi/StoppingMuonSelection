@@ -61,6 +61,7 @@ namespace stoppingcosmicmuonselection {
   // Determine if the PFParticle is a selected cathode crosser
   bool StoppingMuonSelectionAlg::IsStoppingAnodeCrosser(art::Event const &evt,
                                                         recob::PFParticle const &thisParticle) {
+    bool DEBUG = false;
     Reset();
     _evNumber = evt.id().event();
 
@@ -76,27 +77,47 @@ namespace stoppingcosmicmuonselection {
     _trackLength = track.Length();
     _trackID = track.ID();
 
+    std::cout << "Track ID: " << _trackID << std::endl;
+
     // using the ordered start and end points calculate the angles _theta_xz and _theta_yz
     _theta_xz = TMath::RadToDeg() * TMath::ATan2(_recoStartPoint.X()-_recoEndPoint.X(), _recoStartPoint.Z()-_recoEndPoint.Z());
     _theta_yz = TMath::RadToDeg() * TMath::ATan2(_recoStartPoint.Y()-_recoEndPoint.Y(), _recoStartPoint.Z()-_recoEndPoint.Z());
 
     SetMinAndMaxHitPeakTime(evt,thisParticle,_minHitPeakTime,_maxHitPeakTime);
 
-    if (_trackLength < length_cutoff_AC) return false;
-    if (TMath::Abs(_theta_yz-90)<10 || TMath::Abs(_theta_yz+90)<10 || TMath::Abs(_theta_xz-90)<10 || TMath::Abs(_theta_xz+90)<10) return false;
+    if (_trackLength < length_cutoff_AC) {
+      if (DEBUG) std::cout << "Track too short." << std::endl;
+      return false;
+    }
+
+    if (TMath::Abs(_theta_yz-90)<10 || TMath::Abs(_theta_yz+90)<10 || TMath::Abs(_theta_xz-90)<10 || TMath::Abs(_theta_xz+90)<10) {
+      if(DEBUG) std::cout << "Track's angle not accepted." << std::endl;
+      return false;
+    }
 
     bool goodTrack = geoHelper.IsPointYZProjectionInArea(_recoStartPoint,offsetYStartPoint_AC,offsetZStartPoint_AC);
-    if (!goodTrack) return false;
+    if (!goodTrack) {
+      if(DEBUG) std::cout << "Track's start point not accepted." << std::endl;
+      return false;
+    }
 
-    if (_minHitPeakTime <= cutMinHitPeakTime_AC) return false;
-    if (_maxHitPeakTime >= cutMaxHitPeakTime_AC) return false;
+    if (_minHitPeakTime <= cutMinHitPeakTime_AC) {
+      if(DEBUG) std::cout << "Track's minHitPeakTime not accepted." << std::endl;
+      return false;
+    }
+    if (_maxHitPeakTime >= cutMaxHitPeakTime_AC) {
+      if(DEBUG) std::cout << "Track's maxHitPeakTime not accepted." << std::endl;
+      return false;
+    }
 
     if ((TMath::Abs(_recoStartPoint.Z()-geoHelper.GetAPABoundaries()[0])<=cutContourAPA_AC) ||
        (TMath::Abs(_recoStartPoint.Z()-geoHelper.GetAPABoundaries()[1])<=cutContourAPA_AC) ||
        (TMath::Abs(_recoEndPoint.Z()-geoHelper.GetAPABoundaries()[0])<=cutContourAPA_AC)   ||
        (TMath::Abs(_recoEndPoint.Z()-geoHelper.GetAPABoundaries()[1])<=cutContourAPA_AC)
-       )
+     ) {
+      if(DEBUG) std::cout << "Track's extreme points too close to APA." << std::endl;
       return false;
+    }
 
     TVector3 dirFirstTrack = _recoEndPoint - _recoStartPoint;
     bool isBrokenTrack = false;
@@ -145,13 +166,15 @@ namespace stoppingcosmicmuonselection {
       // Stop searching if found one
       if (isBrokenTrack) break;
     }
-    if (isBrokenTrack) return false;
+    if (isBrokenTrack) {
+      if(DEBUG) std::cout << "Track is broken." << std::endl;
+      return false;
+    }
 
     // Get the T0
     std::vector<anab::T0> pfparticleT0s = pfpUtil.GetPFParticleT0(thisParticle,evt,fPFParticleTag);
     if (pfparticleT0s.size() == 0) {
       _trackT0 = INV_DBL;
-      return false;
     }
     else
       _trackT0 = pfparticleT0s[0].Time();
@@ -160,10 +183,14 @@ namespace stoppingcosmicmuonselection {
       if (CorrectPosAndGetT0(_recoStartPoint,_recoEndPoint) == INV_DBL) return false;
 
     bool goodEndPoint = geoHelper.IsPointInVolume(geoHelper.GetFiducialVolumeBounds(),_recoEndPoint);
-    if (!goodEndPoint) return false;
+    if (!goodEndPoint) {
+      if(DEBUG) std::cout << "Track's end point not accepted." << std::endl;
+      return false;
+    }
 
     // All cuts passed, this is likely an anode-crossing stopping muon.
     _isAnAnodeCrosser = true;
+    if (DEBUG) std::cout << "Track passed all selection cuts." << std::endl;
     return true;
   }
 
