@@ -68,8 +68,10 @@ namespace stoppingcosmicmuonselection {
       // an handle on the track)
       const recob::Track &track = selectorAlg.GetTrackFromPFParticle(evt,thisParticle);
       spAlg.SetT0(selectorAlg.GetTrackProperties().trackT0);
-      if(!spAlg.IsGoodTrack(track,spacePoints,fIsRecoSelectedAnodeCrosser))
+      if(!spAlg.IsGoodTrack(track,spacePoints,fIsRecoSelectedAnodeCrosser)) {
+        std::cout << "Space point alg: " << "TrackID: " << track.ID() << " not accepted." << std::endl;
         continue;
+      }
 
       // Check if the matched PFParticle is a true stopping muon
       if (fIsRecoSelectedCathodeCrosser)
