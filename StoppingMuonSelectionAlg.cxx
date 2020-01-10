@@ -179,8 +179,11 @@ namespace stoppingcosmicmuonselection {
     else
       _trackT0 = pfparticleT0s[0].Time();
 
-    if (_trackT0 == INV_DBL)
+    if (_trackT0 == INV_DBL) {
       if (CorrectPosAndGetT0(_recoStartPoint,_recoEndPoint) == INV_DBL) return false;
+    }
+    else
+      std::cout << "Track tagged by Pandora." << std::endl;
 
     bool goodEndPoint = geoHelper.IsPointInVolume(geoHelper.GetFiducialVolumeBounds(),_recoEndPoint);
     if (!goodEndPoint) {
