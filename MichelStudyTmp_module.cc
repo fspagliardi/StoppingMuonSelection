@@ -67,8 +67,7 @@ namespace stoppingcosmicmuonselection {
       // Check if the track is missing some space points (need to get
       // an handle on the track)
       const recob::Track &track = selectorAlg.GetTrackFromPFParticle(evt,thisParticle);
-      spAlg.SetT0(selectorAlg.GetTrackProperties().trackT0);
-      if(!spAlg.IsGoodTrack(track,spacePoints,fIsRecoSelectedAnodeCrosser)) {
+      if(!spAlg.IsGoodTrack(track,spacePoints,selectorAlg.GetTrackProperties())) {
         std::cout << "Space point alg: " << "TrackID: " << track.ID() << " not accepted." << std::endl;
         continue;
       }
