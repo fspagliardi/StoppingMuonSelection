@@ -25,21 +25,18 @@ namespace stoppingcosmicmuonselection {
     // Is valid for this track
     bool IsValid();
 
-    // Set T0 value
-    void SetT0(const double &T0);
-
     // Read parameters from FHICL file
     void reconfigure(fhicl::ParameterSet const &p);
 
     // Check if the track correctly fit the space points around the end points
-    bool IsGoodTrack(const recob::Track &track, const std::vector<recob::SpacePoint> &spacePoints, const bool &isAnodeCrosser);
+    bool IsGoodTrack(const recob::Track &track, const std::vector<recob::SpacePoint> &spacePoints, const trackProperties &trackProp);
 
   private:
     // Strings for track orientation
     const std::string _bottom = "bottom";
     const std::string _top = "top";
-    double _T0;
     bool _isValid = false;
+    trackProperties tP;
     // Define parameters for cilinder space points
     double _cilinderAxis; // cm
     double _cilinderRadius; // cm

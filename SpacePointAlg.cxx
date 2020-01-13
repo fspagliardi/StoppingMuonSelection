@@ -21,11 +21,6 @@ bool SpacePointAlg::IsValid() {
   return _isValid;
 }
 
-// Set T0 value
-void SpacePointAlg::SetT0(const double &T0) {
-  _T0 = T0;
-}
-
 // Read parameters from FHICL file
 void SpacePointAlg::reconfigure(fhicl::ParameterSet const &p) {
   _cilinderAxis = p.get<double>("cilinderAxis", 50.);
@@ -36,7 +31,8 @@ void SpacePointAlg::reconfigure(fhicl::ParameterSet const &p) {
 // Check if the track correctly fit the space points around the end points
 bool SpacePointAlg::IsGoodTrack(const recob::Track &track,
                                 const std::vector<recob::SpacePoint> &spacePoints,
-                                const bool &isAnodeCrosser) {
+                                const trackProperties &trackProp) {
+  tP = trackProp;
   // Check if the track is valid
   bool isTrackValid = false;
   size_t nValidPointsCounter(0);
@@ -80,10 +76,10 @@ bool SpacePointAlg::IsGoodTrack(const recob::Track &track,
     }
 
     bool badTrack = true;
-    if (isAnodeCrosser)
+    if (tP.isAnodeCrosserMine)
       badTrack = (IsTrackNotFittingSpacePoints(posLastValidPoint,pos20cmLastValidPoint,spacePoints,_bottom)
            || IsTrackNotFittingSpacePoints(posFirstValidPoint,pos20cmFirstValidPoint,spacePoints,_top));
-    else
+    else if (tP.isAnodeCrosserPandora || tP.isCathodeCrosser)
       badTrack = IsTrackNotFittingSpacePoints(posLastValidPoint,pos20cmLastValidPoint,spacePoints,_bottom);
 
     return !badTrack;
@@ -143,23 +139,26 @@ bool SpacePointAlg::IsTrackNotFittingSpacePoints(TVector3 &posExtremeValidPoint,
     if (whichEnd == "bottom") { // option bottom includes cathode-crossing tracks as well
       // If track is T0 tagged the space points not fitted are not aligned in the XY place because they have
       // the wrong X while the T0-tagged track has been shifted.
-      if (_T0 != INV_DBL) {
+      if (tP.isAnodeCrosserPandora || tP.isCathodeCrosser) {
         if (distanceFootSpYZ<_cilinderRadius && distanceFootEndYZ<_cilinderAxis && posExtremeValidPoint.Y()>sp.XYZ()[1]) {
           spCounter++;
         }
       }
-      else if (distanceFootSpYZ<_cilinderRadius && distanceFootEndYZ<_cilinderAxis && distanceFootSpXZ<_cilinderRadius && distanceFootEndXZ<_cilinderAxis && posExtremeValidPoint.Y()>sp.XYZ()[1]) {
-        spCounter++;
-        //std::cout << "X: " << sp.XYZ()[0] << " Y: " << sp.XYZ()[1] << " Z: " << sp.XYZ()[2] << std::endl;
+      else if (tP.isAnodeCrosserMine) {
+        if (distanceFootSpYZ<_cilinderRadius && distanceFootEndYZ<_cilinderAxis && distanceFootSpXZ<_cilinderRadius && distanceFootEndXZ<_cilinderAxis && posExtremeValidPoint.Y()>sp.XYZ()[1]) {
+          spCounter++;
+          //std::cout << "X: " << sp.XYZ()[0] << " Y: " << sp.XYZ()[1] << " Z: " << sp.XYZ()[2] << std::endl;
+        }
       }
 
     }
     else if (whichEnd == "top") {
-      if (distanceFootSpYZ<_cilinderRadius && distanceFootEndYZ<_cilinderAxis && distanceFootSpXZ<_cilinderRadius && distanceFootEndXZ<_cilinderAxis && posExtremeValidPoint.Y()<sp.XYZ()[1]) {
-        spCounter++;
-        //std::cout << "X: " << sp.XYZ()[0] << " Y: " << sp.XYZ()[1] << " Z: " << sp.XYZ()[2] << std::endl;
+      if (tP.isAnodeCrosserMine) {
+        if (distanceFootSpYZ<_cilinderRadius && distanceFootEndYZ<_cilinderAxis && distanceFootSpXZ<_cilinderRadius && distanceFootEndXZ<_cilinderAxis && posExtremeValidPoint.Y()<sp.XYZ()[1]) {
+          spCounter++;
+          //std::cout << "X: " << sp.XYZ()[0] << " Y: " << sp.XYZ()[1] << " Z: " << sp.XYZ()[2] << std::endl;
+        }
       }
-
     }
     else {
       //std::cout << "ERROR: wrong option for function IsTrackNotFittingSpacePoints" << std::endl;
