@@ -23,7 +23,7 @@
 <!--maxfilesperjob>1</maxfilesperjob-->
 
 <!-- Operating System -->
-<os>SL6</os>
+<os>SL7</os>
 
 <!-- Batch resources -->
 <resource>DEDICATED,OPPORTUNISTIC</resource>
