@@ -181,9 +181,14 @@ namespace stoppingcosmicmuonselection {
 
     if (_trackT0 == INV_DBL) {
       if (CorrectPosAndGetT0(_recoStartPoint,_recoEndPoint) == INV_DBL) return false;
+      trackInfo.isAnodeCrosserPandora = false;
+      trackInfo.isAnodeCrosserMine = true;
     }
-    else
+    else {
       std::cout << "Track tagged by Pandora." << std::endl;
+      trackInfo.isAnodeCrosserPandora = true;
+      trackInfo.isAnodeCrosserMine = false;
+    }
 
     bool goodEndPoint = geoHelper.IsPointInVolume(geoHelper.GetFiducialVolumeBounds(),_recoEndPoint);
     if (!goodEndPoint) {
@@ -319,6 +324,7 @@ namespace stoppingcosmicmuonselection {
 
     // All cuts passed, this is likely a cathode-crossing stopping muon.
     _isACathodeCrosser = true;
+    trackInfo.isCathodeCrosser = true;
     return true;
 
   }
