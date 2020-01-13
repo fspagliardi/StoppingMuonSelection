@@ -25,6 +25,11 @@ namespace stoppingcosmicmuonselection {
     double trackLength;
     double trackID;
 
+    // Characterisation
+    bool isCathodeCrosser;
+    bool isAnodeCrosserPandora;
+    bool isAnodeCrosserMine;
+
     // Truth information
     int pdg;
     TVector3 trueStartPoint;
@@ -33,6 +38,9 @@ namespace stoppingcosmicmuonselection {
     double trueTrackID;
 
     void Reset() {
+      isCathodeCrosser = false;
+      isAnodeCrosserPandora = false;
+      isAnodeCrosserMine = false;
       evNumber = INV_INT;
       trackT0 = INV_DBL;
       recoStartPoint.SetXYZ(INV_DBL,INV_DBL,INV_DBL);
