@@ -61,7 +61,7 @@ namespace stoppingcosmicmuonselection {
   // Determine if the PFParticle is a selected cathode crosser
   bool StoppingMuonSelectionAlg::IsStoppingAnodeCrosser(art::Event const &evt,
                                                         recob::PFParticle const &thisParticle) {
-    bool DEBUG = false;
+    bool DEBUG = true;
     Reset();
     _evNumber = evt.id().event();
 
