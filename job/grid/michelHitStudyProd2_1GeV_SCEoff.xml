@@ -41,11 +41,12 @@
   <fcl>runMichelStudyProd2.fcl</fcl>
   <inputdef>PDSPProd2_MC_1GeV_reco_sce_off</inputdef>
   <outdir>/pnfs/dune/scratch/users/fspaglia/&release;/&name;</outdir>
-    <workdir>/pnfs/dune/scratch/users/fspaglia/&release;/&name;</workdir>
-    <numjobs>1100</numjobs>
-    <!--schema>root</schema-->
-    <anadatatier>full-reconstructed</anadatatier>
-    <jobsub>-f /pnfs/dune/persistent/users/fspaglia/MCdEdxSuperBinning.root --memory=4000 --expected-lifetime=3h</jobsub>
+  <workdir>/pnfs/dune/scratch/users/fspaglia/&release;/&name;</workdir>
+  <numjobs>3201</numjobs>
+  <schema>root</schema>
+  <maxfilesperjob>3</maxfilesperjob>
+  <anadatatier>full-reconstructed</anadatatier>
+  <jobsub>-f /pnfs/dune/persistent/users/fspaglia/MCdEdxSuperBinning.root --memory=4000 --expected-lifetime=3h</jobsub>
 </stage>
 
 <filetype>&file_type;</filetype>
