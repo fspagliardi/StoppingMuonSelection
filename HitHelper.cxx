@@ -248,7 +248,7 @@ namespace stoppingcosmicmuonselection {
   }
 
   // Check if vector of hits contains at least one hit on the cryostat side.
-  bool HitHelper::AreThereHitsOnCryoSide(const artPtrHitVec &hits) {
+  bool HitHelper::AreThereHitsOnCryoSide(const std::vector<const recob::Hit*> &hits) {
 
     for (auto const &hit : hits) {
       if (geoHelper.IsTPCOnCryoSide(hit->WireID().TPC))

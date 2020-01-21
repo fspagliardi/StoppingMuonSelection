@@ -109,7 +109,7 @@ namespace stoppingcosmicmuonselection {
     void InitHitImageHisto(TProfile2D *&image, const size_t &planeNumber, const std::string &name);
 
     // Check if vector of hits contain hits on the cryostat side.
-    bool AreThereHitsOnCryoSide(const artPtrHitVec &hits);
+    bool AreThereHitsOnCryoSide(const std::vector<const recob::Hit*> &hits);
 
     // Set the parameters from the FHICL file
     void reconfigure(fhicl::ParameterSet const &p);
