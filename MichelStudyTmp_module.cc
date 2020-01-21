@@ -84,8 +84,9 @@ namespace stoppingcosmicmuonselection {
       std::cout << "Track accepted." << std::endl;
       if (fIsRecoSelectedCathodeCrosser)
         std::cout << "Track is a CATHODE crosser." << std::endl;
-      else if (fIsRecoSelectedAnodeCrosser)
-        std::cout << "Track is an ANODE crosser." << std::endl;
+      else if (fIsRecoSelectedAnodeCrosser) {
+        std::cout << "Track is an ANODE crosser. Selected by Pandora? " << selectorAlg.GetTrackProperties().isAnodeCrosserPandora << std::endl;
+      }
       std::cout << "Event: " << selectorAlg.GetTrackProperties().evNumber << std::endl;
       std::cout << "trackID: " << selectorAlg.GetTrackProperties().trackID << std::endl;
 
