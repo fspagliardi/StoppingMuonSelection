@@ -57,6 +57,8 @@ namespace stoppingcosmicmuonselection {
         continue;
 
       // Check if this PFParticle is a stopping muon.
+      //      !!!SELECTION STEP!!!
+      //
       if (_selectCC && selectorAlg.IsStoppingCathodeCrosser(evt,thisParticle))
         fIsRecoSelectedCathodeCrosser = true;
       else if (_selectAC && selectorAlg.IsStoppingAnodeCrosser(evt,thisParticle))

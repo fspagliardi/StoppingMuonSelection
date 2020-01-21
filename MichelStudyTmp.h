@@ -119,6 +119,8 @@ private:
   bool fIsRecoSelectedAnodeCrosser = false;
   bool fIsTrueSelectedCathodeCrosser = false;
   bool fIsTrueSelectedAnodeCrosser = false;
+  bool fIsAnodePandora = false;
+  bool fIsAnodeMine = false;
   std::vector<double> f_michelHitsMichelScore;
   std::vector<double> f_muonHitsMichelScore;
   // Objects for TTree
@@ -191,6 +193,8 @@ void MichelStudyTmp::beginJob()
   fTrackTree->Branch("isTrueSelectedCathodeCrosser",&fIsTrueSelectedCathodeCrosser);
   fTrackTree->Branch("isRecoSelectedAnodeCrosser",&fIsRecoSelectedAnodeCrosser);
   fTrackTree->Branch("isTrueSelectedAnodeCrosser",&fIsTrueSelectedAnodeCrosser);
+  fTrackTree->Branch("isAnodePandora", &fIsAnodePandora);
+  fTrackTree->Branch("isAnodeMine", &fIsAnodeMine);
   fTrackTree->Branch("filename", &filename);
   fTrackTree->Branch("g_imageCollection",&fg_imageCollection);
   fTrackTree->Branch("g_imageCollectionNoMichel",&fg_imageCollectionNoMichel);
@@ -295,6 +299,8 @@ void MichelStudyTmp::UpdateTTreeVariableWithTrackProperties(const trackPropertie
   fTStartT        = trackInfo.trueStartT;;
   fTEndT          = trackInfo.trueEndT;
   fTrackID        = trackInfo.trueTrackID;
+  fIsAnodePandora = trackInfo.isAnodeCrosserPandora;
+  fIsAnodeMine    = trackInfo.isAnodeCrosserMine;
 }
 
 } // namespace
