@@ -244,6 +244,18 @@ namespace stoppingcosmicmuonselection {
     return INV_DBL;
   }
 
+  // Check if TPC number is on the cryostat side.
+  bool GeometryHelper::IsTPCOnCryoSide(const unsigned int &hit_tpcid) {
+
+    if (hit_tpcid == tpcIndecesBLout[0] || hit_tpcid == tpcIndecesBRout[0] ||
+        hit_tpcid == tpcIndecesBLout[1] || hit_tpcid == tpcIndecesBRout[1] ||
+        hit_tpcid == tpcIndecesBLout[2] || hit_tpcid == tpcIndecesBRout[2])
+
+      return true;
+
+    return false;
+  }
+
 } // end of namespace stoppingcosmicmuonselection
 
 #endif
