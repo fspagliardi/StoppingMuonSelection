@@ -45,11 +45,11 @@ namespace stoppingcosmicmuonselection {
 
     // Get the vector of art::Ptr to hit for the given track
     const artPtrHitVec GetArtPtrToHitVect(const art::FindManyP<recob::Hit> &fmht,
-                                                               const size_t &trackIndex);
+                                          const size_t &trackIndex);
 
     // Get hit list on a given plane.
     artPtrHitVec GetHitsOnAPlane(const size_t &planeNumb,
-                                       const artPtrHitVec &allHits);
+                                 const artPtrHitVec &allHits);
 
     // Get XYZ position for that hit
     TVector3 GetHitXYZ(const art::Ptr<recob::Hit> &hitp,
@@ -107,6 +107,9 @@ namespace stoppingcosmicmuonselection {
 
     // Initialise the image for a series of hit for a given plane
     void InitHitImageHisto(TProfile2D *&image, const size_t &planeNumber, const std::string &name);
+
+    // Check if vector of hits contain hits on the cryostat side.
+    bool AreThereHitsOnCryoSide(const artPtrHitVec &hits);
 
     // Set the parameters from the FHICL file
     void reconfigure(fhicl::ParameterSet const &p);

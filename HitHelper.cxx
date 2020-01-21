@@ -247,6 +247,16 @@ namespace stoppingcosmicmuonselection {
     image = new TProfile2D(name.c_str(),name.c_str(),nWires,0,nWires,nTicks,0,nTicks);
   }
 
+  // Check if vector of hits contains at least one hit on the cryostat side.
+  bool HitHelper::AreThereHitsOnCryoSide(const artPtrHitVec &hits) {
+
+    for (auto const &hit : hits) {
+      if (geoHelper.IsTPCOnCryoSide(hit->WireID().TPC))
+        return true;
+    }
+    return false;
+  }
+
   // Set the parameters from the FHICL file
   void HitHelper::reconfigure(fhicl::ParameterSet const &p) {
     _electronEnergyFractionToCallMichelHits = p.get<double>("electronEnergyFractionToCallMichelHits", 0.7);
