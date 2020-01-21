@@ -190,6 +190,16 @@ namespace stoppingcosmicmuonselection {
       trackInfo.isAnodeCrosserMine = false;
     }
 
+    // Check if there are hits on the cryostat side if the track is selected by Pandora.
+    if (trackInfo.isAnodeCrosserPandora) {
+      // Get hit vector.
+      auto const &trackHits = pfpUtil.GetPFParticleHits(thisParticle,evt,fPFParticleTag);
+      if (!hitHelper.AreThereHitsOnCryoSide(trackHits)) {
+        if(DEBUG) std::cout << "There are hits in the cryostat sides." << std::endl;
+        return false;
+      }
+    }
+
     bool goodEndPoint = geoHelper.IsPointInVolume(geoHelper.GetFiducialVolumeBounds(),_recoEndPoint);
     if (!goodEndPoint) {
       if(DEBUG) std::cout << "Track's end point not accepted." << std::endl;

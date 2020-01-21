@@ -27,6 +27,7 @@
 #include "lardata/DetectorInfoServices/DetectorPropertiesService.h"
 
 #include "GeometryHelper.h"
+#include "HitHelper.h"
 #include "SpacePointAlg.h"
 #include "DataTypes.h"
 
@@ -105,6 +106,7 @@ namespace stoppingcosmicmuonselection {
 
     // Helpers and algorithms
     GeometryHelper geoHelper;
+    HitHelper      hitHelper;
 
     // Declare handle for particle inventory service
     art::ServiceHandle<cheat::ParticleInventoryService> pi_serv;
