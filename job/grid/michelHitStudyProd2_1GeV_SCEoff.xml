@@ -23,7 +23,7 @@
 <!--maxfilesperjob>1</maxfilesperjob-->
 
 <!-- Operating System -->
-<os>SL6</os>
+<os>SL7</os>
 
 <!-- Batch resources -->
 <resource>DEDICATED,OPPORTUNISTIC</resource>
@@ -42,9 +42,9 @@
   <inputdef>PDSPProd2_MC_1GeV_reco_sce_off</inputdef>
   <outdir>/pnfs/dune/scratch/users/fspaglia/&release;/&name;</outdir>
   <workdir>/pnfs/dune/scratch/users/fspaglia/&release;/&name;</workdir>
-  <numjobs>3201</numjobs>
+  <numjobs>500</numjobs>
   <schema>root</schema>
-  <maxfilesperjob>3</maxfilesperjob>
+  <!--maxfilesperjob>3</maxfilesperjob-->
   <anadatatier>full-reconstructed</anadatatier>
   <jobsub>-f /pnfs/dune/persistent/users/fspaglia/MCdEdxSuperBinning.root --memory=4000 --expected-lifetime=3h</jobsub>
 </stage>
