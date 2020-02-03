@@ -26,7 +26,7 @@ namespace stoppingcosmicmuonselection {
     double LandauVav(double *x, double *p);
 
     // Return MPV of dEdx according to landau-vavilov
-    double LandauVav(double &resRange);
+    double LandauVav(double &resRange, const double &trackPitch);
 
     // Get the dEdx from the MC simulation.
     double GetMCdEdx(const double &resRange);

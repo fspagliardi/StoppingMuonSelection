@@ -24,6 +24,7 @@ namespace stoppingcosmicmuonselection {
   // Get the calorimetry from the PFParticle
   void CalorimetryHelper::Set(const recob::PFParticle &thisParticle, art::Event const &evt, const int &plane) {
     Reset();
+    bool correct_dQdx = true;
     // Set variable to see if it's data or MC (different histo scales)
     if (evt.isRealData()) _isData = true;
     const recob::Track &track = *(pfpUtil.GetPFParticleTrack(thisParticle,evt,fPFParticleTag,fTrackerTag));
@@ -41,12 +42,16 @@ namespace stoppingcosmicmuonselection {
         //std::cout << "TpIndex: " << (_calos[itcal].TpIndices())[itHit] << std::endl;
         auto const & TrackPos = (_calos[itcal].XYZ())[itHit];
         _dqdx.push_back((_calos[itcal].dQdx())[itHit]);
+        if (correct_dQdx)
+          _dqdx.at(_dqdx.size()-1) *= DqdxCorrection();
         _dedx.push_back((_calos[itcal].dEdx())[itHit]);
         _resrange.push_back((_calos[itcal].ResidualRange())[itHit]);
         _hitx.push_back(TrackPos.X());
     	  _hity.push_back(TrackPos.Y());
     	  _hitz.push_back(TrackPos.Z());
         _track_pitch.push_back((_calos[itcal].TrkPitchVec())[itHit]);
+        if (correct_dQdx)
+          _track_pitch.at(_track_pitch.size()-1) /= DqdxCorrection();
         // Get Hit Peak Time
         //const size_t & hitIndex = (_calos[itcal].TpIndices())[itHit];
         //const auto & thisHit = allHits[hitIndex];
@@ -233,11 +238,10 @@ namespace stoppingcosmicmuonselection {
     const std::vector<double> &resRangeOrd = GetResRangeOrdered();
     const std::vector<double> &trackPitch = GetTrackPitch();
     const std::vector<double> &corrFactor = GetCorrFactor();
-    double p[2] = {(tp_min+tp_max)/2,0};
     for (size_t it = 0; it < dQdx.size(); it++) {
       if (trackPitch[it]<tp_min || trackPitch[it]>tp_max) continue;
       double rex = resRangeOrd[it];
-      double dEdx = truedEdxHelper.LandauVav(&rex,p);
+      double dEdx = truedEdxHelper.LandauVav(rex,(tp_min+tp_max)/2);
       h_dQdEVsRR->Fill(resRangeOrd[it],dQdx[it]*corrFactor[it]/dEdx);
     }
   }
@@ -247,6 +251,11 @@ namespace stoppingcosmicmuonselection {
     fTrackerTag = p.get<std::string>("TrackerTag");
     fCalorimetryTag = p.get<std::string>("CalorimetryTag");
     fPFParticleTag = p.get<std::string>("PFParticleTag");
+  }
+
+  // Return factor to correct dQdx values from bug in calorimetry module.
+  double CalorimetryHelper::DqdxCorrection() {
+    return geom->WirePitch(0)/geom->WirePitch(2);
   }
 
   // Reset

@@ -40,11 +40,11 @@ namespace stoppingcosmicmuonselection {
   }
 
   // Return MPV of dEdx according to landau-vavilov
-  double TruedEdxHelper::LandauVav(double &resRange) {
+  double TruedEdxHelper::LandauVav(double &resRange, const double &trackPitch) {
     double kEn = ResRangeToKEnergy(resRange);
     double yb = GetBetaGammaFromKEnergy(kEn);
     double d = DensityEffect(yb); // density correction
-    double pars[2] = {0.75, d};
+    double pars[2] = {trackPitch, d};
     return LandauVav(&resRange, pars);
   }
 

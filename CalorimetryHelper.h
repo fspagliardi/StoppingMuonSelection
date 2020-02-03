@@ -93,6 +93,9 @@ namespace stoppingcosmicmuonselection {
     // Set the parameters from the FHICL file
     void reconfigure(fhicl::ParameterSet const &p);
 
+    // Return factor to correct dQdx values from bug in calorimetry module.
+    double DqdxCorrection();
+
     // Reset
     void Reset();
 

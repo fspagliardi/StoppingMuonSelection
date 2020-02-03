@@ -6,7 +6,7 @@
     <!ENTITY release "v08_30_02">
     <!ENTITY file_type "mc">
     <!ENTITY run_type "physics">
-    <!ENTITY name "MichelStudy_3ms">
+    <!ENTITY name "MichelStudyProd2_1GeV_SCEon">
     <!ENTITY tag "ana">
     ]>
 
@@ -20,10 +20,10 @@
 <!-- Make sure we keep a 1-to-1 mapping with the SAM files -->
 <!-- Number of events large enough that we always process all events -->
 <numevents>10000000</numevents>
-<maxfilesperjob>1</maxfilesperjob>
+<!--maxfilesperjob>1</maxfilesperjob-->
 
 <!-- Operating System -->
-<os>SL6</os>
+<os>SL7</os>
 
 <!-- Batch resources -->
 <resource>DEDICATED,OPPORTUNISTIC</resource>
@@ -37,15 +37,15 @@
 
 <check>1</check>
 
-<stage name = "michelStudyAidanFiles">
-  <fcl>runMichelStudy.fcl</fcl>
-  <inputlist>/pnfs/dune/resilient/users/fspaglia/listAidan.txt</inputlist>
-  <outdir>/pnfs/dune/scratch/users/fspaglia/&release;/&name;/AidanFiles</outdir>
-    <workdir>/pnfs/dune/scratch/users/fspaglia/&release;/&name;/AidanFiles</workdir>
-    <numjobs>100</numjobs>
-    <!--schema>root</schema-->
-    <anadatatier>full-reconstructed</anadatatier>
-    <jobsub>-f /pnfs/dune/persistent/users/fspaglia/MCdEdxSuperBinning.root --memory=8000 --expected-lifetime=2h</jobsub>
+<stage name = "runProd2">
+  <fcl>runMichelStudyProd2.fcl</fcl>
+  <inputdef>PDSPProd2_MC_1GeV_reco_sce_datadriven</inputdef>
+  <outdir>/pnfs/dune/scratch/users/fspaglia/&release;/&name;</outdir>
+  <workdir>/pnfs/dune/scratch/users/fspaglia/&release;/&name;</workdir>
+  <numjobs>500</numjobs>
+  <schema>root</schema>
+  <anadatatier>full-reconstructed</anadatatier>
+  <jobsub>-f /pnfs/dune/persistent/users/fspaglia/MCdEdxSuperBinning.root --memory=4000 --expected-lifetime=3h</jobsub>
 </stage>
 
 <filetype>&file_type;</filetype>
