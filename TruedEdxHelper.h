@@ -31,6 +31,9 @@ namespace stoppingcosmicmuonselection {
     // Get the dEdx from the MC simulation.
     double GetMCdEdx(const double &resRange);
 
+    // Work out the density effect based on Sternheimer parametrization.
+    double DensityEffect(const double &yb);
+
     // Get relativist beta given the kinetic energy
     double GetBetaFromkEnergy(const double &kEnergy);
 
@@ -47,7 +50,7 @@ namespace stoppingcosmicmuonselection {
   private:
 
     TH1D *_h_dEdx;
-    
+
     // Declare handle for detector properties
     const detinfo::DetectorProperties *detprop = lar::providerFrom<detinfo::DetectorPropertiesService>();
 

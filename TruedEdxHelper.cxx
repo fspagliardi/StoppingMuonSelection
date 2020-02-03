@@ -22,8 +22,7 @@ namespace stoppingcosmicmuonselection {
   double TruedEdxHelper::LandauVav(double *x, double *p)  {
     double resRange = x[0];
     double X = p[0] * LArdensity;
-    double d = p[1]; // density correction
-  	//double d = 0;
+  	double d = p[1];
   	double Z = 18;
     double mc2 = 0.5109989461; // MeV
     double K = 0.307075; // MeV cm2 / mol
@@ -42,7 +41,10 @@ namespace stoppingcosmicmuonselection {
 
   // Return MPV of dEdx according to landau-vavilov
   double TruedEdxHelper::LandauVav(double &resRange) {
-    double pars[2] = {0.75, 0};
+    double kEn = ResRangeToKEnergy(resRange);
+    double yb = GetBetaGammaFromKEnergy(kEn);
+    double d = DensityEffect(yb); // density correction
+    double pars[2] = {0.75, d};
     return LandauVav(&resRange, pars);
   }
 
@@ -50,6 +52,26 @@ namespace stoppingcosmicmuonselection {
   double TruedEdxHelper::GetMCdEdx(const double &resRange) {
     double MCdEdx = _h_dEdx->GetBinContent(_h_dEdx->FindBin(resRange));
     return MCdEdx;
+  }
+
+  // Work out the density effect based on Sternheimer parametrization. (https://journals.aps.org/prb/pdf/10.1103/PhysRevB.3.3681)
+  double TruedEdxHelper::DensityEffect(const double &yb) {
+    double x = TMath::Log10(yb);
+    // See also https://www.sciencedirect.com/science/article/pii/S0092640X01908617
+    // page 204
+    double C = -5.2146; // Always negative
+    double x1 = 3.0;
+    double x0 = 0.2;
+    double m = 3.0;
+    double a = 0.19559;
+    if (x >= x1) {
+      return 2*TMath::Log(10)*x+C;
+    }
+    else if (x <= x0)
+      return 0;
+    else {
+      return 2*TMath::Log(10)*x + C + a*TMath::Power(x1-x,m);
+    }
   }
 
   // Get relativist beta given the kinetic energy
