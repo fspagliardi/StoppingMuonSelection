@@ -59,6 +59,7 @@ namespace stoppingcosmicmuonselection {
     double x = TMath::Log10(yb);
     // See also https://www.sciencedirect.com/science/article/pii/S0092640X01908617
     // page 204
+    // values eventually taken from http://pdg.lbl.gov/2019/AtomicNuclearProperties/MUE/muE_liquid_argon.pdf
     double C = -5.2146; // Always negative
     double x1 = 3.0;
     double x0 = 0.2;
