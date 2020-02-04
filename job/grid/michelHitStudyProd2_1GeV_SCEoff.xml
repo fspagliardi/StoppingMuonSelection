@@ -37,11 +37,23 @@
 
 <check>1</check>
 
-<stage name = "runProd2">
+<stage name = "runProd2Anode">
   <fcl>runMichelStudyProd2.fcl</fcl>
   <inputdef>PDSPProd2_MC_1GeV_reco_sce_off</inputdef>
-  <outdir>/pnfs/dune/scratch/users/fspaglia/&release;/&name;</outdir>
-  <workdir>/pnfs/dune/scratch/users/fspaglia/&release;/&name;</workdir>
+  <outdir>/pnfs/dune/scratch/users/fspaglia/&release;/&name;_anode</outdir>
+  <workdir>/pnfs/dune/scratch/users/fspaglia/&release;/&name;_anode</workdir>
+  <numjobs>500</numjobs>
+  <schema>root</schema>
+  <!--maxfilesperjob>3</maxfilesperjob-->
+  <anadatatier>full-reconstructed</anadatatier>
+  <jobsub>-f /pnfs/dune/persistent/users/fspaglia/MCdEdxSuperBinning.root --memory=4000 --expected-lifetime=3h</jobsub>
+</stage>
+
+<stage name = "runProd2Cathode">
+  <fcl>runMichelStudyProd2_Cathode.fcl</fcl>
+  <inputdef>PDSPProd2_MC_1GeV_reco_sce_off</inputdef>
+  <outdir>/pnfs/dune/scratch/users/fspaglia/&release;/&name;_cathode</outdir>
+  <workdir>/pnfs/dune/scratch/users/fspaglia/&release;/&name;_cathode</workdir>
   <numjobs>500</numjobs>
   <schema>root</schema>
   <!--maxfilesperjob>3</maxfilesperjob-->
