@@ -75,9 +75,9 @@ namespace stoppingcosmicmuonselection {
       }
 
       // Check if the matched PFParticle is a true stopping muon
-      if (fIsRecoSelectedCathodeCrosser)
+      if (!evt.isRealData() && fIsRecoSelectedCathodeCrosser)
         fIsTrueSelectedCathodeCrosser = selectorAlg.IsTrueParticleACathodeCrossingStoppingMuon(evt,thisParticle);
-      else if (fIsRecoSelectedAnodeCrosser)
+      else if (!evt.isRealData() && fIsRecoSelectedAnodeCrosser)
         fIsTrueSelectedAnodeCrosser = selectorAlg.IsTrueParticleAnAnodeCrossingStoppingMuon(evt,thisParticle);
 
       std::cout << "**************************" << std::endl;
@@ -123,6 +123,7 @@ namespace stoppingcosmicmuonselection {
 
       for (const art::Ptr<recob::Hit> &hitp : trackHits) {
         if (hitp->WireID().Plane != 2) continue;
+        if (evt.isRealData()) continue;
         if (hitHelper.IsHitMichelLike(hitp,selectorAlg.GetTrackProperties().recoEndPoint,fmthm,tracklist,trackIndex))
           numbMichelLikeHits++;
       }
@@ -132,13 +133,15 @@ namespace stoppingcosmicmuonselection {
       // Store vector of ordered scores.
       std::vector<double> scores = cnnHelper.GetScoreVector(hitResults,hitPlaneAlg.GetOrderedHitVec());
       cnnHelper.FillHitScoreGraph2D(fg_imageScore, hitResults, hitPlaneAlg.GetOrderedHitVec());
-      const artPtrHitVec &michelLikeHits = hitHelper.GetMichelLikeHits(hitPlaneAlg.GetOrderedHitVec(),selectorAlg.GetTrackProperties().recoEndPoint,fmthm,tracklist,trackIndex);
-      const artPtrHitVec &muonLikeHits = hitHelper.GetMuonLikeHits(hitPlaneAlg.GetOrderedHitVec(),selectorAlg.GetTrackProperties().recoEndPoint,fmthm,tracklist,trackIndex);
-      f_michelHitsMichelScore = cnnHelper.GetScoreVector(hitResults, michelLikeHits);
-      f_muonHitsMichelScore = cnnHelper.GetScoreVector(hitResults, muonLikeHits);
+      if (!evt.isRealData()) {
+        const artPtrHitVec &michelLikeHits = hitHelper.GetMichelLikeHits(hitPlaneAlg.GetOrderedHitVec(),selectorAlg.GetTrackProperties().recoEndPoint,fmthm,tracklist,trackIndex);
+        const artPtrHitVec &muonLikeHits = hitHelper.GetMuonLikeHits(hitPlaneAlg.GetOrderedHitVec(),selectorAlg.GetTrackProperties().recoEndPoint,fmthm,tracklist,trackIndex);
+        f_michelHitsMichelScore = cnnHelper.GetScoreVector(hitResults, michelLikeHits);
+        f_muonHitsMichelScore = cnnHelper.GetScoreVector(hitResults, muonLikeHits);
+      }
       const artPtrHitVec &hitsNoMichel = hitPlaneAlg.GetHitVecNoMichel(hitResults,_michelScoreThreshold,_michelScoreThresholdAvg);
 
-      if (numbMichelLikeHits > _minNumbMichelLikeHit) {
+      if (numbMichelLikeHits > _minNumbMichelLikeHit && !evt.isRealData()) {
         hitHelper.FillTrackGraph2D(fg_imageCollection,hitPlaneAlg.GetOrderedHitVec(),
                                    selectorAlg.GetTrackProperties().recoEndPoint,2,selectorAlg.GetTrackProperties().trackT0);
         hitHelper.FillTrackGraph2D(fg_imageCollectionNoMichel,hitsNoMichel,
