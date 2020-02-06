@@ -42,11 +42,11 @@
   <inputdef>protodune-sp_runset_5387_reco_v08_27_XX_v0</inputdef>
   <outdir>/pnfs/dune/scratch/users/fspaglia/&release;/&name;_anode</outdir>
   <workdir>/pnfs/dune/scratch/users/fspaglia/&release;/&name;_anode</workdir>
-  <numjobs>500</numjobs>
+  <numjobs>94</numjobs>
   <schema>root</schema>
   <!--maxfilesperjob>3</maxfilesperjob-->
   <anadatatier>full-reconstructed</anadatatier>
-  <jobsub>-f /pnfs/dune/persistent/users/fspaglia/MCdEdxSuperBinning.root --memory=4000 --expected-lifetime=3h</jobsub>
+  <jobsub>-f /pnfs/dune/persistent/users/fspaglia/MCdEdxSuperBinning.root --memory=4000 --expected-lifetime=4h</jobsub>
 </stage>
 
 <stage name = "runProd2Cathode">
