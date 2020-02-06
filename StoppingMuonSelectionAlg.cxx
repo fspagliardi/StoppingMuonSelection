@@ -350,6 +350,7 @@ namespace stoppingcosmicmuonselection {
         //std::cout << "Particle ID: " << particleP->TrackId() << " Pdg: " << particleP->PdgCode() << std::endl;
         //int pdg_mother = pi_serv->TrackIdToMotherParticle_P(particleP->TrackId())->PdgCode();
         //std::cout << "StoppingMuonSelectionAlg::IsTrackMatchedToTrueCosmicTrack: " << "pdg of mother particle: " << pdg_mother << std::endl;
+        //std::cout << "process: " << particleP->Process() << std::endl;
         return true;
       }
       else
