@@ -346,8 +346,12 @@ namespace stoppingcosmicmuonselection {
     if (!evt.isRealData()) {
       particleP = truthUtil.GetMCParticleFromPFParticle(thisParticle,evt,fPFParticleTag);
       if (particleP == 0x0) return false;
-      if ((pi_serv->TrackIdToMCTruth_P(particleP->TrackId())->Origin()) == simb::kCosmicRay)
+      if ((pi_serv->TrackIdToMCTruth_P(particleP->TrackId())->Origin()) == simb::kCosmicRay) {
+        //std::cout << "Particle ID: " << particleP->TrackId() << " Pdg: " << particleP->PdgCode() << std::endl;
+        //int pdg_mother = pi_serv->TrackIdToMotherParticle_P(particleP->TrackId())->PdgCode();
+        //std::cout << "StoppingMuonSelectionAlg::IsTrackMatchedToTrueCosmicTrack: " << "pdg of mother particle: " << pdg_mother << std::endl;
         return true;
+      }
       else
         return false;
     }
