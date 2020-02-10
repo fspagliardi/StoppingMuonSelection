@@ -38,7 +38,7 @@
 <check>1</check>
 
 <stage name = "runProd2Anode">
-  <fcl>runMichelStudyProd2.fcl</fcl>
+  <fcl>runMichelStudyProd2_Anode.fcl</fcl>
   <inputdef>PDSPProd2_MC_1GeV_reco_sce_off</inputdef>
   <outdir>/pnfs/dune/scratch/users/fspaglia/&release;/&name;_anode</outdir>
   <workdir>/pnfs/dune/scratch/users/fspaglia/&release;/&name;_anode</workdir>

@@ -38,7 +38,7 @@
 <check>1</check>
 
 <stage name = "runProd2Anode">
-  <fcl>runMichelStudyProd2_data.fcl</fcl>
+  <fcl>runMichelStudyProd2_Anode_data.fcl</fcl>
   <inputdef>protodune-sp_runset_5387_reco_v08_27_XX_v0</inputdef>
   <outdir>/pnfs/dune/scratch/users/fspaglia/&release;/&name;_anode</outdir>
   <workdir>/pnfs/dune/scratch/users/fspaglia/&release;/&name;_anode</workdir>
@@ -50,7 +50,7 @@
 </stage>
 
 <stage name = "runProd2Cathode">
-  <fcl>runMichelStudyProd2_Cathode.fcl</fcl>
+  <fcl>runMichelStudyProd2_Cathode_data.fcl</fcl>
   <inputdef>PDSPProd2_MC_1GeV_reco_sce_off</inputdef>
   <outdir>/pnfs/dune/scratch/users/fspaglia/&release;/&name;_cathode</outdir>
   <workdir>/pnfs/dune/scratch/users/fspaglia/&release;/&name;_cathode</workdir>
