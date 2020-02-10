@@ -119,6 +119,7 @@ namespace stoppingcosmicmuonselection {
     bool _isValid = false;
     bool _isCalorimetrySet = false;
     bool _isData = false;
+    int _plane;
 
     std::string fTrackerTag;
     std::string fCalorimetryTag;

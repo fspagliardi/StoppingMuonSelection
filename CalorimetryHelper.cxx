@@ -24,15 +24,25 @@ namespace stoppingcosmicmuonselection {
   // Get the calorimetry from the PFParticle
   void CalorimetryHelper::Set(const recob::PFParticle &thisParticle, art::Event const &evt, const int &plane) {
     Reset();
+    _plane = plane;
     bool correct_dQdx = true;
     // Set variable to see if it's data or MC (different histo scales)
     if (evt.isRealData()) _isData = true;
     const recob::Track &track = *(pfpUtil.GetPFParticleTrack(thisParticle,evt,fPFParticleTag,fTrackerTag));
     _calos = trackUtil.GetRecoTrackCalorimetry(track,evt,fTrackerTag,fCalorimetryTag);
     _isCalorimetrySet = true;
-    if (!IsValid()) return;
+    
+    if (!IsValid()) {
+      std::cout << "CalorimetryHelper.cxx: Calorimetry invalid for plane: " << plane << std::endl;
+      return;
+    }
+    
     for (size_t itcal = 0; itcal < _calos.size(); itcal++) {
-      if (!(_calos[itcal].PlaneID().isValid)) {std::cout << "CalorimetryHelper.cxx: " << "plane not valid"<< std::endl;continue;}
+      if (!(_calos[itcal].PlaneID().isValid)) {
+        std::cout << "CalorimetryHelper.cxx: " << "plane at entry " << itcal << " not valid"<< std::endl;
+        continue;
+      }
+
       int planeNumb = _calos[itcal].PlaneID().Plane;
       if (plane != planeNumb) continue;
       size_t const Nhits = _calos[itcal].dEdx().size();
@@ -73,19 +83,26 @@ namespace stoppingcosmicmuonselection {
 
   // Check if the calorimetry is valid
   bool CalorimetryHelper::IsValid() {
-    if (_calos.size() == 0) {
-      _isValid = false;
-      return false;
+    
+    _isValid = false;
+    // Check that the size is not zero.
+    if (_calos.size() == 0) _isValid = false;
+    // If it's zero the loop is ignored
+    for (size_t itcal = 0; itcal < _calos.size(); itcal++) {
+      if (!(_calos[itcal].PlaneID().isValid)) continue;
+      int planeNumb = _calos[itcal].PlaneID().Plane;
+      if (_plane == planeNumb) {
+        _isValid = true;
+        break;
+      }
     }
-    else {
-      _isValid = true;
-      return true;
-    }
+    return _isValid;
+    
   }
 
   // Order the residual range with respect to the track direction
-  void CalorimetryHelper::OrderResRange() {
-      std::vector<double> res_vect;
+  void CalorimetryHelper::OrderResRange() { 
+    std::vector<double> res_vect;
       for (size_t i = 0; i < _resrange.size();i++) {
         res_vect.push_back(_resrange[i]);
       }
