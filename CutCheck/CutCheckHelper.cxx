@@ -92,8 +92,10 @@ namespace stoppingcosmicmuonselection {
         double _trackPitch = 0.75;
         double _trackPitchTolerance = 0.1;
         caloHelper.Set(thisParticle,evt,2);
-        caloHelper.FillHisto_dQdxVsRR((TH2D *)histo);
-        caloHelper.FillHisto_dQdxVsRR((TH2D *)histo_signal,_trackPitch-_trackPitchTolerance,_trackPitch+_trackPitchTolerance);
+        if (caloHelper.IsValid()) {
+          caloHelper.FillHisto_dQdxVsRR((TH2D *)histo);
+          caloHelper.FillHisto_dQdxVsRR((TH2D *)histo_signal,_trackPitch-_trackPitchTolerance,_trackPitch+_trackPitchTolerance);
+        }
       }
 
     } // end loop on particles.
