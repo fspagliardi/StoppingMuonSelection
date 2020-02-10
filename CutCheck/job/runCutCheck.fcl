@@ -1,0 +1,55 @@
+#include "services_dune.fcl"
+#include "stoppingmuonAlg.fcl"
+#include "caloHelper.fcl"
+#include "protodune_tools_dune.fcl"
+
+process_name: CutCheck
+
+services:
+{
+  IFDH: {}
+  TFileService: {fileName: "%ifb_NMinus1.root"}
+  TimeTracker: {}
+  MemoryTracker: {}
+  RandomNumberGenerator: {}
+  message:  @local::dune_message_services_prod_debug
+  FileCatalogMetadata: @local::art_file_catalog_mc
+  #@table::protodune_services
+  @table::protodune_reco_services
+}
+
+cut_check:
+{
+  module_type:   "CutCheck"
+  PFParticleTag: "pandora"
+  TrackerTag:    "pandoraTrack"
+  trackPitch:               0.75
+  trackPitchTolerance:      0.1
+  selectAC:                 false
+  selectCC:                 true
+  ConfigSubModules:
+  {
+    StoppingMuonSelectionAlg: @local::stoppingmuonAlg
+    CalorimetryHelper:        @local::caloHelper
+  }
+}
+
+source:
+{
+  module_type:RootInput
+  maxEvents: -1
+
+}
+
+physics:
+{
+analyzers:
+{
+  fabioana: @local::cut_check
+
+}
+
+ana: [fabioana]
+
+end_paths: [ana]
+}

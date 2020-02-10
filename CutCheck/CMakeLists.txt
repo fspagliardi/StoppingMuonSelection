@@ -1,8 +1,5 @@
-
-include_directories( $ENV{PANDORA_INC} )
-
 art_make(BASENAME_ONLY
-  LIBRARY_NAME      ProtoDUNEStoppingMuonSelection
+  LIBRARY_NAME CutCheckLib
   LIB_LIBRARIES
     ${ART_FRAMEWORK_CORE}
     ${ART_FRAMEWORK_PRINCIPAL}
@@ -53,8 +50,9 @@ art_make(BASENAME_ONLY
     SignalShapingServiceDUNE10kt_service
     SignalShapingServiceDUNE35t_service
     ProtoDUNEAnaUtils
-  MODULE_LIBRARIES
     ProtoDUNEStoppingMuonSelection
+  MODULE_LIBRARIES
+    CutCheckLib
     ${ART_FRAMEWORK_CORE}
     ${ART_FRAMEWORK_PRINCIPAL}
     ${ART_FRAMEWORK_SERVICES_REGISTRY}
@@ -104,10 +102,10 @@ art_make(BASENAME_ONLY
     SignalShapingServiceDUNE10kt_service
     SignalShapingServiceDUNE35t_service
     ProtoDUNEAnaUtils
+    ProtoDUNEStoppingMuonSelection
   )
 add_subdirectory(job)
 install_headers()
 install_fhicl()
 install_source()
-install_scripts()
-add_subdirectory(CutCheck)
+
