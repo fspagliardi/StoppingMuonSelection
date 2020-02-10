@@ -45,9 +45,9 @@ public:
   void beginJob() override;
   void endJob() override;
   void reconfigure(fhicl::ParameterSet const& p);
-  void respondToOpenInputFile(art::FileBlock const &inputFile) override;
 
 private:
+  size_t evNumber;
 
   CutCheckHelper           cutCheckHelper; // need configuration
   GeometryHelper           geoHelper;
@@ -58,39 +58,6 @@ private:
   bool _selectAC, _selectCC;
   std::string fPFParticleTag, fTrackerTag;
 
-  // Utils
-  protoana::ProtoDUNEPFParticleUtils   pfpUtil;
-
-  // Track Tree stuff
-  TTree *fTrackTree;
-  // Tree variables
-  size_t fEvNumber;
-  int    fPdgID = INV_INT;
-  double fTrackLength = INV_DBL;
-  double fEndX = INV_DBL;
-  double fEndY = INV_DBL;
-  double fEndZ = INV_DBL;
-  double fStartX = INV_DBL;
-  double fStartY = INV_DBL;
-  double fStartZ = INV_DBL;
-  double fRecoTrackID = INV_DBL;
-  double fTEndX = INV_DBL;
-  double fTEndY = INV_DBL;
-  double fTEndZ = INV_DBL;
-  double fTStartX = INV_DBL;
-  double fTStartY = INV_DBL;
-  double fTStartZ = INV_DBL;
-  double fTStartT = INV_DBL;
-  double fTEndT = INV_DBL;
-  double fT0_reco = INV_DBL;
-  double fTrackID = INV_DBL;
-  double ftheta_xz = INV_DBL;
-  double ftheta_yz = INV_DBL;
-  double fMinHitPeakTime = INV_DBL;
-  double fMaxHitPeakTime = INV_DBL;
-
-  // Objects for TTree
-  std::string filename;
   // Histos
   TH2D *h_dQdxVsRR;
   TH2D *h_dQdxVsRR_TP;
@@ -112,6 +79,23 @@ private:
   TH1D *h_maxHitPeakTime;
   TH1D *h_maxHitPeakTime_signal;
 
+  TH1D *h_startXPriori;
+  TH1D *h_startX_signalPriori;
+  TH1D *h_startYPriori;
+  TH1D *h_startY_signalPriori;
+  TH1D *h_startZPriori;
+  TH1D *h_startZ_signalPriori;
+  TH1D *h_endXPriori;
+  TH1D *h_endX_signalPriori;
+  TH1D *h_endYPriori;
+  TH1D *h_endY_signalPriori;
+  TH1D *h_endZPriori;
+  TH1D *h_endZ_signalPriori;
+  TH1D *h_minHitPeakTimePriori;
+  TH1D *h_minHitPeakTime_signalPriori;
+  TH1D *h_maxHitPeakTimePriori;
+  TH1D *h_maxHitPeakTime_signalPriori;
+
 };
 
 CutCheck::CutCheck(fhicl::ParameterSet const & p)
@@ -125,36 +109,50 @@ void CutCheck::beginJob()
 {
   art::ServiceHandle<art::TFileService> tfs;
 
+  art::TFileDirectory PrioriCutCheckDir = tfs->mkdir("PrioriCutCheck");
+  h_startXPriori = PrioriCutCheckDir.make<TH1D>("h_startXPriori","h_startXPriori",400,-400,400);
+  h_startX_signalPriori = PrioriCutCheckDir.make<TH1D>("h_startX_signalPriori","h_startX_signalPriori",400,-400,400);
+  h_startYPriori = PrioriCutCheckDir.make<TH1D>("h_startYPriori","h_startYPriori",400,-100,700);
+  h_startY_signalPriori = PrioriCutCheckDir.make<TH1D>("h_startY_signalPriori","h_startY_signalPriori",400,-100,700);
+  h_startZPriori = PrioriCutCheckDir.make<TH1D>("h_startZPriori","h_startZPriori",450,-100,800);
+  h_startZ_signalPriori = PrioriCutCheckDir.make<TH1D>("h_startZ_signalPriori","h_startZ_signalPriori",450,-100,800);
+  h_endXPriori = PrioriCutCheckDir.make<TH1D>("h_endXPriori","h_endXPriori",400,-400,400);
+  h_endX_signalPriori = PrioriCutCheckDir.make<TH1D>("h_endX_signalPriori","h_endX_signalPriori",400,-400,400);
+  h_endYPriori = PrioriCutCheckDir.make<TH1D>("h_endYPriori","h_endYPriori",400,-400,400);
+  h_endY_signalPriori = PrioriCutCheckDir.make<TH1D>("h_endY_signalPriori","h_endY_signalPriori",400,-400,400);
+  h_endZPriori = PrioriCutCheckDir.make<TH1D>("h_endZPriori","h_endZPriori",400,-400,400);
+  h_endZ_signalPriori = PrioriCutCheckDir.make<TH1D>("h_endZ_signalPriori","h_endZ_signalPriori",400,-400,400);
+  h_minHitPeakTimePriori = PrioriCutCheckDir.make<TH1D>("h_minHitPeakTimePriori","h_minHitPeakTimePriori",3000,0,6000);
+  h_minHitPeakTime_signalPriori = PrioriCutCheckDir.make<TH1D>("h_minHitPeakTime_signalPriori","h_minHitPeakTime_signalPriori",3000,0,6000);
+  h_maxHitPeakTimePriori = PrioriCutCheckDir.make<TH1D>("h_maxHitPeakTimePriori","h_maxHitPeakTimePriori",3000,0,6000);
+  h_maxHitPeakTime_signalPriori = PrioriCutCheckDir.make<TH1D>("h_maxHitPeakTime_signalPriori","h_maxHitPeakTime_signalPriori",3000,0,6000);
+
+  art::TFileDirectory NMinus1Dir = tfs->mkdir("NMinus1");
   // Histograms
-  h_dQdxVsRR = tfs->make<TH2D>("h_dQdxVsRR","h_dQdxVsRR",200,0,200,800,0,800);
-  h_dQdxVsRR_TP = tfs->make<TH2D>("h_dQdxVsRR_TP","h_dQdxVsRR_TP",200,0,200,800,0,800);
-  h_startX = tfs->make<TH1D>("h_startX","h_startX",400,-400,400);
-  h_startX_signal = tfs->make<TH1D>("h_startX_signal","h_startX_signal",400,-400,400);
-  h_startY = tfs->make<TH1D>("h_startY","h_startY",400,-100,700);
-  h_startY_signal = tfs->make<TH1D>("h_startY_signal","h_startY_signal",400,-100,700);
-  h_startZ = tfs->make<TH1D>("h_startZ","h_startZ",450,-100,800);
-  h_startZ_signal = tfs->make<TH1D>("h_startZ_signal","h_startZ_signal",450,-100,800);
-  h_endX = tfs->make<TH1D>("h_endX","h_endX",400,-400,400);
-  h_endX_signal = tfs->make<TH1D>("h_endX_signal","h_endX_signal",400,-400,400);
-  h_endY = tfs->make<TH1D>("h_endY","h_endY",400,-400,400);
-  h_endY_signal = tfs->make<TH1D>("h_endY_signal","h_endY_signal",400,-400,400);
-  h_endZ = tfs->make<TH1D>("h_endZ","h_endZ",400,-400,400);
-  h_endZ_signal = tfs->make<TH1D>("h_endZ_signal","h_endZ_signal",400,-400,400);
-  h_minHitPeakTime = tfs->make<TH1D>("h_minHitPeakTime","h_minHitPeakTime",3000,0,6000);
-  h_minHitPeakTime_signal = tfs->make<TH1D>("h_minHitPeakTime_signal","h_minHitPeakTime_signal",3000,0,6000);
-  h_maxHitPeakTime = tfs->make<TH1D>("h_maxHitPeakTime","h_maxHitPeakTime",3000,0,6000);
-  h_maxHitPeakTime_signal = tfs->make<TH1D>("h_maxHitPeakTime_signal","h_maxHitPeakTime_signal",3000,0,6000);
+  h_dQdxVsRR = NMinus1Dir.make<TH2D>("h_dQdxVsRR","h_dQdxVsRR",200,0,200,800,0,800);
+  h_dQdxVsRR_TP = NMinus1Dir.make<TH2D>("h_dQdxVsRR_TP","h_dQdxVsRR_TP",200,0,200,800,0,800);
+  h_startX = NMinus1Dir.make<TH1D>("h_startX","h_startX",400,-400,400);
+  h_startX_signal = NMinus1Dir.make<TH1D>("h_startX_signal","h_startX_signal",400,-400,400);
+  h_startY = NMinus1Dir.make<TH1D>("h_startY","h_startY",400,-100,700);
+  h_startY_signal = NMinus1Dir.make<TH1D>("h_startY_signal","h_startY_signal",400,-100,700);
+  h_startZ = NMinus1Dir.make<TH1D>("h_startZ","h_startZ",450,-100,800);
+  h_startZ_signal = NMinus1Dir.make<TH1D>("h_startZ_signal","h_startZ_signal",450,-100,800);
+  h_endX = NMinus1Dir.make<TH1D>("h_endX","h_endX",400,-400,400);
+  h_endX_signal = NMinus1Dir.make<TH1D>("h_endX_signal","h_endX_signal",400,-400,400);
+  h_endY = NMinus1Dir.make<TH1D>("h_endY","h_endY",400,-400,400);
+  h_endY_signal = NMinus1Dir.make<TH1D>("h_endY_signal","h_endY_signal",400,-400,400);
+  h_endZ = NMinus1Dir.make<TH1D>("h_endZ","h_endZ",400,-400,400);
+  h_endZ_signal = NMinus1Dir.make<TH1D>("h_endZ_signal","h_endZ_signal",400,-400,400);
+  h_minHitPeakTime = NMinus1Dir.make<TH1D>("h_minHitPeakTime","h_minHitPeakTime",3000,0,6000);
+  h_minHitPeakTime_signal = NMinus1Dir.make<TH1D>("h_minHitPeakTime_signal","h_minHitPeakTime_signal",3000,0,6000);
+  h_maxHitPeakTime = NMinus1Dir.make<TH1D>("h_maxHitPeakTime","h_maxHitPeakTime",3000,0,6000);
+  h_maxHitPeakTime_signal = NMinus1Dir.make<TH1D>("h_maxHitPeakTime_signal","h_maxHitPeakTime_signal",3000,0,6000);
 
 }
 
 void CutCheck::endJob()
 {
   mf::LogVerbatim("CutCheck") << "CutCheck finished job";
-}
-
-void CutCheck::respondToOpenInputFile(art::FileBlock const &inputFile) {
-  filename = inputFile.fileName();
-  std::cout << "Analyzer on file: " << filename << std::endl;
 }
 
 void CutCheck::reconfigure(fhicl::ParameterSet const& p)

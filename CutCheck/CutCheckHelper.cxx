@@ -100,6 +100,65 @@ namespace stoppingcosmicmuonselection {
 
   }
 
+  // Fill distribution for every track and for true cathode crossing tracks.
+  void CutCheckHelper::FillTruthDistributionCathode(art::Event const &evt, const std::vector<recob::PFParticle> &particles,
+                                    TH1D *h_startXPriori, TH1D *h_startX_signalPriori,
+                                    TH1D *h_startYPriori, TH1D *h_startY_signalPriori,
+                                    TH1D *h_startZPriori, TH1D *h_startZ_signalPriori,
+                                    TH1D *h_endXPriori, TH1D *h_endX_signalPriori,
+                                    TH1D *h_endYPriori, TH1D *h_endY_signalPriori,
+                                    TH1D *h_endZPriori, TH1D *h_endZ_signalPriori,
+                                    TH1D *h_minHitPeakTimePriori, TH1D *h_minHitPeakTime_signalPriori,
+                                    TH1D *h_maxHitPeakTimePriori, TH1D *h_maxHitPeakTime_signalPriori) {
+
+    for (unsigned int p = 0; p < particles.size(); p++) {
+
+      // Prepare the selector to digest a new PFParticle
+      selectorAlg.Reset();
+
+      // Get the PFParticle
+      const recob::PFParticle &thisParticle = particles[p];
+
+      // Only consider primary particles
+      if (!thisParticle.IsPrimary()) continue;
+
+      // Skip if the PFParticle is not track-like
+      if (!selectorAlg.IsPFParticleATrack(evt,thisParticle)) continue;
+
+      // If this is MC we want that the PFParticle is matched to a cosmic MCParticle
+      if (!evt.isRealData() && !selectorAlg.IsTrackMatchedToTrueCosmicTrack(evt,thisParticle))
+        continue;
+
+      // Run the selection but just to fill the track properties.
+      selectorAlg.IsStoppingCathodeCrosser(evt, thisParticle);
+      const TVector3 &recoStartPoint = selectorAlg.GetTrackProperties().recoStartPoint;
+      const TVector3 &recoEndPoint = selectorAlg.GetTrackProperties().recoEndPoint;
+      const double &minHitPeakTime = selectorAlg.GetTrackProperties().minHitPeakTime;
+      const double &maxHitPeakTime = selectorAlg.GetTrackProperties().maxHitPeakTime;
+
+      if (selectorAlg.IsTrueParticleACathodeCrossingStoppingMuon(evt, thisParticle)) {
+        h_startX_signalPriori->Fill(recoStartPoint.X());
+        h_startY_signalPriori->Fill(recoStartPoint.Y());
+        h_startZ_signalPriori->Fill(recoStartPoint.Z());
+        h_endX_signalPriori->Fill(recoEndPoint.X());
+        h_endY_signalPriori->Fill(recoEndPoint.Y());
+        h_endZ_signalPriori->Fill(recoEndPoint.Z());
+        h_minHitPeakTime_signalPriori->Fill(minHitPeakTime);
+        h_maxHitPeakTime_signalPriori->Fill(maxHitPeakTime);
+      }
+      h_startXPriori->Fill(recoStartPoint.X());
+      h_startYPriori->Fill(recoStartPoint.Y());
+      h_startZPriori->Fill(recoStartPoint.Z());
+      h_endXPriori->Fill(recoEndPoint.X());
+      h_endYPriori->Fill(recoEndPoint.Y());
+      h_endZPriori->Fill(recoEndPoint.Z());
+      h_minHitPeakTimePriori->Fill(minHitPeakTime);
+      h_maxHitPeakTimePriori->Fill(maxHitPeakTime);
+
+    } // look on particles.
+
+  }
+
   // Configure the selector.
   void CutCheckHelper::reconfigure(fhicl::ParameterSet const &p) {
 
