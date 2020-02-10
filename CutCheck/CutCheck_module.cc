@@ -42,6 +42,17 @@ namespace stoppingcosmicmuonselection {
                                                   h_maxHitPeakTimePriori, h_maxHitPeakTime_signalPriori);
 
     }
+    else if (_selectAC) {
+      std::cout << "Analysing anode-crossers..." << std::endl;
+      cutCheckHelper.ApplyCutsCathode(h_startY, h_startY_signal, "offsetYStartPoint", evt, recoParticles);
+    	cutCheckHelper.ApplyCutsCathode(h_startZ, h_startZ_signal, "offsetZStartPoint", evt, recoParticles);
+      cutCheckHelper.ApplyCutsCathode(h_minHitPeakTime, h_minHitPeakTime_signal, "cutMinHitPeakTime", evt, recoParticles);
+      cutCheckHelper.ApplyCutsCathode(h_maxHitPeakTime, h_maxHitPeakTime_signal, "cutMaxHitPeakTime", evt, recoParticles);
+    	cutCheckHelper.ApplyCutsCathode(h_endX, h_endX_signal, "distanceFiducialVolumeX", evt, recoParticles);
+    	cutCheckHelper.ApplyCutsCathode(h_endY, h_endY_signal, "distanceFiducialVolumeY", evt, recoParticles);
+    	cutCheckHelper.ApplyCutsCathode(h_endZ, h_endZ_signal, "distanceFiducialVolumeZ", evt, recoParticles);
+      cutCheckHelper.ApplyCutsCathode(h_dQdxVsRR, h_dQdxVsRR_TP, "complete", evt, recoParticles);
+    }
 
 
   } // end of analyzer

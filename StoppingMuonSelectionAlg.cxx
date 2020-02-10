@@ -542,6 +542,185 @@ namespace stoppingcosmicmuonselection {
     return true;
   }
 
+  // N-1 cuts for Cathode crossers
+  bool StoppingMuonSelectionAlg::NMinus1Anode(const std::string &excludeCut, art::Event const &evt, const recob::PFParticle &thisParticle) {
+
+    bool DEBUG = false;
+    Reset();
+    _evNumber = evt.id().event();
+
+    // Set the correct boundaries for cathode crossers.
+    geoHelper.SetFiducialBoundOffset(offsetFiducialBounds_AC);
+    geoHelper.InitFiducialVolumeBounds();
+
+    // Get recob::Track from PFParticle
+    const recob::Track &track = GetTrackFromPFParticle(evt,thisParticle);
+    _recoEndPoint = track.End<TVector3>();
+    _recoStartPoint.SetXYZ(track.LocationAtPoint(track.FirstValidPoint()).X(), track.LocationAtPoint(track.FirstValidPoint()).Y(), track.LocationAtPoint(track.FirstValidPoint()).Z());
+    OrderRecoStartEnd(_recoStartPoint, _recoEndPoint);
+    _trackLength = track.Length();
+    _trackID = track.ID();
+
+    std::cout << "Track ID: " << _trackID << std::endl;
+
+    // using the ordered start and end points calculate the angles _theta_xz and _theta_yz
+    _theta_xz = TMath::RadToDeg() * TMath::ATan2(_recoStartPoint.X()-_recoEndPoint.X(), _recoStartPoint.Z()-_recoEndPoint.Z());
+    _theta_yz = TMath::RadToDeg() * TMath::ATan2(_recoStartPoint.Y()-_recoEndPoint.Y(), _recoStartPoint.Z()-_recoEndPoint.Z());
+
+    SetMinAndMaxHitPeakTime(evt,thisParticle,_minHitPeakTime,_maxHitPeakTime);
+
+    if (_trackLength < length_cutoff_AC) {
+      if (DEBUG) std::cout << "Track too short." << std::endl;
+      return false;
+    }
+
+    if (TMath::Abs(_theta_yz-90)<10 || TMath::Abs(_theta_yz+90)<10 || TMath::Abs(_theta_xz-90)<10 || TMath::Abs(_theta_xz+90)<10) {
+      if(DEBUG) std::cout << "Track's angle not accepted." << std::endl;
+      return false;
+    }
+
+    bool goodTrack = false;
+    double *actBounds = geoHelper.GetActiveVolumeBounds();
+    if (excludeCut != "offsetYStartPoint" && excludeCut != "offsetZStartPoint")
+      goodTrack = geoHelper.IsPointYZProjectionInArea(_recoStartPoint,offsetYStartPoint_AC,offsetZStartPoint_AC);
+    else if (excludeCut == "offsetYStartPoint")
+      goodTrack = (_recoStartPoint.Z()>=(actBounds[4]+offsetZStartPoint_AC) && _recoStartPoint.Z()<=(actBounds[5]-offsetZStartPoint_AC));
+    else if (excludeCut == "offsetZStartPoint")
+      goodTrack = (_recoStartPoint.Y()>=(actBounds[2]+offsetYStartPoint_AC) && _recoStartPoint.Y()<=(actBounds[3]-offsetYStartPoint_AC));
+    if (!goodTrack) {
+      if(DEBUG) std::cout << "Track's start point not accepted." << std::endl;
+      return false;
+    }
+
+    if (excludeCut != "cutMinHitPeakTime") {
+      if (_minHitPeakTime <= cutMinHitPeakTime_AC) {
+        if(DEBUG) std::cout << "Track's minHitPeakTime not accepted." << std::endl;
+        return false;
+      }
+    }
+
+    if (excludeCut != "cutMaxHitPeakTime") {
+      if (_maxHitPeakTime >= cutMaxHitPeakTime_AC) {
+        if(DEBUG) std::cout << "Track's maxHitPeakTime not accepted." << std::endl;
+        return false;
+      }
+    }
+
+    if ((TMath::Abs(_recoStartPoint.Z()-geoHelper.GetAPABoundaries()[0])<=cutContourAPA_AC) ||
+       (TMath::Abs(_recoStartPoint.Z()-geoHelper.GetAPABoundaries()[1])<=cutContourAPA_AC) ||
+       (TMath::Abs(_recoEndPoint.Z()-geoHelper.GetAPABoundaries()[0])<=cutContourAPA_AC)   ||
+       (TMath::Abs(_recoEndPoint.Z()-geoHelper.GetAPABoundaries()[1])<=cutContourAPA_AC)
+     ) {
+      if(DEBUG) std::cout << "Track's extreme points too close to APA." << std::endl;
+      return false;
+    }
+
+    TVector3 dirFirstTrack = _recoEndPoint - _recoStartPoint;
+    bool isBrokenTrack = false;
+    const std::vector<recob::PFParticle> & pfparticles = *(evt.getValidHandle<std::vector<recob::PFParticle>>(fPFParticleTag));
+    for (size_t p=0;p<pfparticles.size();p++) {
+      // Get track
+      const recob::Track *newTrack = pfpUtil.GetPFParticleTrack(pfparticles[p],evt,fPFParticleTag,fTrackerTag);
+      if (newTrack==nullptr) continue;
+      if (newTrack->ID()==_trackID) continue;
+      size_t fp = newTrack->FirstValidPoint();
+      TVector3 recoStartPointSecond(newTrack->LocationAtPoint(fp).X(),newTrack->LocationAtPoint(fp).Y(),newTrack->LocationAtPoint(fp).Z());
+      TVector3 recoEndPointSecond = newTrack->End<TVector3>();
+      OrderRecoStartEnd(recoStartPointSecond,recoEndPointSecond);
+      TVector3 dirSecondTrack = recoEndPointSecond-recoStartPointSecond;
+      TVector3 dirHigherTrack, dirLowerTrack, endPointHigherTrack, startPointLowerTrack, endPointLowerTrack;
+
+      if (_recoStartPoint.Y() > recoStartPointSecond.Y()) {
+        dirHigherTrack = dirFirstTrack;
+        dirLowerTrack = dirSecondTrack;
+        startPointLowerTrack = recoStartPointSecond;
+        endPointLowerTrack = recoEndPointSecond;
+        endPointHigherTrack = _recoEndPoint;
+      }
+      else {
+        dirHigherTrack = dirSecondTrack;
+        dirLowerTrack = dirFirstTrack;
+        startPointLowerTrack = _recoStartPoint;
+        endPointLowerTrack = _recoEndPoint;
+        endPointHigherTrack = recoEndPointSecond;
+      }
+
+      TVector3 middlePointLowerTrack = (startPointLowerTrack + endPointLowerTrack) * 0.5;
+      TVector3 dirHigherTrack_YZ(0., dirHigherTrack.Y(), dirHigherTrack.Z());
+      TVector3 dirJoiningSegment(0., middlePointLowerTrack.Y()-endPointHigherTrack.Y(), middlePointLowerTrack.Z()-endPointHigherTrack.Z());
+      double cosBeta = TMath::Cos(dirHigherTrack_YZ.Angle(dirJoiningSegment));
+      double absCosAlpha = TMath::Abs(TMath::Cos(dirFirstTrack.Angle(dirSecondTrack)));
+
+      if ( (absCosAlpha > cutCosAngleBrokenTracks_AC) && (cosBeta >= cutCosAngleAlignment_AC) )
+        isBrokenTrack = true;
+
+      double distHigherLower = TMath::Sqrt(TMath::Power(endPointHigherTrack.Y()-startPointLowerTrack.Y(),2) + TMath::Power(endPointHigherTrack.Z()-startPointLowerTrack.Z(),2));
+      if (distHigherLower < radiusBrokenTracksSearch_AC) {
+        if ( TMath::Abs(TMath::Cos(dirFirstTrack.Angle(dirSecondTrack))) > 0.96)
+        isBrokenTrack = true;
+      }
+      // Stop searching if found one
+      if (isBrokenTrack) break;
+    }
+    if (isBrokenTrack) {
+      if(DEBUG) std::cout << "Track is broken." << std::endl;
+      return false;
+    }
+
+    // Get the T0
+    std::vector<anab::T0> pfparticleT0s = pfpUtil.GetPFParticleT0(thisParticle,evt,fPFParticleTag);
+    if (pfparticleT0s.size() == 0) {
+      _trackT0 = INV_DBL;
+    }
+    else
+      _trackT0 = pfparticleT0s[0].Time();
+
+    if (_trackT0 == INV_DBL) {
+      if (CorrectPosAndGetT0(_recoStartPoint,_recoEndPoint) == INV_DBL) return false;
+      trackInfo.isAnodeCrosserPandora = false;
+      trackInfo.isAnodeCrosserMine = true;
+    }
+    else {
+      if (DEBUG) std::cout << "Track tagged by Pandora." << std::endl;
+      trackInfo.isAnodeCrosserPandora = true;
+      trackInfo.isAnodeCrosserMine = false;
+    }
+
+    // Check if there are hits on the cryostat side if the track is selected by Pandora.
+    if (trackInfo.isAnodeCrosserPandora) {
+      // Get hit vector.
+      auto const &trackHits = pfpUtil.GetPFParticleHits(thisParticle,evt,fPFParticleTag);
+      if (!hitHelper.AreThereHitsOnCryoSide(trackHits)) {
+        if(DEBUG) std::cout << "There are hits in the cryostat sides." << std::endl;
+        return false;
+      }
+    }
+
+    double *fidBounds = geoHelper.GetFiducialVolumeBounds();
+    if (excludeCut != "distanceFiducialVolumeX" && excludeCut != "distanceFiducialVolumeY" && excludeCut != "distanceFiducialVolumeZ")   {
+      bool goodEndPoint = geoHelper.IsPointInVolume(geoHelper.GetFiducialVolumeBounds(), _recoEndPoint);
+      if (!goodEndPoint) return false;
+    }
+    else if (excludeCut == "distanceFiducialVolumeX") {
+      bool goodEndPoint = (_recoEndPoint.Y() >= fidBounds[2] && _recoEndPoint.Y() <= fidBounds[3] && _recoEndPoint.Z() >= fidBounds[4] && _recoEndPoint.Z() <= fidBounds[5]);
+      if (!goodEndPoint) return false;
+    }
+    else if (excludeCut == "distanceFiducialVolumeY") {
+      bool goodEndPoint = (_recoEndPoint.X() >= fidBounds[0] && _recoEndPoint.X() <= fidBounds[1] && _recoEndPoint.Z() >= fidBounds[4] && _recoEndPoint.Z() <= fidBounds[5]);
+      if (!goodEndPoint) return false;
+    }
+    else if (excludeCut == "distanceFiducialVolumeZ") {
+      bool goodEndPoint = (_recoEndPoint.X() >= fidBounds[0] && _recoEndPoint.X() <= fidBounds[1] && _recoEndPoint.Y() >= fidBounds[2] && _recoEndPoint.Y() <= fidBounds[3]);
+      if (!goodEndPoint) return false;
+    }
+
+    // All cuts passed, this is likely an anode-crossing stopping muon.
+    _isAnAnodeCrosser = true;
+    if (DEBUG) std::cout << "Track passed all selection cuts." << std::endl;
+    return true;
+
+  }
+
   // Get the property for this track. Only if its selected.
   const trackProperties StoppingMuonSelectionAlg::GetTrackProperties() {
     trackInfo.evNumber = _evNumber;

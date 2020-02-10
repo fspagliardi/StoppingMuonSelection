@@ -46,6 +46,9 @@ namespace stoppingcosmicmuonselection {
     // Apply cuts ignoring the specified one.
     void ApplyCutsCathode(TH1 *histo, TH1 *histo_signal, const std::string &excludeCut, art::Event const &evt, const std::vector<recob::PFParticle> &particles);
 
+    // Apply cuts ignoring the specified one.
+    void ApplyCutsAnode(TH1 *histo, TH1 *histo_signal, const std::string &excludeCut, art::Event const &evt, const std::vector<recob::PFParticle> &particles);
+
     // Fill distribution for every track and for true cathode crossing tracks.
     void FillTruthDistributionCathode(art::Event const &evt, const std::vector<recob::PFParticle> &particles,
                                       TH1D *h_startXPriori, TH1D *h_startX_signalPriori,
