@@ -111,6 +111,8 @@ namespace stoppingcosmicmuonselection {
                                     TH1D *h_minHitPeakTimePriori, TH1D *h_minHitPeakTime_signalPriori,
                                     TH1D *h_maxHitPeakTimePriori, TH1D *h_maxHitPeakTime_signalPriori) {
 
+    std::cout << "\tFill distributions for true cathode crossing muons..." << std::endl;
+
     for (unsigned int p = 0; p < particles.size(); p++) {
 
       // Prepare the selector to digest a new PFParticle
