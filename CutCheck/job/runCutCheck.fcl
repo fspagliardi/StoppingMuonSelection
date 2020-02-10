@@ -8,7 +8,7 @@ process_name: CutCheck
 services:
 {
   IFDH: {}
-  TFileService: {fileName: "%ifb_NMinus1.root"}
+  TFileService: {fileName: "%ifb_CutCheck.root"}
   TimeTracker: {}
   MemoryTracker: {}
   RandomNumberGenerator: {}
