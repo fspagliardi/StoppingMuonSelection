@@ -75,6 +75,9 @@ namespace stoppingcosmicmuonselection {
     // Check if the true track associated with that PFParticle is a stopping muon
     bool IsTrueParticleACathodeCrossingStoppingMuon(art::Event const &evt, recob::PFParticle const &thisParticle);
 
+    // N-1 cuts for Cathode crossers
+    bool NMinus1Cathode(const std::string &excludeCut, art::Event const &evt, const recob::PFParticle &thisParticle);
+
     // Get the property for this track.
     const trackProperties GetTrackProperties();
 
