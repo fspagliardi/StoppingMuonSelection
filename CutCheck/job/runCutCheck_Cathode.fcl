@@ -24,7 +24,7 @@ cut_check:
   module_type:   "CutCheck"
   PFParticleTag: "pandora"
   TrackerTag:    "pandoraTrack"
-  SpacePointTag; "reco3d"
+  SpacePointTag: "reco3d"
   trackPitch:               0.75
   trackPitchTolerance:      0.1
   selectAC:                 false
