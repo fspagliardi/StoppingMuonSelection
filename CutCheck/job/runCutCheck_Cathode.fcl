@@ -1,6 +1,7 @@
 #include "services_dune.fcl"
 #include "stoppingmuonAlg.fcl"
 #include "caloHelper.fcl"
+#include "spacepointAlg.fcl"
 #include "protodune_tools_dune.fcl"
 
 process_name: CutCheck
@@ -23,6 +24,7 @@ cut_check:
   module_type:   "CutCheck"
   PFParticleTag: "pandora"
   TrackerTag:    "pandoraTrack"
+  SpacePointTag; "reco3d"
   trackPitch:               0.75
   trackPitchTolerance:      0.1
   selectAC:                 false
@@ -31,6 +33,7 @@ cut_check:
   {
     StoppingMuonSelectionAlg: @local::stoppingmuonAlg
     CalorimetryHelper:        @local::caloHelper
+    SpacePointAlg:            @local::spacepointAlg
   }
 }
 
