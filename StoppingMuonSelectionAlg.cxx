@@ -249,14 +249,6 @@ namespace stoppingcosmicmuonselection {
     geoHelper.SetThicknessStartVolume(thicknessStartVolume_CC);
     geoHelper.InitFiducialVolumeBounds();
 
-    // Get the T0
-    std::vector<anab::T0> pfparticleT0s = pfpUtil.GetPFParticleT0(thisParticle,evt,fPFParticleTag);
-    if (pfparticleT0s.size() == 0) {
-      _trackT0 = INV_DBL;
-      return false;
-    }
-    else
-      _trackT0 = pfparticleT0s[0].Time();
     // Get recob::Track from PFParticle
     const recob::Track &track = GetTrackFromPFParticle(evt,thisParticle);
     _recoEndPoint = track.End<TVector3>();
@@ -275,6 +267,16 @@ namespace stoppingcosmicmuonselection {
     //std::cout << "_maxHitPeakTime :"  << _maxHitPeakTime << std::endl;
     // Apply cuts with selection with progressive cuts
     //std::cout << "Length: " << _trackLength << std::endl;
+    
+    // Get the T0
+    std::vector<anab::T0> pfparticleT0s = pfpUtil.GetPFParticleT0(thisParticle,evt,fPFParticleTag);
+    if (pfparticleT0s.size() == 0) {
+      _trackT0 = INV_DBL;
+      return false;
+    }
+    else
+      _trackT0 = pfparticleT0s[0].Time();
+
     if (_trackLength < length_cutoff_CC) return false;
     if (TMath::Abs(_theta_yz-90)<10 || TMath::Abs(_theta_yz+90)<10 || TMath::Abs(_theta_xz-90)<10 || TMath::Abs(_theta_xz+90)<10) return false;
     bool goodTrack = ((_recoStartPoint.X()*_recoEndPoint.X()<0)
