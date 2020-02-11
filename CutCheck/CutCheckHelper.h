@@ -67,6 +67,15 @@ namespace stoppingcosmicmuonselection {
                                       TH1D *h_minHitPeakTimePriori, TH1D *h_minHitPeakTime_signalPriori,
                                       TH1D *h_maxHitPeakTimePriori, TH1D *h_maxHitPeakTime_signalPriori);
 
+    // Fill distribution for every track and for true cathode crossing tracks.
+    void FillTruthDistributionAnode(art::Event const &evt, const std::vector<recob::PFParticle> &particles,
+                                    TH1D *h_startYPriori, TH1D *h_startY_signalPriori,
+                                    TH1D *h_startZPriori, TH1D *h_startZ_signalPriori,
+                                    TH1D *h_endYPriori, TH1D *h_endY_signalPriori,
+                                    TH1D *h_endZPriori, TH1D *h_endZ_signalPriori,
+                                    TH1D *h_minHitPeakTimePriori, TH1D *h_minHitPeakTime_signalPriori,
+                                    TH1D *h_maxHitPeakTimePriori, TH1D *h_maxHitPeakTime_signalPriori);
+
     // Configure the selector.
     void reconfigure(fhicl::ParameterSet const &p);
 
