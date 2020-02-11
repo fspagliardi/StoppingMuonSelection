@@ -167,7 +167,7 @@ bool SpacePointAlg::IsTrackNotFittingSpacePoints(TVector3 &posExtremeValidPoint,
 
   } // end loop over space points
 
-  std::cout << "Number of SP in geometry: " << spCounter << "/" << _minNumberSpacePoints << " (" << whichEnd << ")" << std::endl;
+  std::cout << "\tSpacePointAlg.cxx: Number of SP in geometry: " << spCounter << "/" << _minNumberSpacePoints << " (" << whichEnd << ")" << std::endl;
   if (spCounter > _minNumberSpacePoints)
     return true;
   else
