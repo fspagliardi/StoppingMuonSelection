@@ -16,7 +16,9 @@ namespace stoppingcosmicmuonselection {
   }
 
   // Apply cuts ignoring the specified one.
-  void CutCheckHelper::ApplyCutsCathode(TH1 *histo, TH1 *histo_signal, const std::string &excludeCut, art::Event const &evt, const std::vector<recob::PFParticle> &particles) {
+  void CutCheckHelper::ApplyCutsCathode(TH1 *histo, TH1 *histo_signal, const std::string &excludeCut,
+                                        art::Event const &evt, const std::vector<recob::PFParticle> &particles,
+                                        const std::vector<recob::SpacePoint> &spacePoints) {
 
     std::cout << "\tApplying cuts excluding " << excludeCut << std::endl;
 
@@ -40,6 +42,10 @@ namespace stoppingcosmicmuonselection {
 
       // Run the selection.
       if (!selectorAlg.NMinus1Cathode(excludeCut, evt, thisParticle)) continue;
+
+      // Check space points.
+      const recob::Track &track = selectorAlg.GetTrackFromPFParticle(evt,thisParticle);
+      if (!spAlg.IsGoodTrack(track,spacePoints,selectorAlg.GetTrackProperties())) continue;
 
       const TVector3 &recoStartPoint = selectorAlg.GetTrackProperties().recoStartPoint;
       const TVector3 &recoEndPoint = selectorAlg.GetTrackProperties().recoEndPoint;
@@ -66,7 +72,7 @@ namespace stoppingcosmicmuonselection {
       else if (excludeCut == "distanceFiducialVolumeZ")
         histo->Fill(recoEndPoint.Z());
 
-      if (!evt.isRealdData() && selectorAlg.IsTrueParticleACathodeCrossingStoppingMuon(evt, thisParticle)) {
+      if (!evt.isRealData() && selectorAlg.IsTrueParticleACathodeCrossingStoppingMuon(evt, thisParticle)) {
         if (excludeCut=="thicknessStartVolume") {
           std::string title = histo_signal->GetTitle();
           if (title.find("X")!=std::string::npos)
@@ -103,7 +109,10 @@ namespace stoppingcosmicmuonselection {
   }
 
   // Apply cuts ignoring the specified one.
-  void CutCheckHelper::ApplyCutsAnode(TH1 *histo, TH1 *histo_signal, const std::string &excludeCut, art::Event const &evt, const std::vector<recob::PFParticle> &particles) {
+  void CutCheckHelper::ApplyCutsAnode(TH1 *histo, TH1 *histo_signal,
+                                      const std::string &excludeCut, art::Event const &evt,
+                                      const std::vector<recob::PFParticle> &particles,
+                                      const std::vector<recob::SpacePoint> &spacePoints) {
 
     std::cout << "\tApplying cuts excluding " << excludeCut << std::endl;
 
@@ -127,6 +136,10 @@ namespace stoppingcosmicmuonselection {
 
       // Run the selection.
       if (!selectorAlg.NMinus1Anode(excludeCut, evt, thisParticle)) continue;
+
+      // Check space points.
+      const recob::Track &track = selectorAlg.GetTrackFromPFParticle(evt,thisParticle);
+      if (!spAlg.IsGoodTrack(track,spacePoints,selectorAlg.GetTrackProperties())) continue;
 
       const TVector3 &recoStartPoint = selectorAlg.GetTrackProperties().recoStartPoint;
       const TVector3 &recoEndPoint = selectorAlg.GetTrackProperties().recoEndPoint;
@@ -242,6 +255,7 @@ namespace stoppingcosmicmuonselection {
 
     selectorAlg.reconfigure(p.get<fhicl::ParameterSet>("StoppingMuonSelectionAlg"));
     caloHelper.reconfigure(p.get<fhicl::ParameterSet>("CalorimetryHelper"));
+    spAlg.reconfigure(p.get<fhicl::ParameterSet>("SpacePointAlg"));
 
   }
 

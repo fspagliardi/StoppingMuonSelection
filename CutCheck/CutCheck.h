@@ -56,7 +56,7 @@ private:
   double _trackPitch;
   double _trackPitchTolerance;
   bool _selectAC, _selectCC;
-  std::string fPFParticleTag, fTrackerTag;
+  std::string fPFParticleTag, fTrackerTag, fSpacePointTag;
 
   // Histos
   TH2D *h_dQdxVsRR;
@@ -159,6 +159,7 @@ void CutCheck::reconfigure(fhicl::ParameterSet const& p)
 {
   fTrackerTag = p.get<std::string>("TrackerTag");
   fPFParticleTag = p.get<std::string>("PFParticleTag");
+  fSpacePointTag = p.get<std::string>("SpacePointTag");
   _selectAC = p.get<bool>("selectAC", true);
   _selectCC = p.get<bool>("selectCC", true);
   _trackPitch = p.get<double>("trackPitch", 0.75);

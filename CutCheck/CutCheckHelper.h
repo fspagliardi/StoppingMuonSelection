@@ -34,6 +34,7 @@
 #include "StoppingMuonSelection/DataTypes.h"
 #include "StoppingMuonSelection/CalorimetryHelper.h"
 #include "StoppingMuonSelection/StoppingMuonSelectionAlg.h"
+#include "StoppingMuonSelection/SpacePointAlg.h"
 
 namespace stoppingcosmicmuonselection {
 
@@ -44,10 +45,16 @@ namespace stoppingcosmicmuonselection {
     ~CutCheckHelper();
 
     // Apply cuts ignoring the specified one.
-    void ApplyCutsCathode(TH1 *histo, TH1 *histo_signal, const std::string &excludeCut, art::Event const &evt, const std::vector<recob::PFParticle> &particles);
+    void ApplyCutsCathode(TH1 *histo, TH1 *histo_signal,
+                          const std::string &excludeCut,
+                          art::Event const &evt, const std::vector<recob::PFParticle> &particles,
+                          const std::vector<recob::SpacePoint> &spacePoints);
 
     // Apply cuts ignoring the specified one.
-    void ApplyCutsAnode(TH1 *histo, TH1 *histo_signal, const std::string &excludeCut, art::Event const &evt, const std::vector<recob::PFParticle> &particles);
+    void ApplyCutsAnode(TH1 *histo, TH1 *histo_signal,
+                        const std::string &excludeCut,
+                        art::Event const &evt, const std::vector<recob::PFParticle> &particles,
+                        const std::vector<recob::SpacePoint> &spacePoints);
 
     // Fill distribution for every track and for true cathode crossing tracks.
     void FillTruthDistributionCathode(art::Event const &evt, const std::vector<recob::PFParticle> &particles,
@@ -67,6 +74,7 @@ namespace stoppingcosmicmuonselection {
 
     StoppingMuonSelectionAlg selectorAlg; // need configuration
     CalorimetryHelper        caloHelper;   // need configuration
+    SpacePointAlg            spAlg; // need configuration
   };
 }
 
