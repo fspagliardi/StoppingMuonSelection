@@ -66,7 +66,7 @@ namespace stoppingcosmicmuonselection {
       else if (excludeCut == "distanceFiducialVolumeZ")
         histo->Fill(recoEndPoint.Z());
 
-      if (selectorAlg.IsTrueParticleACathodeCrossingStoppingMuon(evt, thisParticle)) {
+      if (!evt.isRealdData() && selectorAlg.IsTrueParticleACathodeCrossingStoppingMuon(evt, thisParticle)) {
         if (excludeCut=="thicknessStartVolume") {
           std::string title = histo_signal->GetTitle();
           if (title.find("X")!=std::string::npos)
@@ -148,7 +148,7 @@ namespace stoppingcosmicmuonselection {
       else if (excludeCut == "distanceFiducialVolumeZ")
         histo->Fill(recoEndPoint.Z());
 
-      if (selectorAlg.IsTrueParticleAnAnodeCrossingStoppingMuon(evt, thisParticle)) {
+      if (!evt.isRealData() && selectorAlg.IsTrueParticleAnAnodeCrossingStoppingMuon(evt, thisParticle)) {
         if (excludeCut=="offsetYStartPoint")
           histo->Fill(recoStartPoint.Y());
         else if (excludeCut=="offsetZStartPoint")
@@ -214,7 +214,7 @@ namespace stoppingcosmicmuonselection {
       const double &minHitPeakTime = selectorAlg.GetTrackProperties().minHitPeakTime;
       const double &maxHitPeakTime = selectorAlg.GetTrackProperties().maxHitPeakTime;
 
-      if (selectorAlg.IsTrueParticleACathodeCrossingStoppingMuon(evt, thisParticle)) {
+      if (!evt.isRealData() && selectorAlg.IsTrueParticleACathodeCrossingStoppingMuon(evt, thisParticle)) {
         h_startX_signalPriori->Fill(recoStartPoint.X());
         h_startY_signalPriori->Fill(recoStartPoint.Y());
         h_startZ_signalPriori->Fill(recoStartPoint.Z());
