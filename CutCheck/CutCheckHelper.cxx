@@ -224,6 +224,8 @@ namespace stoppingcosmicmuonselection {
       selectorAlg.IsStoppingCathodeCrosser(evt, thisParticle);
       const TVector3 &recoStartPoint = selectorAlg.GetTrackProperties().recoStartPoint;
       const TVector3 &recoEndPoint = selectorAlg.GetTrackProperties().recoEndPoint;
+      // Skip if track is not "cathode crossing" - like
+      if ( (selectorAlg.GetTrackProperties().trackT0 == INV_DBL) || (recoStartPoint.X()*recoEndPoint.X())>0) continue;
       const double &minHitPeakTime = selectorAlg.GetTrackProperties().minHitPeakTime;
       const double &maxHitPeakTime = selectorAlg.GetTrackProperties().maxHitPeakTime;
 
