@@ -64,7 +64,7 @@ namespace stoppingcosmicmuonselection {
                                                   h_maxHitPeakTimePriori, h_maxHitPeakTime_signalPriori);
     }
 
-
+    h_events->Fill(0);
   } // end of analyzer
 
 } // namespace

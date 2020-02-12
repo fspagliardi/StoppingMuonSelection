@@ -58,6 +58,9 @@ private:
   bool _selectAC, _selectCC;
   std::string fPFParticleTag, fTrackerTag, fSpacePointTag;
 
+  // Dummy histo to count events.
+  TH1D *h_events;
+
   // Histos
   TH2D *h_dQdxVsRR;
   TH2D *h_dQdxVsRR_TP;
@@ -108,6 +111,7 @@ CutCheck::CutCheck(fhicl::ParameterSet const & p)
 void CutCheck::beginJob()
 {
   art::ServiceHandle<art::TFileService> tfs;
+  h_events = tfs->make<TH1D>("h_events","h_events",1,0,1);
 
   art::TFileDirectory PrioriCutCheckDir = tfs->mkdir("PrioriCutCheck");
   h_startXPriori = PrioriCutCheckDir.make<TH1D>("h_startXPriori","h_startXPriori",400,-400,400);
