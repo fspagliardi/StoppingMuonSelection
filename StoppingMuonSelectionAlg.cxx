@@ -195,7 +195,7 @@ namespace stoppingcosmicmuonselection {
       // Get hit vector.
       auto const &trackHits = pfpUtil.GetPFParticleHits(thisParticle,evt,fPFParticleTag);
       if (!hitHelper.AreThereHitsOnCryoSide(trackHits)) {
-        if(DEBUG) std::cout << "There are hits in the cryostat sides." << std::endl;
+        if(DEBUG) std::cout << "There are no hits in the cryostat sides." << std::endl;
         return false;
       }
     }
@@ -267,7 +267,7 @@ namespace stoppingcosmicmuonselection {
     //std::cout << "_maxHitPeakTime :"  << _maxHitPeakTime << std::endl;
     // Apply cuts with selection with progressive cuts
     //std::cout << "Length: " << _trackLength << std::endl;
-    
+
     // Get the T0
     std::vector<anab::T0> pfparticleT0s = pfpUtil.GetPFParticleT0(thisParticle,evt,fPFParticleTag);
     if (pfparticleT0s.size() == 0) {
@@ -693,7 +693,7 @@ namespace stoppingcosmicmuonselection {
       // Get hit vector.
       auto const &trackHits = pfpUtil.GetPFParticleHits(thisParticle,evt,fPFParticleTag);
       if (!hitHelper.AreThereHitsOnCryoSide(trackHits)) {
-        if(DEBUG) std::cout << "There are hits in the cryostat sides." << std::endl;
+        if(DEBUG) std::cout << "There are no hits in the cryostat sides." << std::endl;
         return false;
       }
     }
