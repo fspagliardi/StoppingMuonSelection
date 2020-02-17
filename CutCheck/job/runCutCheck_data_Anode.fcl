@@ -1,0 +1,74 @@
+#include "services_dune.fcl"
+#include "spacepointAlg.fcl"
+#include "stoppingmuonAlg.fcl"
+#include "caloHelper.fcl"
+#include "filters.fcl"
+#include "ProtoDUNEUnstableHVFilter.fcl"
+#include "signalservices_dune.fcl"
+#include "ProtoDUNEDataUtils.fcl"
+#include "ProtoDUNEFembFilter.fcl"
+#include "missingproductfilter.fcl"
+#include "ProtoDUNEDataUtils.fcl"
+#include "protodune_tools_dune.fcl"
+
+process_name: MichelStudyData
+
+services:
+{
+  IFDH: {}
+  TFileService: {fileName: "%ifb_CutCheck.root"}
+  TimeTracker: {}
+  MemoryTracker: {}
+  RandomNumberGenerator: {}
+  message:  @local::dune_message_services_prod_debug
+  FileCatalogMetadata: @local::art_file_catalog_mc
+  @table::protodune_services
+  @table::protodune_data_reco_services
+  PdspChannelMapService: @local::pdspchannelmap
+  ChannelStatusService:  @local::pdsp_channel_status
+}
+
+cut_check:
+{
+  module_type:   "CutCheck"
+  PFParticleTag: "pandora"
+  TrackerTag:    "pandoraTrack"
+  SpacePointTag: "reco3d"
+  trackPitch:               0.75
+  trackPitchTolerance:      0.1
+  selectAC:                 true
+  selectCC:                 false
+  ConfigSubModules:
+  {
+    StoppingMuonSelectionAlg: @local::stoppingmuonAlg
+    CalorimetryHelper:        @local::caloHelper
+    SpacePointAlg:            @local::spacepointAlg
+  }
+  SelectEvents: [fpath]
+}
+
+source:
+{
+  module_type:RootInput
+  maxEvents: -1
+
+}
+
+physics:
+{
+  filters:
+  {
+    f2: @local::pdsp_fembfilter_all
+    f1: @local::HVfilter
+    f3: @local::standard_missingproductfilter
+  }
+  fpath: [f2,f1,f3]
+  analyzers:
+  {
+    fabioana: @local::cut_check
+  }
+
+ana: [fabioana]
+
+end_paths: [ana]
+}
