@@ -46,14 +46,14 @@ namespace stoppingcosmicmuonselection {
     }
     else if (_selectAC) {
       std::cout << "Analysing anode-crossers..." << std::endl;
-      cutCheckHelper.ApplyCutsCathode(h_startY, h_startY_signal, "offsetYStartPoint", evt, recoParticles, spacePoints);
-    	cutCheckHelper.ApplyCutsCathode(h_startZ, h_startZ_signal, "offsetZStartPoint", evt, recoParticles, spacePoints);
-      cutCheckHelper.ApplyCutsCathode(h_minHitPeakTime, h_minHitPeakTime_signal, "cutMinHitPeakTime", evt, recoParticles, spacePoints);
-      cutCheckHelper.ApplyCutsCathode(h_maxHitPeakTime, h_maxHitPeakTime_signal, "cutMaxHitPeakTime", evt, recoParticles, spacePoints);
-    	cutCheckHelper.ApplyCutsCathode(h_endX, h_endX_signal, "distanceFiducialVolumeX", evt, recoParticles, spacePoints);
-    	cutCheckHelper.ApplyCutsCathode(h_endY, h_endY_signal, "distanceFiducialVolumeY", evt, recoParticles, spacePoints);
-    	cutCheckHelper.ApplyCutsCathode(h_endZ, h_endZ_signal, "distanceFiducialVolumeZ", evt, recoParticles, spacePoints);
-      cutCheckHelper.ApplyCutsCathode(h_dQdxVsRR, h_dQdxVsRR_TP, "complete", evt, recoParticles, spacePoints);
+      cutCheckHelper.ApplyCutsAnode(h_startY, h_startY_signal, "offsetYStartPoint", evt, recoParticles, spacePoints);
+    	cutCheckHelper.ApplyCutsAnode(h_startZ, h_startZ_signal, "offsetZStartPoint", evt, recoParticles, spacePoints);
+      cutCheckHelper.ApplyCutsAnode(h_minHitPeakTime, h_minHitPeakTime_signal, "cutMinHitPeakTime", evt, recoParticles, spacePoints);
+      cutCheckHelper.ApplyCutsAnode(h_maxHitPeakTime, h_maxHitPeakTime_signal, "cutMaxHitPeakTime", evt, recoParticles, spacePoints);
+    	cutCheckHelper.ApplyCutsAnode(h_endX, h_endX_signal, "distanceFiducialVolumeX", evt, recoParticles, spacePoints);
+    	cutCheckHelper.ApplyCutsAnode(h_endY, h_endY_signal, "distanceFiducialVolumeY", evt, recoParticles, spacePoints);
+    	cutCheckHelper.ApplyCutsAnode(h_endZ, h_endZ_signal, "distanceFiducialVolumeZ", evt, recoParticles, spacePoints);
+      cutCheckHelper.ApplyCutsAnode(h_dQdxVsRR, h_dQdxVsRR_TP, "complete", evt, recoParticles, spacePoints);
 
       cutCheckHelper.FillTruthDistributionAnode(evt, recoParticles,
                                                   h_startYPriori, h_startY_signalPriori,

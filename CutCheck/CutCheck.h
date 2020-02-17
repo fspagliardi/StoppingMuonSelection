@@ -171,5 +171,4 @@ void CutCheck::reconfigure(fhicl::ParameterSet const& p)
   cutCheckHelper.reconfigure(p.get<fhicl::ParameterSet>("ConfigSubModules"));
 }
 
-
 } // namespace
