@@ -22,7 +22,9 @@ services:
   message:  @local::dune_message_services_prod_debug
   FileCatalogMetadata: @local::art_file_catalog_mc
   @table::protodune_services
-  #@table::protodune_reco_services
+  @table::protodune_data_reco_services
+  PdspChannelMapService: @local::pdspchannelmap
+  ChannelStatusService:  @local::pdsp_channel_status
 }
 
 michel_study:
@@ -44,6 +46,8 @@ michel_study:
   StoppingMuonSelectionAlg: @local::stoppingmuonAlg
   CalorimetryHelper:        @local::caloHelper
   HitHelper:                @local::hitHelper
+
+  SelectEvents: [fpath]
 }
 
 source:
@@ -55,12 +59,13 @@ source:
 
 physics:
 {
-  filters:	
+  filters:
   {
-    #  filter:   @local::pdsp_fembfilter_all
+    f2: @local::pdsp_fembfilter_all
     f1: @local::HVfilter
-  } 
-  fpath: [f1]
+    f3: @local::standard_missingproductfilter
+  }
+  fpath: [f2,f1,f3]
   analyzers:
   {
     fabioana: @local::michel_study
