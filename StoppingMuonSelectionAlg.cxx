@@ -563,8 +563,6 @@ namespace stoppingcosmicmuonselection {
     _trackLength = track.Length();
     _trackID = track.ID();
 
-    std::cout << "Track ID: " << _trackID << std::endl;
-
     // using the ordered start and end points calculate the angles _theta_xz and _theta_yz
     _theta_xz = TMath::RadToDeg() * TMath::ATan2(_recoStartPoint.X()-_recoEndPoint.X(), _recoStartPoint.Z()-_recoEndPoint.Z());
     _theta_yz = TMath::RadToDeg() * TMath::ATan2(_recoStartPoint.Y()-_recoEndPoint.Y(), _recoStartPoint.Z()-_recoEndPoint.Z());
