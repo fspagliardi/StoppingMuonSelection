@@ -163,9 +163,9 @@ namespace stoppingcosmicmuonselection {
 
       if (!evt.isRealData() && selectorAlg.IsTrueParticleAnAnodeCrossingStoppingMuon(evt, thisParticle)) {
         if (excludeCut=="offsetYStartPoint")
-          histo->Fill(recoStartPoint.Y());
+          histo_signal->Fill(recoStartPoint.Y());
         else if (excludeCut=="offsetZStartPoint")
-          histo->Fill(recoStartPoint.Z());
+          histo_signal->Fill(recoStartPoint.Z());
         else if (excludeCut=="cutMinHitPeakTime")
           histo_signal->Fill(minHitPeakTime);
         else if (excludeCut=="cutMaxHitPeakTime")
