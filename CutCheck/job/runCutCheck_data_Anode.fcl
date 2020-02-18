@@ -11,7 +11,7 @@
 #include "ProtoDUNEDataUtils.fcl"
 #include "protodune_tools_dune.fcl"
 
-process_name: MichelStudyData
+process_name: CutCheck
 
 services:
 {
