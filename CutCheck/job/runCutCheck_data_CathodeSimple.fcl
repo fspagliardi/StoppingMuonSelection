@@ -1,0 +1,3 @@
+#include "runCutCheck_data_Cathode.fcl"
+
+physics.analyzers.fabioana.runCathodeSimple: true
