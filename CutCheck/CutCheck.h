@@ -56,6 +56,7 @@ private:
   double _trackPitch;
   double _trackPitchTolerance;
   bool _selectAC, _selectCC;
+  bool _runCathodeSimple;
   std::string fPFParticleTag, fTrackerTag, fSpacePointTag;
 
   // Dummy histo to count events.
@@ -166,6 +167,7 @@ void CutCheck::reconfigure(fhicl::ParameterSet const& p)
   fSpacePointTag = p.get<std::string>("SpacePointTag");
   _selectAC = p.get<bool>("selectAC", true);
   _selectCC = p.get<bool>("selectCC", true);
+  _runCathodeSimple = p.get<bool>("runCathodeSimple", false);
   _trackPitch = p.get<double>("trackPitch", 0.75);
   _trackPitchTolerance = p.get<double>("trackPitchTolerance", 0.1);
   cutCheckHelper.reconfigure(p.get<fhicl::ParameterSet>("ConfigSubModules"));

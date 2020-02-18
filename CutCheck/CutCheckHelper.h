@@ -51,6 +51,11 @@ namespace stoppingcosmicmuonselection {
                           const std::vector<recob::SpacePoint> &spacePoints);
 
     // Apply cuts ignoring the specified one.
+    void ApplyCutsCathodeSimple(TH1 *histo, TH1 *histo_signal,
+                          const std::string &excludeCut,
+                          art::Event const &evt, const std::vector<recob::PFParticle> &particles);
+
+    // Apply cuts ignoring the specified one.
     void ApplyCutsAnode(TH1 *histo, TH1 *histo_signal,
                         const std::string &excludeCut,
                         art::Event const &evt, const std::vector<recob::PFParticle> &particles,
