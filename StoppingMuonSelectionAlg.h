@@ -78,8 +78,11 @@ namespace stoppingcosmicmuonselection {
     // N-1 cuts for Cathode crossers
     bool NMinus1Cathode(const std::string &excludeCut, art::Event const &evt, const recob::PFParticle &thisParticle);
 
-    // N-1 cuts for Cathode crossers
+    // N-1 cuts for Anode crossers
     bool NMinus1Anode(const std::string &excludeCut, art::Event const &evt, const recob::PFParticle &thisParticle);
+
+    // N-1 cuts for Cathode crossers (simple version)
+    bool NMinus1CathodeSimple(const std::string &excludeCut, art::Event const &evt, const recob::PFParticle &thisParticle);
 
     // Get the property for this track.
     const trackProperties GetTrackProperties();
