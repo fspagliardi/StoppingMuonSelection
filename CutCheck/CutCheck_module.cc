@@ -22,8 +22,9 @@ namespace stoppingcosmicmuonselection {
     const std::vector<recob::SpacePoint> spacePoints = *spacePointHandle;
 
     if (_selectCC) {
-      std::cout << "Analysing cathode-crossers..." << std::endl;
+      std::cout << "Analysing cathode-crossers... ";
       if (!_runCathodeSimple) {
+        std::cout << "the traditional way." << std::endl;
         cutCheckHelper.ApplyCutsCathode(h_startX, h_startX_signal, "thicknessStartVolume", evt, recoParticles, spacePoints);
     	  cutCheckHelper.ApplyCutsCathode(h_startY, h_startY_signal, "thicknessStartVolume", evt, recoParticles, spacePoints);
     	  cutCheckHelper.ApplyCutsCathode(h_startZ, h_startZ_signal, "thicknessStartVolume", evt, recoParticles, spacePoints);
@@ -35,6 +36,7 @@ namespace stoppingcosmicmuonselection {
         cutCheckHelper.ApplyCutsCathode(h_dQdxVsRR, h_dQdxVsRR_TP, "complete", evt, recoParticles, spacePoints);
       }
       else {
+        std::cout << "the simplified way." << std::endl;
         cutCheckHelper.ApplyCutsCathodeSimple(h_startX, h_startX_signal, "thicknessStartVolume", evt, recoParticles);
     	  cutCheckHelper.ApplyCutsCathodeSimple(h_startY, h_startY_signal, "thicknessStartVolume", evt, recoParticles);
     	  cutCheckHelper.ApplyCutsCathodeSimple(h_startZ, h_startZ_signal, "thicknessStartVolume", evt, recoParticles);

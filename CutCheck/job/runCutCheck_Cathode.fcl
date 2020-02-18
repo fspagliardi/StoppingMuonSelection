@@ -29,6 +29,7 @@ cut_check:
   trackPitchTolerance:      0.1
   selectAC:                 false
   selectCC:                 true
+  runCathodeSimple:         false
   ConfigSubModules:
   {
     StoppingMuonSelectionAlg: @local::stoppingmuonAlg
