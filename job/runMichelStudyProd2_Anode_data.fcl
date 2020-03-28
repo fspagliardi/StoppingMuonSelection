@@ -8,6 +8,8 @@
 #include "signalservices_dune.fcl"
 #include "ProtoDUNEDataUtils.fcl"
 #include "ProtoDUNEFembFilter.fcl"
+#include "missingproductfilter.fcl"
+#include "ProtoDUNEDataUtils.fcl"
 #include "protodune_tools_dune.fcl"
 
 process_name: MichelStudyData
