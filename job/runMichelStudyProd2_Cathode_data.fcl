@@ -3,9 +3,16 @@
 #include "stoppingmuonAlg.fcl"
 #include "caloHelper.fcl"
 #include "hitHelper.fcl"
+#include "filters.fcl"
+#include "ProtoDUNEUnstableHVFilter.fcl"
+#include "signalservices_dune.fcl"
+#include "ProtoDUNEDataUtils.fcl"
+#include "ProtoDUNEFembFilter.fcl"
+#include "missingproductfilter.fcl"
+#include "ProtoDUNEDataUtils.fcl"
 #include "protodune_tools_dune.fcl"
 
-process_name: MichelStudy
+process_name: MichelStudyData
 
 services:
 {
@@ -16,8 +23,10 @@ services:
   RandomNumberGenerator: {}
   message:  @local::dune_message_services_prod_debug
   FileCatalogMetadata: @local::art_file_catalog_mc
-  #@table::protodune_services
-  @table::protodune_reco_services
+  @table::protodune_services
+  @table::protodune_data_reco_services
+  PdspChannelMapService: @local::pdspchannelmap
+  ChannelStatusService:  @local::pdsp_channel_status
 }
 
 michel_study:
@@ -39,6 +48,7 @@ michel_study:
   StoppingMuonSelectionAlg: @local::stoppingmuonAlg
   CalorimetryHelper:        @local::caloHelper
   HitHelper:                @local::hitHelper
+  SelectEvents: [fpath]
 }
 
 source:
@@ -50,11 +60,17 @@ source:
 
 physics:
 {
-analyzers:
-{
-  fabioana: @local::michel_study
-
-}
+  filters:
+  {
+    f2: @local::pdsp_fembfilter_all
+    f1: @local::HVfilter
+    f3: @local::standard_missingproductfilter
+  }
+  fpath: [f2,f1,f3]
+  analyzers:
+  {
+    fabioana: @local::michel_study
+  }
 
 ana: [fabioana]
 
