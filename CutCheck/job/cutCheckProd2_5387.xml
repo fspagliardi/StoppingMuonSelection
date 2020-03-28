@@ -61,6 +61,18 @@
   <jobsub>-f /pnfs/dune/persistent/users/fspaglia/MCdEdxSuperBinning.root --memory=4000 --expected-lifetime=3h</jobsub>
 </stage>
 
+<stage name = "runProd2CathodeSimple">
+  <fcl>runCutCheck_data_CathodeSimple.fcl</fcl>
+  <inputdef>protodune-sp_runset_5387_reco_v08_27_XX_v0</inputdef>
+  <outdir>/pnfs/dune/scratch/users/fspaglia/&release;/&name;_cathodeSimple</outdir>
+  <workdir>/pnfs/dune/scratch/users/fspaglia/&release;/&name;_cathodeSimple</workdir>
+  <numjobs>300</numjobs>
+  <schema>root</schema>
+  <!--maxfilesperjob>3</maxfilesperjob-->
+  <anadatatier>full-reconstructed</anadatatier>
+  <jobsub>-f /pnfs/dune/persistent/users/fspaglia/MCdEdxSuperBinning.root --memory=4000 --expected-lifetime=3h</jobsub>
+</stage>
+
 <filetype>&file_type;</filetype>
 <runtype>&run_type;</runtype>
 
