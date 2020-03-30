@@ -222,8 +222,14 @@ namespace stoppingcosmicmuonselection {
       if (!evt.isRealData() && !selectorAlg.IsTrackMatchedToTrueCosmicTrack(evt,thisParticle))
         continue;
 
-      // Run the selection.
-      if (!selectorAlg.NMinus1Anode(excludeCut, evt, thisParticle)) continue;
+      // Manipulate the string to run the same selection.
+      if (excludeCut=="distanceFiducialVolumeXFabio" || excludeCut=="distanceFiducialVolumeXPandora") {
+        if (!selectorAlg.NMinus1Anode("distanceFiducialVolumeX", evt, thisParticle)) continue;
+      }
+      else {
+        // Run the selection.
+        if (!selectorAlg.NMinus1Anode(excludeCut, evt, thisParticle)) continue;
+      }
 
       // Check space points.
       const recob::Track &track = selectorAlg.GetTrackFromPFParticle(evt,thisParticle);
@@ -233,6 +239,7 @@ namespace stoppingcosmicmuonselection {
       const TVector3 &recoEndPoint = selectorAlg.GetTrackProperties().recoEndPoint;
       const double &minHitPeakTime = selectorAlg.GetTrackProperties().minHitPeakTime;
       const double &maxHitPeakTime = selectorAlg.GetTrackProperties().maxHitPeakTime;
+      const bool &isFabioTagged = selectorAlg.GetTrackProperties().isAnodeCrosserMine;
 
       if (excludeCut=="offsetYStartPoint")
         histo->Fill(recoStartPoint.Y());
@@ -248,6 +255,14 @@ namespace stoppingcosmicmuonselection {
         histo->Fill(recoEndPoint.Y());
       else if (excludeCut == "distanceFiducialVolumeZ")
         histo->Fill(recoEndPoint.Z());
+      else if (excludeCut == "distanceFiducialVolumeXFabio") {
+        if (isFabioTagged)
+          histo->Fill(recoEndPoint.X());
+      }
+      else if (excludeCut == "distanceFiducialVolumeXPandora") {
+        if (!isFabioTagged)
+          histo->Fill(recoEndPoint.X());
+      }
 
       if (!evt.isRealData() && selectorAlg.IsTrueParticleAnAnodeCrossingStoppingMuon(evt, thisParticle)) {
         if (excludeCut=="offsetYStartPoint")
@@ -264,6 +279,14 @@ namespace stoppingcosmicmuonselection {
           histo_signal->Fill(recoEndPoint.Y());
         else if (excludeCut == "distanceFiducialVolumeZ")
           histo_signal->Fill(recoEndPoint.Z());
+        else if (excludeCut == "distanceFiducialVolumeXFabio") {
+          if (isFabioTagged)
+            histo_signal->Fill(recoEndPoint.X());
+        }
+        else if (excludeCut == "distanceFiducialVolumeXPandora") {
+          if (!isFabioTagged)
+            histo_signal->Fill(recoEndPoint.X());
+        }
       }
 
       if (excludeCut == "complete") {
