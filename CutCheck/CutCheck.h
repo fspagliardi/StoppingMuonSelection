@@ -74,10 +74,6 @@ private:
   TH1D *h_startZ_signal;
   TH1D *h_endX;
   TH1D *h_endX_signal;
-  TH1D *h_endX_Fabio;
-  TH1D *h_endX_signal_Fabio;
-  TH1D *h_endX_Pandora;
-  TH1D *h_endX_signal_Pandora;
   TH1D *h_endY;
   TH1D *h_endY_signal;
   TH1D *h_endZ;
@@ -86,6 +82,10 @@ private:
   TH1D *h_minHitPeakTime_signal;
   TH1D *h_maxHitPeakTime;
   TH1D *h_maxHitPeakTime_signal;
+  TH1D *h_endX_Fabio;
+  TH1D *h_endX_signal_Fabio;
+  TH1D *h_endX_Pandora;
+  TH1D *h_endX_signal_Pandora;
 
   TH1D *h_startXPriori;
   TH1D *h_startX_signalPriori;
@@ -157,6 +157,8 @@ void CutCheck::beginJob()
   h_maxHitPeakTime = NMinus1Dir.make<TH1D>("h_maxHitPeakTime","h_maxHitPeakTime",3000,0,6000);
   h_maxHitPeakTime_signal = NMinus1Dir.make<TH1D>("h_maxHitPeakTime_signal","h_maxHitPeakTime_signal",3000,0,6000);
   h_endX_Fabio = NMinus1Dir.make<TH1D>("h_endX_Fabio","h_endX_Fabio",400,-400,400);
+  h_endX_signal_Fabio = NMinus1Dir.make<TH1D>("h_endX_signal_Fabio","h_endX_signal_Fabio",400,-400,400);
+  h_endX_Pandora = NMinus1Dir.make<TH1D>("h_endX_Pandora","h_endX_Pandora",400,-400,400);
   h_endX_signal_Pandora = NMinus1Dir.make<TH1D>("h_endX_signal_Pandora","h_endX_signal_Pandora",400,-400,400);
 
 }
