@@ -71,6 +71,9 @@ namespace stoppingcosmicmuonselection {
       cutCheckHelper.ApplyCutsAnode(h_dQdxVsRR, h_dQdxVsRR_TP, "complete", evt, recoParticles, spacePoints);
       cutCheckHelper.ApplyCutsAnode(h_endX_Fabio, h_endX_signal_Fabio, "distanceFiducialVolumeXFabio", evt, recoParticles, spacePoints);
       cutCheckHelper.ApplyCutsAnode(h_endX_Pandora, h_endX_signal_Pandora, "distanceFiducialVolumeXPandora", evt, recoParticles, spacePoints);
+      cutCheckHelper.ApplyCutsAnode(h_theta_xz, h_theta_xz_signal, "endX_anglexz", evt, recoParticles, spacePoints);
+      cutCheckHelper.ApplyCutsAnode(h_theta_yz, h_theta_yz_signal, "endX_angleyz", evt, recoParticles, spacePoints);
+      cutCheckHelper.ApplyCutsAnode(h_length, h_length_signal, "endX_length", evt, recoParticles, spacePoints);
 
       cutCheckHelper.FillTruthDistributionAnode(evt, recoParticles,
                                                   h_startYPriori, h_startY_signalPriori,
