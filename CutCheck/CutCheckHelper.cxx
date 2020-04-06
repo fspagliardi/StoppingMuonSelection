@@ -133,7 +133,7 @@ namespace stoppingcosmicmuonselection {
         continue;
 
       // Run the selection.
-      if (!selectorAlg.NMinus1Cathode(excludeCut, evt, thisParticle)) continue;
+      if (!selectorAlg.NMinus1CathodeSimple(excludeCut, evt, thisParticle)) continue;
 
       const TVector3 &recoStartPoint = selectorAlg.GetTrackProperties().recoStartPoint;
       const TVector3 &recoEndPoint = selectorAlg.GetTrackProperties().recoEndPoint;
