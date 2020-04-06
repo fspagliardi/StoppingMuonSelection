@@ -1,0 +1,80 @@
+#include "services_dune.fcl"
+#include "spacepointAlg.fcl"
+#include "stoppingmuonAlg.fcl"
+#include "caloHelper.fcl"
+#include "hitHelper.fcl"
+#include "filters.fcl"
+#include "ProtoDUNEUnstableHVFilter.fcl"
+#include "signalservices_dune.fcl"
+#include "ProtoDUNEDataUtils.fcl"
+#include "ProtoDUNEFembFilter.fcl"
+#include "missingproductfilter.fcl"
+#include "ProtoDUNEDataUtils.fcl"
+#include "protodune_tools_dune.fcl"
+
+process_name: CalStudyData
+
+services:
+{
+  IFDH: {}
+  TFileService: {fileName: "%ifb_CalStudy.root"}
+  TimeTracker: {}
+  MemoryTracker: {}
+  RandomNumberGenerator: {}
+  message:  @local::dune_message_services_prod_debug
+  FileCatalogMetadata: @local::art_file_catalog_mc
+  @table::protodune_services
+  @table::protodune_data_reco_services
+  PdspChannelMapService: @local::pdspchannelmap
+  ChannelStatusService:  @local::pdsp_channel_status
+}
+
+calibration_study:
+{
+  module_type:   "CalibrationStudy"
+  PFParticleTag: "pandora"
+  SpacePointTag: "reco3d"
+  TrackerTag:    "pandoraTrack"
+  NNetTag:       "emtrkmichelid:emtrkmichel"
+  minNumbMichelLikeHit:     5
+  trackPitch:               0.75
+  trackPitchTolerance:      0.1
+  numberNeighbors:          2
+  michelScoreThreshold:     0.7
+  michelScoreThresholdAvg:  0.5
+  selectAC:                 false
+  selectCC:                 true
+  SpacePointAlg:            @local::spacepointAlg
+  StoppingMuonSelectionAlg: @local::stoppingmuonAlg
+  CalorimetryHelper:        @local::caloHelper
+  HitHelper:                @local::hitHelper
+  SelectEvents: [fpath]
+}
+
+source:
+{
+  module_type:RootInput
+  maxEvents: -1
+
+}
+
+physics:
+{
+  filters:
+  {
+    f2: @local::pdsp_fembfilter_all
+    f1: @local::HVfilter
+    f3: @local::standard_missingproductfilter
+  }
+  fpath: [f2,f1,f3]
+  analyzers:
+  {
+    fabioana: @local::calibration_study
+  }
+
+ana: [fabioana]
+
+end_paths: [ana]
+}
+
+physics.analyzers.fabioana.CalorimetryHelper.CalorimetryTag: "pandoracaloSCE"
