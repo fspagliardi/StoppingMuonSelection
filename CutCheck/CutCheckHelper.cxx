@@ -226,6 +226,9 @@ namespace stoppingcosmicmuonselection {
       if (excludeCut=="distanceFiducialVolumeXFabio" || excludeCut=="distanceFiducialVolumeXPandora") {
         if (!selectorAlg.NMinus1Anode("distanceFiducialVolumeX", evt, thisParticle)) continue;
       }
+      else if (excludeCut=="endX_anglexz" || excludeCut=="endX_angleyz" || excludeCut=="endX_length") {
+        if (!selectorAlg.NMinus1Anode("distanceFiducialVolumeX", evt, thisParticle)) continue;
+      }
       else {
         // Run the selection.
         if (!selectorAlg.NMinus1Anode(excludeCut, evt, thisParticle)) continue;
@@ -263,6 +266,15 @@ namespace stoppingcosmicmuonselection {
         if (!isFabioTagged)
           histo->Fill(recoEndPoint.X());
       }
+      else if (excludeCut == "endX_anglexz") {
+        histo->Fill(selectorAlg.GetTrackProperties().theta_xz);
+      }
+      else if (excludeCut == "endX_angleyz") {
+        histo->Fill(selectorAlg.GetTrackProperties().theta_yz);
+      }
+      else if (excludeCut == "endX_length") {
+        histo->Fill(selectorAlg.GetTrackProperties().trackLength);
+      }
 
       if (!evt.isRealData() && selectorAlg.IsTrueParticleAnAnodeCrossingStoppingMuon(evt, thisParticle)) {
         if (excludeCut=="offsetYStartPoint")
@@ -286,6 +298,15 @@ namespace stoppingcosmicmuonselection {
         else if (excludeCut == "distanceFiducialVolumeXPandora") {
           if (!isFabioTagged)
             histo_signal->Fill(recoEndPoint.X());
+        }
+        else if (excludeCut == "endX_anglexz") {
+          histo_signal->Fill(selectorAlg.GetTrackProperties().theta_xz);
+        }
+        else if (excludeCut == "endX_angleyz") {
+          histo_signal->Fill(selectorAlg.GetTrackProperties().theta_yz);
+        }
+        else if (excludeCut == "endX_length") {
+          histo_signal->Fill(selectorAlg.GetTrackProperties().trackLength);
         }
       }
 

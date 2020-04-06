@@ -212,6 +212,23 @@ namespace stoppingcosmicmuonselection {
     return true;
   }
 
+  // Correct position of the end point using the minimum hit peak time.
+  void StoppingMuonSelectionAlg::CorrectPosEnd(TVector3 &_recoStartPoint, TVector3 &_recoEndPoint, const double &minHitPeakTime) {
+
+    // To do: make this independent from protoDUNE run 1 setup.
+    double t0 = (minHitPeakTime - 500) / 2. * 1000.; // in ns.
+    double drift_velocity = detprop->DriftVelocity()*1e-3; // in cm/ns.
+
+    if (_recoStartPoint.X() <= _recoEndPoint.X()) {
+      if (_recoStartPoint.X() <= 0)
+        _recoEndPoint.SetX(_recoEndPoint.X() - (drift_velocity * t0));
+    }
+    else {
+      if (_recoStartPoint.X() >= 0)
+        _recoEndPoint.SetX(_recoEndPoint.X() + (drift_velocity * t0));
+    }
+  }
+
   // Work out t0 for anode crossers.
   double StoppingMuonSelectionAlg::CorrectPosAndGetT0(TVector3 &_recoStartPoint, TVector3 &_recoEndPoint) {
 
@@ -677,11 +694,13 @@ namespace stoppingcosmicmuonselection {
 
     if (_trackT0 == INV_DBL) {
       if (CorrectPosAndGetT0(_recoStartPoint,_recoEndPoint) == INV_DBL) return false;
+      CorrectPosEnd(_recoStartPoint, _recoEndPoint, _minHitPeakTime);
       trackInfo.isAnodeCrosserPandora = false;
       trackInfo.isAnodeCrosserMine = true;
     }
     else {
       if (DEBUG) std::cout << "Track tagged by Pandora." << std::endl;
+      CorrectPosEnd(_recoStartPoint, _recoEndPoint, _minHitPeakTime);
       trackInfo.isAnodeCrosserPandora = true;
       trackInfo.isAnodeCrosserMine = false;
     }
@@ -786,8 +805,6 @@ namespace stoppingcosmicmuonselection {
     if (excludeCut!="cutMaxHitPeakTime") {
       if (_maxHitPeakTime >= cutMaxHitPeakTime_CC) return false;
     }
-
-    if ((TMath::Abs(_recoEndPoint.Z()-geoHelper.GetAPABoundaries()[0])<=cutContourAPA_CC) || (TMath::Abs(_recoEndPoint.Z()-geoHelper.GetAPABoundaries()[1])<=cutContourAPA_CC)) return false;
 
     // All cuts passed, this is likely a cathode-crossing stopping muon.
     _isACathodeCrosser = true;
