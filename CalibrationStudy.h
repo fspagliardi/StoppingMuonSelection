@@ -29,6 +29,7 @@
 #include "HitHelper.h"
 #include "HitPlaneAlg.h"
 #include "CNNHelper.h"
+#include "CalibrationHelper.h"
 
 namespace stoppingcosmicmuonselection {
 
@@ -70,7 +71,8 @@ private:
   StoppingMuonSelectionAlg selectorAlg;  // need configuration
   CalorimetryHelper        caloHelper;   // need configuration
   HitHelper                hitHelper;    // need configuration
-  CNNHelper             cnnHelper;
+  CNNHelper                cnnHelper;
+  CalibrationHelper        calibHelper;
 
   // Parameters form FHICL File
   size_t _minNumbMichelLikeHit;
@@ -123,6 +125,15 @@ private:
   bool fIsAnodeMine = false;
   std::vector<double> f_michelHitsMichelScore;
   std::vector<double> f_muonHitsMichelScore;
+  std::vector<double> fYZcalibFactor;
+  std::vector<double> fXcalibFactor;
+  std::vector<double> fdQdx;
+  std::vector<double> fResRange;
+  std::vector<double> fTrackPitch;
+  std::vector<double> fHitX;
+  std::vector<double> fHitY;
+  std::vector<double> fHitZ;
+
   // Objects for TTree
   std::string filename;
   // TH1s
@@ -131,15 +142,6 @@ private:
   TGraph2D *fg_imageCollection = nullptr;
   TGraph2D *fg_imageScore = nullptr;
   TGraph2D *fg_imageCollectionNoMichel = nullptr;
-
-  // Graphs
-  TGraphErrors *fg_wireID = nullptr;
-  TGraphErrors *fg_Q = nullptr;
-  TGraphErrors *fg_Dqds = nullptr;
-  TGraphErrors *fg_QSmooth = nullptr;
-  TGraphErrors *fg_DqdsSmooth = nullptr;
-  TGraphErrors *fg_LocalLin = nullptr;
-  TGraphErrors *fg_CnnScore = nullptr;
 
   // Histos
   TH2D *h_dQdxVsRR;
@@ -200,15 +202,16 @@ void CalibrationStudy::beginJob()
   fTrackTree->Branch("g_imageCollectionNoMichel",&fg_imageCollectionNoMichel);
   fTrackTree->Branch("g_imageScore",&fg_imageScore);
   fTrackTree->Branch("h_progressiveDistance","TH1D",&fh_progressiveDistance);
-  fTrackTree->Branch("g_wireID", &fg_wireID);
-  fTrackTree->Branch("g_Q", &fg_Q);
-  fTrackTree->Branch("g_Dqds", &fg_Dqds);
-  fTrackTree->Branch("g_QSmooth", &fg_QSmooth);
-  fTrackTree->Branch("g_DqdsSmooth", &fg_DqdsSmooth);
-  fTrackTree->Branch("g_LocalLin", &fg_LocalLin);
-  fTrackTree->Branch("g_CnnScore", &fg_CnnScore);
   fTrackTree->Branch("michelHitsMichelScore", &f_michelHitsMichelScore);
   fTrackTree->Branch("muonHitsMichelScore", &f_muonHitsMichelScore);
+  fTrackTree->Branch("YZcalibFactor", &fYZcalibFactor);
+  fTrackTree->Branch("XcalibFactor", &fXcalibFactor);
+  fTrackTree->Branch("dQdx", &fdQdx);
+  fTrackTree->Branch("ResRange", &fResRange);
+  fTrackTree->Branch("TrackPitch", &fTrackPitch);
+  fTrackTree->Branch("HitX", &fHitX);
+  fTrackTree->Branch("HitY", &fHitY);
+  fTrackTree->Branch("HitZ", &fHitZ);
 
   // Init the graph for the hits
   fg_imageCollection = new TGraph2D();
@@ -226,15 +229,6 @@ void CalibrationStudy::beginJob()
   h_dQdEVsRR_TP075_LTCorr_LV = tfs->make<TH2D>("h_dQdEVsRR_TP075_LTCorr_LV","h_dQdEVsRR_TP075_LTCorr_LV",200,0,200,800,0,800);
   h_dQdxVsRR_NoMichel = tfs->make<TH2D>("h_dQdxVsRR_NoMichel","h_dQdxVsRR_NoMichel",200,0,200,800,0,800);
   h_dQdxVsRR_NoMichelTP = tfs->make<TH2D>("h_dQdxVsRR_NoMichelTP","h_dQdxVsRR_NoMichelTP",200,0,200,800,0,800);
-
-  // Graphs
-  fg_wireID = new TGraphErrors();
-  fg_Q = new TGraphErrors();
-  fg_Dqds = new TGraphErrors();
-  fg_QSmooth = new TGraphErrors();
-  fg_DqdsSmooth = new TGraphErrors();
-  fg_LocalLin = new TGraphErrors();
-  fg_CnnScore = new TGraphErrors();
 
   // Print active volume bounds.
   geoHelper.PrintActiveVolumeBounds();

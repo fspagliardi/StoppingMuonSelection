@@ -35,8 +35,26 @@ namespace stoppingcosmicmuonselection {
 
   public:
     CalibrationHelper();
-    CalibrationHelper(const recob::PFParticle &thisParticle, art::Event const &evt, const int &plane);
+    CalibrationHelper(const std::string &filetype);
     ~CalibrationHelper();
+
+    // Get the histos.
+    void Set(art::Event const &evt);
+
+    // Get X correction factor.
+    double GetXCorr(const TVector3 &hitPos);
+
+    // Get YZ correction factor.
+    double GetYZCorr(const TVector3 &hitPos);
+
+    // Get both factors at the same time.
+    double GetXYZCorr(const TVector3 &hitPos);
+
+    // Get vector of factors for X.
+    std::vector<double> GetXCorr_V(const std::vector<double> &hit_xs);
+
+    // Get vector of factors for YZ.
+    std::vector<double> GetYZCorr_V(const std::vector<double> &hit_xs, const std::vector<double> &hit_ys, const std::vector<double> &hit_zs);
 
   private:
     TH1D *h_x;

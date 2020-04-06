@@ -16,6 +16,9 @@ namespace stoppingcosmicmuonselection {
     std::cout << "CalibrationStudy_module is on event: " << fEvNumber << std::endl;
     mf::LogVerbatim("CalibrationStudy") << "CalibrationStudy module on event " << fEvNumber;
 
+    // Set the calibration helper.
+    calibHelper.Set(evt);
+
     // Get handles
     // trackHandle is art::ValidHandle<std::vector<recob::Track>>
     auto const pfparticleHandle = evt.getValidHandle<std::vector<recob::PFParticle>>(fPFParticleTag);
@@ -102,6 +105,17 @@ namespace stoppingcosmicmuonselection {
       caloHelper.FillHisto_dQdxVsRR_LTCorr(h_dQdxVsRR_TP075_LTCorr,_trackPitch-_trackPitchTolerance,_trackPitch+_trackPitchTolerance);
       caloHelper.FillHisto_dQdEVsRR_LTCorr_MC(h_dQdEVsRR_TP075_LTCorr_MC,_trackPitch-_trackPitchTolerance,_trackPitch+_trackPitchTolerance);
       caloHelper.FillHisto_dQdEVsRR_LTCorr_LV(h_dQdEVsRR_TP075_LTCorr_LV,_trackPitch-_trackPitchTolerance,_trackPitch+_trackPitchTolerance);
+      fdQdx = caloHelper.GetdQdx();
+      fResRange = caloHelper.GetResRangeOrdered();
+      fTrackPitch = caloHelper.GetTrackPitch();
+      fHitX = caloHelper.GetHitX();
+      fHitY = caloHelper.GetHitY();
+      fHitZ = caloHelper.GetHitZ();
+
+      // Get Calibration correction factors.
+      // TODO: If track is anode crosser, correct x position
+      fYZcalibFactor = calibHelper.GetYZCorr_V(fHitX, fHitY, fHitZ);
+      fXcalibFactor = calibHelper.GetXCorr_V(fHitX);
 
       size_t trackIndex = hitHelper.GetTrackIndex(track,tracklist);
       auto const &trackHits = hitHelper.GetArtPtrToHitVect(fmht,trackIndex);
@@ -112,13 +126,6 @@ namespace stoppingcosmicmuonselection {
       std::cout << "Hits on collection size: " << hitsOnCollection.size() << std::endl;
       const size_t &hitIndex = hitHelper.GetIndexClosestHitToPoint(selectorAlg.GetTrackProperties().recoStartPoint,hitsOnCollection,fmthm,tracklist,trackIndex);
       HitPlaneAlg hitPlaneAlg(trackHits,hitIndex,2,selectorAlg.GetTrackProperties().trackT0);
-      // Get the vectors.
-      const std::vector<double> &WireIDs = hitPlaneAlg.GetOrderedWireNumb();
-      const std::vector<double> &Qs = hitPlaneAlg.GetOrderedQ();
-      const std::vector<double> &Dqds = hitPlaneAlg.GetOrderedDqds();
-      const std::vector<double> &QsSmooth = hitPlaneAlg.Smoother(Qs,_numberNeighbors);
-      const std::vector<double> &DqdsSmooth = hitPlaneAlg.Smoother(Dqds,_numberNeighbors);
-      const std::vector<double> &LocalLin = hitPlaneAlg.CalculateLocalLinearity(_numberNeighbors);
       std::cout << "Ordered hit size: " << hitPlaneAlg.GetOrderedHitVec().size() << std::endl;
 
       for (const art::Ptr<recob::Hit> &hitp : trackHits) {
@@ -146,11 +153,6 @@ namespace stoppingcosmicmuonselection {
                                    selectorAlg.GetTrackProperties().recoEndPoint,2,selectorAlg.GetTrackProperties().trackT0);
         hitHelper.FillTrackGraph2D(fg_imageCollectionNoMichel,hitsNoMichel,
                                    selectorAlg.GetTrackProperties().recoEndPoint,2,selectorAlg.GetTrackProperties().trackT0);
-
-        // std::cout << "Reco End Point: " << selectorAlg.GetTrackProperties().recoEndPoint.X() << " " << selectorAlg.GetTrackProperties().recoEndPoint.Y() << " " << selectorAlg.GetTrackProperties().recoEndPoint.Z() << std::endl;
-        // std::cout << "True End Point: " << selectorAlg.GetTrackProperties().trueEndPoint.X() << " " << selectorAlg.GetTrackProperties().trueEndPoint.Y() << " " << selectorAlg.GetTrackProperties().trueEndPoint.Z() << std::endl;
-        // std::cout << "Last hit: " << lastHitPos.X() << " " << lastHitPos.Y() << " " << lastHitPos.Z() << std::endl;
-        // std::cout << "Wire: " << geoHelper.GetWireNumb(hitsNoMichel2.back()) << " Time: " << hitsNoMichel2.back()->PeakTime() << std::endl;
       }
       else {
         fg_imageCollection->Set(0);
@@ -166,15 +168,6 @@ namespace stoppingcosmicmuonselection {
       }
       else
         fDistEndPointNoMichel = INV_DBL;
-
-      // Fill the graphs.
-      FillTGraph(fg_wireID, WireIDs);
-      FillTGraph(fg_Q,Qs);
-      FillTGraph(fg_Dqds,Dqds);
-      FillTGraph(fg_QSmooth,QsSmooth);
-      FillTGraph(fg_DqdsSmooth,DqdsSmooth);
-      FillTGraph(fg_LocalLin,LocalLin);
-      FillTGraph(fg_CnnScore, scores);
 
       fh_progressiveDistance->Reset();
       for (const auto &el : hitPlaneAlg.GetDistances()) {
