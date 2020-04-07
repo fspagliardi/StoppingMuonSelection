@@ -181,11 +181,13 @@ namespace stoppingcosmicmuonselection {
 
     if (_trackT0 == INV_DBL) {
       if (CorrectPosAndGetT0(_recoStartPoint,_recoEndPoint) == INV_DBL) return false;
+      CorrectPosEnd(_recoEndPoint, _minHitPeakTime, _maxHitPeakTime);
       trackInfo.isAnodeCrosserPandora = false;
       trackInfo.isAnodeCrosserMine = true;
     }
     else {
       std::cout << "Track tagged by Pandora." << std::endl;
+      CorrectPosEnd(_recoEndPoint, _minHitPeakTime, _maxHitPeakTime);
       trackInfo.isAnodeCrosserPandora = true;
       trackInfo.isAnodeCrosserMine = false;
     }
@@ -213,20 +215,15 @@ namespace stoppingcosmicmuonselection {
   }
 
   // Correct position of the end point using the minimum hit peak time.
-  void StoppingMuonSelectionAlg::CorrectPosEnd(TVector3 &_recoStartPoint, TVector3 &_recoEndPoint, const double &minHitPeakTime) {
+  void StoppingMuonSelectionAlg::CorrectPosEnd(TVector3 &_recoEndPoint, const double &minHitPeakTime, const double &maxHitPeakTime) {
 
     // To do: make this independent from protoDUNE run 1 setup.
-    double t0 = (minHitPeakTime - 500) / 2. * 1000.; // in ns.
+    //double t0 = (minHitPeakTime - 500) / 2. * 1000.; // in ns.
+    double drift_time_end_point = (maxHitPeakTime-minHitPeakTime) / 2. * 1000; // in ns.
     double drift_velocity = detprop->DriftVelocity()*1e-3; // in cm/ns.
 
-    if (_recoStartPoint.X() <= _recoEndPoint.X()) {
-      if (_recoStartPoint.X() <= 0)
-        _recoEndPoint.SetX(_recoEndPoint.X() - (drift_velocity * t0));
-    }
-    else {
-      if (_recoStartPoint.X() >= 0)
-        _recoEndPoint.SetX(_recoEndPoint.X() + (drift_velocity * t0));
-    }
+    _recoEndPoint.SetX(drift_time_end_point * drift_velocity);
+
   }
 
   // Work out t0 for anode crossers.
@@ -694,13 +691,13 @@ namespace stoppingcosmicmuonselection {
 
     if (_trackT0 == INV_DBL) {
       if (CorrectPosAndGetT0(_recoStartPoint,_recoEndPoint) == INV_DBL) return false;
-      CorrectPosEnd(_recoStartPoint, _recoEndPoint, _minHitPeakTime);
+      //CorrectPosEnd(_recoStartPoint, _recoEndPoint, _minHitPeakTime);
       trackInfo.isAnodeCrosserPandora = false;
       trackInfo.isAnodeCrosserMine = true;
     }
     else {
       if (DEBUG) std::cout << "Track tagged by Pandora." << std::endl;
-      CorrectPosEnd(_recoStartPoint, _recoEndPoint, _minHitPeakTime);
+      //CorrectPosEnd(_recoStartPoint, _recoEndPoint, _minHitPeakTime);
       trackInfo.isAnodeCrosserPandora = true;
       trackInfo.isAnodeCrosserMine = false;
     }
