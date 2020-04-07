@@ -31,12 +31,12 @@ namespace stoppingcosmicmuonselection {
     const recob::Track &track = *(pfpUtil.GetPFParticleTrack(thisParticle,evt,fPFParticleTag,fTrackerTag));
     _calos = trackUtil.GetRecoTrackCalorimetry(track,evt,fTrackerTag,fCalorimetryTag);
     _isCalorimetrySet = true;
-    
+
     if (!IsValid()) {
       std::cout << "CalorimetryHelper.cxx: Calorimetry invalid for plane: " << plane << std::endl;
       return;
     }
-    
+
     for (size_t itcal = 0; itcal < _calos.size(); itcal++) {
       if (!(_calos[itcal].PlaneID().isValid)) {
         std::cout << "CalorimetryHelper.cxx: " << "plane at entry " << itcal << " not valid"<< std::endl;
@@ -83,7 +83,7 @@ namespace stoppingcosmicmuonselection {
 
   // Check if the calorimetry is valid
   bool CalorimetryHelper::IsValid() {
-    
+
     _isValid = false;
     // Check that the size is not zero.
     if (_calos.size() == 0) _isValid = false;
@@ -97,11 +97,11 @@ namespace stoppingcosmicmuonselection {
       }
     }
     return _isValid;
-    
+
   }
 
   // Order the residual range with respect to the track direction
-  void CalorimetryHelper::OrderResRange() { 
+  void CalorimetryHelper::OrderResRange() {
     std::vector<double> res_vect;
       for (size_t i = 0; i < _resrange.size();i++) {
         res_vect.push_back(_resrange[i]);

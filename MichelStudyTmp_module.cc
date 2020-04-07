@@ -13,7 +13,7 @@ namespace stoppingcosmicmuonselection {
     // increase counter and store event number
     counter_total_number_events++;
     fEvNumber = evt.id().event();
-    std::cout << "MichelStudyTmp_module is on event: " << fEvNumber << std::endl;
+    std::cout << "MichelStudyTmp_module is on event: " << fEvNumber <<  " run: " << evt.id().run() << std::endl;
     mf::LogVerbatim("MichelStudyTmp") << "MichelStudyTmp module on event " << fEvNumber;
 
     // Get handles
@@ -98,10 +98,10 @@ namespace stoppingcosmicmuonselection {
       // Fill the histos
       caloHelper.FillHisto_dQdxVsRR(h_dQdxVsRR);
       caloHelper.FillHisto_dQdxVsRR(h_dQdxVsRR_TP075,_trackPitch-_trackPitchTolerance,_trackPitch+_trackPitchTolerance);
-      caloHelper.FillHisto_dQdxVsRR_LTCorr(h_dQdxVsRR_LTCorr);
-      caloHelper.FillHisto_dQdxVsRR_LTCorr(h_dQdxVsRR_TP075_LTCorr,_trackPitch-_trackPitchTolerance,_trackPitch+_trackPitchTolerance);
-      caloHelper.FillHisto_dQdEVsRR_LTCorr_MC(h_dQdEVsRR_TP075_LTCorr_MC,_trackPitch-_trackPitchTolerance,_trackPitch+_trackPitchTolerance);
-      caloHelper.FillHisto_dQdEVsRR_LTCorr_LV(h_dQdEVsRR_TP075_LTCorr_LV,_trackPitch-_trackPitchTolerance,_trackPitch+_trackPitchTolerance);
+      //caloHelper.FillHisto_dQdxVsRR_LTCorr(h_dQdxVsRR_LTCorr);
+      //caloHelper.FillHisto_dQdxVsRR_LTCorr(h_dQdxVsRR_TP075_LTCorr,_trackPitch-_trackPitchTolerance,_trackPitch+_trackPitchTolerance);
+      //caloHelper.FillHisto_dQdEVsRR_LTCorr_MC(h_dQdEVsRR_TP075_LTCorr_MC,_trackPitch-_trackPitchTolerance,_trackPitch+_trackPitchTolerance);
+      //caloHelper.FillHisto_dQdEVsRR_LTCorr_LV(h_dQdEVsRR_TP075_LTCorr_LV,_trackPitch-_trackPitchTolerance,_trackPitch+_trackPitchTolerance);
 
       size_t trackIndex = hitHelper.GetTrackIndex(track,tracklist);
       auto const &trackHits = hitHelper.GetArtPtrToHitVect(fmht,trackIndex);
