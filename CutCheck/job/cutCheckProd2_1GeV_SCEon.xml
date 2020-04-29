@@ -46,7 +46,7 @@
   <schema>root</schema>
   <!--maxfilesperjob>3</maxfilesperjob-->
   <anadatatier>full-reconstructed</anadatatier>
-  <jobsub>-f /pnfs/dune/persistent/users/fspaglia/MCdEdxSuperBinning.root --memory=4000 --expected-lifetime=3h</jobsub>
+  <jobsub>-f /pnfs/dune/persistent/users/fspaglia/MCdEdxSuperBinning.root --memory=4000 --expected-lifetime=4h</jobsub>
 </stage>
 
 <stage name = "runProd2Cathode">
