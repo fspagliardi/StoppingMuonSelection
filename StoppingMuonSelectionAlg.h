@@ -52,7 +52,7 @@ namespace stoppingcosmicmuonselection {
     double CorrectPosAndGetT0(TVector3 &_recoStartPoint, TVector3 &_recoEndPoint);
 
     // Correct position of the end point using the minimum hit peak time.
-    void CorrectPosEnd(TVector3 &_recoEndPoint, const double &minHitPeakTime, const double &maxHitPeakTime);
+    void CorrectPosEnd(TVector3 &_recoStartPoint, TVector3 &_recoEndPoint, const double &minHitPeakTime, const double &maxHitPeakTime);
 
     // Determine if the PFParticle is a selected cathode crosser
     bool IsStoppingCathodeCrosser(art::Event const &evt, recob::PFParticle const &thisParticle);
