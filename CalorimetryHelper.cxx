@@ -71,7 +71,12 @@ namespace stoppingcosmicmuonselection {
         // Apply Lifetime corrections
         const geo::Point_t HitPoint(TrackPos.X(), TrackPos.Y(), TrackPos.Z());
         geo::TPCID const & tpcid = geom->FindTPCAtPosition(HitPoint);
-        if (!tpcid.isValid) {std::cout << "CalorimetryHelper.cxx: " << "tpc not valid"<< std::endl;continue;}
+        if (!tpcid.isValid) {
+          std::cout << "CalorimetryHelper.cxx: " << "tpc not valid"<< std::endl;
+          _drift_time.push_back(INV_DBL);
+          _corr_factors.push_back(INV_DBL);
+          continue;
+        }
         int CryoID = geom->FindCryostatAtPosition(HitPoint);
         double Ticks = detprop->ConvertXToTicks(TrackPos.X(), planeNumb, tpcid.TPC, CryoID);
         _drift_time.push_back((Ticks - detprop->TriggerOffset()) * detprop->SamplingRate()*1e-3);
