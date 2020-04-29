@@ -166,8 +166,8 @@ void CutCheck::beginJob()
   h_endX_signal_Fabio = NMinus1Dir.make<TH1D>("h_endX_signal_Fabio","h_endX_signal_Fabio",400,-400,400);
   h_endX_Pandora = NMinus1Dir.make<TH1D>("h_endX_Pandora","h_endX_Pandora",400,-400,400);
   h_endX_signal_Pandora = NMinus1Dir.make<TH1D>("h_endX_signal_Pandora","h_endX_signal_Pandora",400,-400,400);
-  h_theta_xz = NMinus1Dir.make<TH1D>("h_theta_xz", "h_theta_xz", 180,0,180);
-  h_theta_xz_signal = NMinus1Dir.make<TH1D>("h_theta_xz_signal", "h_theta_xz_signal", 180,0,180);
+  h_theta_xz = NMinus1Dir.make<TH1D>("h_theta_xz", "h_theta_xz", 180*2,-180,180);
+  h_theta_xz_signal = NMinus1Dir.make<TH1D>("h_theta_xz_signal", "h_theta_xz_signal", 180*2,-180,180);
   h_theta_yz = NMinus1Dir.make<TH1D>("h_theta_yz", "h_theta_yz", 180,0,180);
   h_theta_yz_signal = NMinus1Dir.make<TH1D>("h_theta_yz_signal", "h_theta_yz_signal", 180,0,180);
   h_length = NMinus1Dir.make<TH1D>("h_length", "h_length", 800, 0, 800);
