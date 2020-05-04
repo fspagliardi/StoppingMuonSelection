@@ -156,14 +156,26 @@ namespace stoppingcosmicmuonselection {
   }
   // Get HitX
   const std::vector<double> CalorimetryHelper::GetHitX() {
+    // std::cout << "hitx" << std::endl;
+    // for (size_t i = 0; i < _hitx.size(); i++) {
+    //   std::cout << _hitx[i] << std::endl;
+    // }
     return _hitx;
   }
   // Get HitY
   const std::vector<double> CalorimetryHelper::GetHitY() {
+    // std::cout << "hity" << std::endl;
+    // for (size_t i = 0; i < _hity.size(); i++) {
+    //   std::cout << _hity[i] << std::endl;
+    // }
     return _hity;
   }
   // Get HitZ
   const std::vector<double> CalorimetryHelper::GetHitZ() {
+    // std::cout << "hitz" << std::endl;
+    // for (size_t i = 0; i < _hitz.size(); i++) {
+    //   std::cout << _hitz[i] << std::endl;
+    // }
     return _hitz;
   }
   // Get HitPeakTime
