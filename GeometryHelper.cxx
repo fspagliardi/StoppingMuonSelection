@@ -256,6 +256,18 @@ namespace stoppingcosmicmuonselection {
     return false;
   }
 
+  // Return TPC index given a point.
+  unsigned int GeometryHelper::GetTPCFromPosition(const TVector3 &pos) {
+    geo::Point_t point{pos.X(), pos.Y(), pos.Z()};
+
+    // Get geo TPCID.
+    geo::TPCID tpcid = geom->PositionToTPC(point).ID();
+
+    const unsigned int tpcIndex = tpcid.TPC;
+
+    return tpcIndex;
+  }
+
 } // end of namespace stoppingcosmicmuonselection
 
 #endif

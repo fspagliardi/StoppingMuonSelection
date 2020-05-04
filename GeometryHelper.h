@@ -76,6 +76,9 @@ namespace stoppingcosmicmuonselection {
     // Check if TPC number is on the cryostat side.
     bool IsTPCOnCryoSide(const unsigned int &hit_tpcid);
 
+    // Return TPC index given a point.
+    unsigned int GetTPCFromPosition(const TVector3 &pos);
+
     // Arrays with TPC number info
     const unsigned int tpcIndecesBL[3] = {2,6,10};
     const unsigned int tpcIndecesBR[3] = {1,5,9};
