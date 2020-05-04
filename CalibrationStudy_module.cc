@@ -165,9 +165,12 @@ namespace stoppingcosmicmuonselection {
         fDistEndPointNoMichel = (selectorAlg.GetTrackProperties().recoEndPoint - selectorAlg.GetTrackProperties().trueEndPoint).Mag();
         caloHelper.FillHisto_dQdxVsRR(h_dQdxVsRR_NoMichel);
         caloHelper.FillHisto_dQdxVsRR(h_dQdxVsRR_NoMichelTP,_trackPitch-_trackPitchTolerance,_trackPitch+_trackPitchTolerance);
+        fHasMichel = false;
       }
-      else
+      else {
         fDistEndPointNoMichel = INV_DBL;
+        fHasMichel = true;
+      }
 
       fh_progressiveDistance->Reset();
       for (const auto &el : hitPlaneAlg.GetDistances()) {

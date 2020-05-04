@@ -123,6 +123,7 @@ private:
   bool fIsTrueSelectedAnodeCrosser = false;
   bool fIsAnodePandora = false;
   bool fIsAnodeMine = false;
+  bool fHasMichel = false;
   std::vector<double> f_michelHitsMichelScore;
   std::vector<double> f_muonHitsMichelScore;
   std::vector<double> fYZcalibFactor;
@@ -197,6 +198,7 @@ void CalibrationStudy::beginJob()
   fTrackTree->Branch("isTrueSelectedAnodeCrosser",&fIsTrueSelectedAnodeCrosser);
   fTrackTree->Branch("isAnodePandora", &fIsAnodePandora);
   fTrackTree->Branch("isAnodeMine", &fIsAnodeMine);
+  fTrackTree->Branch("hasMichel", &fHasMichel);
   fTrackTree->Branch("filename", &filename);
   fTrackTree->Branch("g_imageCollection",&fg_imageCollection);
   fTrackTree->Branch("g_imageCollectionNoMichel",&fg_imageCollectionNoMichel);
