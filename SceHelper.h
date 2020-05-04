@@ -39,6 +39,12 @@ namespace stoppingcosmicmuonselection {
     SceHelper();
     ~SceHelper();
 
+    // Get corrected position given TVector3
+    TVector3 GetCorrectedPos(const TVector3 &pos);
+
+    // Get corrected field vector at point.
+    TVector3 GetFieldVector(const TVector3 &pos);
+
   private:
 
     GeometryHelper geoHelper;

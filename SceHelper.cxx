@@ -34,6 +34,7 @@ namespace stoppingcosmicmuonselection {
     return res;
   }
 
+  // Get corrected field vector at point.
   TVector3 SceHelper::GetFieldVector(const TVector3 &pos) {
     geo::Point_t loc{pos.X(), pos.Y(), pos.Z()};
     // Get TPC index.
