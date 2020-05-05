@@ -26,6 +26,7 @@ namespace stoppingcosmicmuonselection {
 
     // Get TPC index.
     unsigned int tpc = geoHelper.GetTPCFromPosition(pos);
+    if (tpc == -INV_INT) return TVector3(INV_DBL, INV_DBL, INV_DBL);
 
     locOffsets = sce->GetCalPosOffsets(loc, tpc);
 
@@ -39,8 +40,9 @@ namespace stoppingcosmicmuonselection {
     geo::Point_t loc{pos.X(), pos.Y(), pos.Z()};
     // Get TPC index.
     unsigned int tpc = geoHelper.GetTPCFromPosition(pos);
-    geo::Vector_t E_field_nominal = {0., 0., 0.};
-    double E_nom = detprop->Efield();   // Electric Field in the drift region in KV/cm
+    if (tpc == -INV_INT) return TVector3(INV_DBL, INV_DBL, INV_DBL);
+    geo::Vector_t E_field_offsets = {0., 0., 0.};
+    double E_field_nominal = detprop->Efield();   // Electric Field in the drift region in KV/cm
 
     E_field_offsets = sce->GetCalEfieldOffsets(loc, tpc);
     TVector3 E_field_vector = {E_field_nominal*(1 + E_field_offsets.X()), E_field_nominal*E_field_offsets.Y(), E_field_nominal*E_field_offsets.Z()};

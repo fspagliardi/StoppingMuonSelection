@@ -49,7 +49,7 @@ namespace stoppingcosmicmuonselection {
 
     GeometryHelper geoHelper;
     // Handle for space charge service
-    auto const* sce = lar::providerFrom<spacecharge::SpaceChargeService>();
+    const spacecharge::SpaceCharge* sce = lar::providerFrom<spacecharge::SpaceChargeService>();
     // Handle for detector properties
     const detinfo::DetectorProperties *detprop = lar::providerFrom<detinfo::DetectorPropertiesService>();
   };
