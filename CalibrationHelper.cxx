@@ -84,6 +84,64 @@ namespace stoppingcosmicmuonselection {
     return result;
   }
 
+  // Get vector of directions.
+  std::vector<TVector3> CalibrationHelper::GetHitDirVec(const std::vector<double> &hit_x, const std::vector<double> &hit_y, const std::vector<double> &hit_z) {
+
+    std::vector<TVector3> dirs;
+    if (hit_x[0]!=INV_DBL && hit_y[0]!=INV_DBL && hit_z[0]!=INV_DBL)
+      dirs.push_back(TVector3(hit_x[1]-hit_x[0], hit_y[1]-hit_y[0], hit_z[1]-hit_z[0]));
+    else
+      dirs.push_back(TVector3(INV_DBL, INV_DBL, INV_DBL));
+
+    for (size_t i = 1; i < hit_x.size(); i++) {
+      if (hit_x[i]==INV_DBL || hit_y[i]==INV_DBL || hit_z[i]==INV_DBL)
+        dirs.push_back(TVector3(INV_DBL, INV_DBL, INV_DBL));
+      else {
+        dirs.push_back(TVector3(hit_x[i]-hit_x[i-1], hit_y[i]-hit_y[i-1], hit_z[i]-hit_z[i-1]));
+      }
+    }
+
+    return dirs;
+
+  }
+
+  // Get vector of Fields.
+  std::vector<TVector3> CalibrationHelper::GetHitPosField(const std::vector<double> &hit_x, const std::vector<double> &hit_y, const std::vector<double> &hit_z) {
+
+    std::vector<TVector3> fields;
+
+    for (size_t i = 0; i < hit_x.size(); i++) {
+      if (hit_x[0]==INV_DBL || hit_y[0]==INV_DBL || hit_z[0]==INV_DBL)
+        fields.push_back(TVector3(INV_DBL, INV_DBL, INV_DBL));
+      else {
+        fields.push_back(sceHelper.GetFieldVector(TVector3(hit_x[i], hit_y[i], hit_z[i])));
+      }
+    }
+
+    return fields;
+
+  }
+
+  // Get vector of angles phi.
+  std::vector<double> CalibrationHelper::PitchFieldAngle(const std::vector<double> &hit_xs, const std::vector<double> &hit_ys, const std::vector<double> &hit_zs) {
+    std::vector<double> phis;
+
+    std::vector<TVector3> dirs = GetHitDirVec(hit_xs, hit_ys, hit_zs);
+    std::vector<TVector3> fields = GetHitPosField(hit_xs, hit_ys, hit_zs);
+
+    for (size_t i = 0; i < TMath::Min(dirs.size(), fields.size()); i++) {
+      if (dirs[i].X()==INV_DBL || dirs[i].Y()==INV_DBL || dirs[i].Z()==INV_DBL || fields[i].X()==INV_DBL || fields[i].Y()==INV_DBL || fields[i].Z()==INV_DBL)
+        phis.push_back(INV_DBL);
+      else {
+        double phi = dirs[i].Angle(fields[i]);
+        phis.push_back(phi);
+      }
+    }
+
+    return phis;
+
+  }
+
 } // end of namespace stoppingcosmicmuonselection
 
 #endif

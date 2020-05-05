@@ -28,6 +28,7 @@
 #include "TMath.h"
 
 #include "DataTypes.h"
+#include "SceHelper.h"
 
 namespace stoppingcosmicmuonselection {
 
@@ -56,10 +57,21 @@ namespace stoppingcosmicmuonselection {
     // Get vector of factors for YZ.
     std::vector<double> GetYZCorr_V(const std::vector<double> &hit_xs, const std::vector<double> &hit_ys, const std::vector<double> &hit_zs);
 
+    // Get vector of directions.
+    std::vector<TVector3> GetHitDirVec(const std::vector<double> &hit_xs, const std::vector<double> &hit_ys, const std::vector<double> &hit_zs);
+
+    // Get vector of Fields.
+    std::vector<TVector3> GetHitPosField(const std::vector<double> &hit_x, const std::vector<double> &hit_y, const std::vector<double> &hit_z);
+
+    // Get vector of angles phi.
+    std::vector<double> PitchFieldAngle(const std::vector<double> &hit_xs, const std::vector<double> &hit_ys, const std::vector<double> &hit_zs);
+
   private:
     TH1D *h_x;
     TH2D *h_yz_neg;
     TH2D *h_yz_pos;
+
+    SceHelper sceHelper;
 
   };
 }
