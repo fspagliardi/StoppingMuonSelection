@@ -111,6 +111,7 @@ namespace stoppingcosmicmuonselection {
       fHitX = caloHelper.GetHitX();
       fHitY = caloHelper.GetHitY();
       fHitZ = caloHelper.GetHitZ();
+      fPhis = calibHelper.PitchFieldAngle(fHitX, fHitY, fHitZ);
 
       // Get Calibration correction factors.
       // TODO: If track is anode crosser, correct x position
@@ -177,6 +178,16 @@ namespace stoppingcosmicmuonselection {
         fh_progressiveDistance->Fill(el);
       }
 
+      // Correct start and end point.
+      TVector3 recoStartPoint_corr = sceHelper.GetCorrectedPos(selectorAlg.GetTrackProperties().recoStartPoint);
+      TVector3 recoEndPoint_corr = sceHelper.GetCorrectedPos(selectorAlg.GetTrackProperties().recoEndPoint);
+
+      fEndX_corr = recoEndPoint_corr.X();
+      fEndY_corr = recoEndPoint_corr.Y();
+      fEndZ_corr = recoEndPoint_corr.Z();
+      fStartX_corr = recoStartPoint_corr.X();
+      fStartY_corr = recoStartPoint_corr.Y();
+      fStartZ_corr = recoStartPoint_corr.Z();
       // Fill TTree
       fTrackTree->Fill();
 

@@ -29,6 +29,7 @@
 #include "HitHelper.h"
 #include "HitPlaneAlg.h"
 #include "CNNHelper.h"
+#include "SceHelper.h"
 #include "CalibrationHelper.h"
 
 namespace stoppingcosmicmuonselection {
@@ -73,6 +74,7 @@ private:
   HitHelper                hitHelper;    // need configuration
   CNNHelper                cnnHelper;
   CalibrationHelper        calibHelper;
+  SceHelper                sceHelper;
 
   // Parameters form FHICL File
   size_t _minNumbMichelLikeHit;
@@ -117,6 +119,12 @@ private:
   double fMaxHitPeakTime = INV_DBL;
   double fDistEndPoint = INV_DBL;
   double fDistEndPointNoMichel = INV_DBL;
+  double fEndX_corr = INV_DBL;
+  double fEndY_corr = INV_DBL;
+  double fEndZ_corr = INV_DBL;
+  double fStartX_corr = INV_DBL;
+  double fStartY_corr = INV_DBL;
+  double fStartZ_corr = INV_DBL;
   bool fIsRecoSelectedCathodeCrosser = false;
   bool fIsRecoSelectedAnodeCrosser = false;
   bool fIsTrueSelectedCathodeCrosser = false;
@@ -134,6 +142,7 @@ private:
   std::vector<double> fHitX;
   std::vector<double> fHitY;
   std::vector<double> fHitZ;
+  std::vector<double> fPhis;
 
   // Objects for TTree
   std::string filename;
@@ -192,6 +201,12 @@ void CalibrationStudy::beginJob()
   fTrackTree->Branch("theta_yz", &ftheta_yz, "ftheta_yz/d");
   fTrackTree->Branch("distEndPoint", &fDistEndPoint, "fDistEndPoint/d");
   fTrackTree->Branch("distEndPointNoMichel", &fDistEndPointNoMichel, "fDistEndPointNoMichel/d");
+  fTrackTree->Branch("endX_corr", &fEndX_corr, "fEndX_corr/d");
+  fTrackTree->Branch("endY_corr", &fEndY_corr, "fEndY_corr/d");
+  fTrackTree->Branch("endZ_corr", &fEndZ_corr, "fEndZ_corr/d");
+  fTrackTree->Branch("startX_corr", &fStartX_corr, "fStartX_corr/d");
+  fTrackTree->Branch("startY_corr", &fStartY_corr, "fStartY_corr/d");
+  fTrackTree->Branch("startZ_corr", &fStartZ_corr, "fStartZ_corr/d");
   fTrackTree->Branch("isRecoSelectedCathodeCrosser",&fIsRecoSelectedCathodeCrosser);
   fTrackTree->Branch("isTrueSelectedCathodeCrosser",&fIsTrueSelectedCathodeCrosser);
   fTrackTree->Branch("isRecoSelectedAnodeCrosser",&fIsRecoSelectedAnodeCrosser);
@@ -214,6 +229,7 @@ void CalibrationStudy::beginJob()
   fTrackTree->Branch("HitX", &fHitX);
   fTrackTree->Branch("HitY", &fHitY);
   fTrackTree->Branch("HitZ", &fHitZ);
+  fTrackTree->Branch("Phis", &fPhis);
 
   // Init the graph for the hits
   fg_imageCollection = new TGraph2D();
