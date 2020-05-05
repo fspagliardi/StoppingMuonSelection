@@ -29,6 +29,8 @@ namespace stoppingcosmicmuonselection {
     if (tpc == -INV_INT) return TVector3(INV_DBL, INV_DBL, INV_DBL);
 
     locOffsets = sce->GetCalPosOffsets(loc, tpc);
+    // std::cout << "Offset vector: " << locOffsets.X() << " " << locOffsets.Y() << " " << locOffsets.Z() << std::endl;
+
 
     TVector3 res(loc.X() - locOffsets.X(), loc.Y() + locOffsets.Y(), loc.Z() + locOffsets.Z());
 
@@ -46,6 +48,7 @@ namespace stoppingcosmicmuonselection {
 
     E_field_offsets = sce->GetCalEfieldOffsets(loc, tpc);
     TVector3 E_field_vector = {E_field_nominal*(1 + E_field_offsets.X()), E_field_nominal*E_field_offsets.Y(), E_field_nominal*E_field_offsets.Z()};
+    // std::cout << "New field vector: " << E_field_vector.X() << " " << E_field_vector.Y() << " " << E_field_vector.Z() << std::endl;
 
     return E_field_vector;
   }
