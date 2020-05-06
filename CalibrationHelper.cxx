@@ -111,7 +111,7 @@ namespace stoppingcosmicmuonselection {
     std::vector<TVector3> fields;
 
     for (size_t i = 0; i < hit_x.size(); i++) {
-      if (hit_x[0]==INV_DBL || hit_y[0]==INV_DBL || hit_z[0]==INV_DBL)
+      if (hit_x[i]==INV_DBL || hit_y[i]==INV_DBL || hit_z[i]==INV_DBL)
         fields.push_back(TVector3(INV_DBL, INV_DBL, INV_DBL));
       else {
         fields.push_back(sceHelper.GetFieldVector(TVector3(hit_x[i], hit_y[i], hit_z[i])));
