@@ -1,0 +1,5 @@
+root://fndca1.fnal.gov:1094/pnfs/fnal.gov/usr/dune/tape_backed/dunepro/physics/full-reconstructed/2019/mc/out1/PDSPProd2/22/60/37/10/PDSPProd2_protoDUNE_sp_reco_35ms_sce_off_23473772_0_452d9f89-a2a1-4680-ab72-853a3261da5d.root
+root://fndca1.fnal.gov:1094/pnfs/fnal.gov/usr/dune/tape_backed/dunepro/physics/full-reconstructed/2019/mc/out1/PDSPProd2/22/57/99/65/PDSPProd2_protoDUNE_sp_reco_35ms_sce_off_23477338_0_2243c0b6-3852-4ac7-b20e-5a2322e25fa3.root
+root://fndca1.fnal.gov:1094/pnfs/fnal.gov/usr/dune/tape_backed/dunepro/physics/full-reconstructed/2019/mc/out1/PDSPProd2/23/38/72/36/PDSPProd2_protoDUNE_sp_reco_35ms_sce_off_23477876_0_c674ee59-3e5c-4d25-8bc4-d4961950536c.root
+root://fndca1.fnal.gov:1094/pnfs/fnal.gov/usr/dune/tape_backed/dunepro/physics/full-reconstructed/2019/mc/out1/PDSPProd2/22/57/99/65/PDSPProd2_protoDUNE_sp_reco_35ms_sce_off_23477413_0_bb3526f6-1c18-4f2d-9cef-9db53e080544.root
+root://fndca1.fnal.gov:1094/pnfs/fnal.gov/usr/dune/tape_backed/dunepro/physics/full-reconstructed/2019/mc/out1/PDSPProd2/23/38/72/36/PDSPProd2_protoDUNE_sp_reco_35ms_sce_off_23477878_0_86f4d8a4-a240-4dd4-b4df-a6cb9b6f217a.root
