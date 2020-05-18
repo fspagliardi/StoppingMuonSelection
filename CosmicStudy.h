@@ -3,8 +3,8 @@
 // Plugin Type: ******
 // File:        CosmicStudy.h
 ////////////////////////////////////////////////////////////////////////
-#include "dune/Protodune/Analysis/ProtoDUNEPFParticleUtils.h"
-#include "dune/Protodune/Analysis/ProtoDUNETruthUtils.h"
+#include "protoduneana/protoduneana/Utilities/ProtoDUNEPFParticleUtils.h"
+#include "protoduneana/protoduneana/Utilities/ProtoDUNETruthUtils.h"
 #include "art_root_io/TFileService.h"
 //#include "messagefacility/MessageLogger/MessageLogger.h"
 #include "art/Framework/Core/EDAnalyzer.h"

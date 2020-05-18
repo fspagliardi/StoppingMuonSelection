@@ -5,8 +5,8 @@
 #ifndef CALIBRATION_HELPER_H
 #define CALIBRATION_HELPER_H
 
-#include "dune/Protodune/Analysis/ProtoDUNETrackUtils.h"
-#include "dune/Protodune/Analysis/ProtoDUNEPFParticleUtils.h"
+#include "protoduneana/protoduneana/Utilities/ProtoDUNETrackUtils.h"
+#include "protoduneana/protoduneana/Utilities/ProtoDUNEPFParticleUtils.h"
 #include "fhiclcpp/ParameterSet.h"
 #include "lardataobj/RecoBase/Hit.h"
 #include "lardataobj/RecoBase/Track.h"

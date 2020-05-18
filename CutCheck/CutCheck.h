@@ -3,7 +3,7 @@
 // Plugin Type: ******
 // File:        CutCheck.h
 ////////////////////////////////////////////////////////////////////////
-#include "dune/Protodune/Analysis/ProtoDUNEPFParticleUtils.h"
+#include "protoduneana/protoduneana/Utilities/ProtoDUNEPFParticleUtils.h"
 #include "art_root_io/TFileService.h"
 //#include "messagefacility/MessageLogger/MessageLogger.h"
 #include "art/Framework/Core/EDAnalyzer.h"

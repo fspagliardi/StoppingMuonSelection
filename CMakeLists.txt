@@ -1,4 +1,4 @@
-
+find_ups_product( dunetpc )
 include_directories( $ENV{PANDORA_INC} )
 
 art_make(BASENAME_ONLY
@@ -52,7 +52,7 @@ art_make(BASENAME_ONLY
     larpandora_LArPandoraInterface
     SignalShapingServiceDUNE10kt_service
     SignalShapingServiceDUNE35t_service
-    ProtoDUNEAnaUtils
+    ProtoDUNEUtilities
   MODULE_LIBRARIES
     ProtoDUNEStoppingMuonSelection
     ${ART_FRAMEWORK_CORE}
@@ -103,7 +103,7 @@ art_make(BASENAME_ONLY
     larpandora_LArPandoraInterface
     SignalShapingServiceDUNE10kt_service
     SignalShapingServiceDUNE35t_service
-    ProtoDUNEAnaUtils
+    ProtoDUNEUtilities
   )
 add_subdirectory(job)
 install_headers()

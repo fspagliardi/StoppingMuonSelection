@@ -1,3 +1,4 @@
+find_ups_product( dunetpc )
 art_make(BASENAME_ONLY
   LIBRARY_NAME CutCheckLib
   LIB_LIBRARIES
@@ -49,7 +50,7 @@ art_make(BASENAME_ONLY
     larpandora_LArPandoraInterface
     SignalShapingServiceDUNE10kt_service
     SignalShapingServiceDUNE35t_service
-    ProtoDUNEAnaUtils
+    ProtoDUNEUtilities
     ProtoDUNEStoppingMuonSelection
   MODULE_LIBRARIES
     CutCheckLib
@@ -101,7 +102,7 @@ art_make(BASENAME_ONLY
     larpandora_LArPandoraInterface
     SignalShapingServiceDUNE10kt_service
     SignalShapingServiceDUNE35t_service
-    ProtoDUNEAnaUtils
+    ProtoDUNEUtilities
     ProtoDUNEStoppingMuonSelection
   )
 add_subdirectory(job)
