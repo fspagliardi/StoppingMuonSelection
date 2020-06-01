@@ -264,8 +264,8 @@ namespace stoppingcosmicmuonselection {
     try {
       geo::TPCID tpcid = geom->PositionToTPC(point).ID();
       tpcIndex = tpcid.TPC;
-      std::cout << "Point: " << pos.X() << " "  << pos.Y() << " "  << pos.Z() << std::endl;
-      std::cout << "TPC:   " << tpcIndex << std::endl;
+      //std::cout << "Point: " << pos.X() << " "  << pos.Y() << " "  << pos.Z() << std::endl;
+      //std::cout << "TPC:   " << tpcIndex << std::endl;
     }
     catch (...) {
       tpcIndex = -INV_INT;
