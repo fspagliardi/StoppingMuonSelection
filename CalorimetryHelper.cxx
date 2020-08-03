@@ -25,7 +25,7 @@ namespace stoppingcosmicmuonselection {
   void CalorimetryHelper::Set(const recob::PFParticle &thisParticle, art::Event const &evt, const int &plane) {
     Reset();
     _plane = plane;
-    bool correct_dQdx = true;
+    bool correct_dQdx = false;
     // Set variable to see if it's data or MC (different histo scales)
     if (evt.isRealData()) _isData = true;
     const recob::Track &track = *(pfpUtil.GetPFParticleTrack(thisParticle,evt,fPFParticleTag,fTrackerTag));
