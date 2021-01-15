@@ -5,8 +5,8 @@
 #ifndef CALORIMETRY_HELPER_H
 #define CALORIMETRY_HELPER_H
 
-#include "protoduneana/protoduneana/Utilities/ProtoDUNETrackUtils.h"
-#include "protoduneana/protoduneana/Utilities/ProtoDUNEPFParticleUtils.h"
+#include "protoduneana/Utilities/ProtoDUNETrackUtils.h"
+#include "protoduneana/Utilities/ProtoDUNEPFParticleUtils.h"
 #include "fhiclcpp/ParameterSet.h"
 #include "lardataobj/RecoBase/Hit.h"
 #include "lardataobj/RecoBase/Track.h"
@@ -74,7 +74,7 @@ namespace stoppingcosmicmuonselection {
     const std::vector<size_t> GetHitIndex();
 
     // Get the lifetime correction
-    double LifeTimeCorr(double &ticks, const double &T0);
+    double LifeTimeCorr(double &ticks, const double &T0, const double &samplingRate, const double &triggerOffset, const double &electronLifetime);
 
     // Fill 2D histo of dQdx vs residual range for hits in a given plane
     void FillHisto_dQdxVsRR(TH2D *h_dQdxVsRR);
@@ -88,7 +88,7 @@ namespace stoppingcosmicmuonselection {
     void FillHisto_dQdEVsRR_LTCorr_MC(TH2D *h_dQdEVsRR, const double &tp_min, const double &tp_max);
 
     // Fill 2D histo for dQdx/dEdx with lifetime correction. dEdx taken from LandauVav.
-    void FillHisto_dQdEVsRR_LTCorr_LV(TH2D *h_dQdEVsRR, const double &tp_min, const double &tp_max);
+    void FillHisto_dQdEVsRR_LTCorr_LV(TH2D *h_dQdEVsRR, const double &tp_min, const double &tp_max, const double &LArdensity);
 
     // Set the parameters from the FHICL file
     void reconfigure(fhicl::ParameterSet const &p);
@@ -130,8 +130,7 @@ namespace stoppingcosmicmuonselection {
     protoana::ProtoDUNETrackUtils        trackUtil;
     protoana::ProtoDUNEPFParticleUtils   pfpUtil;
 
-    const geo::GeometryCore *geom = lar::providerFrom<geo::Geometry>();
-    const detinfo::DetectorProperties *detprop = lar::providerFrom<detinfo::DetectorPropertiesService>();
+    const geo::GeometryCore *geom = &*(art::ServiceHandle<geo::Geometry>());
 
   };
 }

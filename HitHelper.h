@@ -15,11 +15,9 @@
 #include "lardataobj/RecoBase/Track.h"
 #include "lardataobj/RecoBase/PFParticle.h"
 #include "lardataobj/RecoBase/TrackHitMeta.h"
-#include "lardata/DetectorInfoServices/DetectorPropertiesService.h"
 #include "larcore/Geometry/Geometry.h"
 #include "larcorealg/Geometry/TPCGeo.h"
 #include "larcorealg/Geometry/GeometryCore.h"
-#include "lardata/DetectorInfoServices/DetectorPropertiesService.h"
 #include "art/Framework/Principal/Event.h"
 #include "art/Framework/Principal/Handle.h"
 #include "canvas/Persistency/Common/FindManyP.h"
@@ -76,37 +74,38 @@ namespace stoppingcosmicmuonselection {
                          const TVector3 &recoEndPoint,
                          art::FindManyP<recob::Hit,recob::TrackHitMeta> &fmthm,
                          const std::vector<art::Ptr<recob::Track>> &tracklist,
-                         const size_t &trackIndex);
+                         const size_t &trackIndex,
+                         detinfo::DetectorClocksData const& clockData);
 
     // Get subvector of michel-like hits.
-    artPtrHitVec GetMichelLikeHits(const artPtrHitVec &hits,
-                                   const TVector3 &recoEndPoint,
-                                   art::FindManyP<recob::Hit,recob::TrackHitMeta> &fmthm,
-                                   const std::vector<art::Ptr<recob::Track>> &tracklist,
-                                   const size_t &trackIndex);
+    // artPtrHitVec GetMichelLikeHits(const artPtrHitVec &hits,
+    //                                const TVector3 &recoEndPoint,
+    //                                art::FindManyP<recob::Hit,recob::TrackHitMeta> &fmthm,
+    //                                const std::vector<art::Ptr<recob::Track>> &tracklist,
+    //                                const size_t &trackIndex);
 
     // Get subvector of michel-like hits.
-    artPtrHitVec GetMuonLikeHits(const artPtrHitVec &hits,
-                                 const TVector3 &recoEndPoint,
-                                 art::FindManyP<recob::Hit,recob::TrackHitMeta> &fmthm,
-                                 const std::vector<art::Ptr<recob::Track>> &tracklist,
-                                 const size_t &trackIndex);
+    // artPtrHitVec GetMuonLikeHits(const artPtrHitVec &hits,
+    //                              const TVector3 &recoEndPoint,
+    //                              art::FindManyP<recob::Hit,recob::TrackHitMeta> &fmthm,
+    //                              const std::vector<art::Ptr<recob::Track>> &tracklist,
+    //                              const size_t &trackIndex);
 
     // Fill the TGraph2D for the images.
-    void FillTrackGraph2D(TGraph2D *graph,
-                          const artPtrHitVec &trackHits,
-                          const TVector3 &recoEndPoint,
-                          const size_t &planeNumber,
-                          const double &t0);
+    // void FillTrackGraph2D(TGraph2D *graph,
+    //                       const artPtrHitVec &trackHits,
+    //                       const TVector3 &recoEndPoint,
+    //                       const size_t &planeNumber,
+    //                       const double &t0);
 
     // Get a TProfile2D filled with hit peak times and wire number
-    void FillTrackHitPicture(TProfile2D* image,
-                             const artPtrHitVec &trackHits,
-                             const TVector3 &recoEndPoint,
-                             const size_t &planeNumber);
+    // void FillTrackHitPicture(TProfile2D* image,
+    //                          const artPtrHitVec &trackHits,
+    //                          const TVector3 &recoEndPoint,
+    //                          const size_t &planeNumber);
 
     // Initialise the image for a series of hit for a given plane
-    void InitHitImageHisto(TProfile2D *&image, const size_t &planeNumber, const std::string &name);
+    // void InitHitImageHisto(TProfile2D *&image, const size_t &planeNumber, const std::string &name);
 
     // Check if vector of hits contain hits on the cryostat side.
     bool AreThereHitsOnCryoSide(const std::vector<const recob::Hit*> &hits);
@@ -123,9 +122,6 @@ namespace stoppingcosmicmuonselection {
     art::ServiceHandle<cheat::ParticleInventoryService> pi_serv;
     // Declare handle for backtracker
     art::ServiceHandle<cheat::BackTrackerService> bt_serv;
-
-    // Declare handle for detector properties
-    const detinfo::DetectorProperties *detprop = lar::providerFrom<detinfo::DetectorPropertiesService>();
 
     // Geometry helper.
     GeometryHelper geoHelper;

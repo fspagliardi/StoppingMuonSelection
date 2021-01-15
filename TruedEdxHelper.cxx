@@ -19,7 +19,7 @@ namespace stoppingcosmicmuonselection {
   }
 
   // Return MPV of dEdx according to landau-vavilov
-  double TruedEdxHelper::LandauVav(double *x, double *p)  {
+  double TruedEdxHelper::LandauVav(double *x, double *p, const double &LArdensity)  {
     double resRange = x[0];
     double X = p[0] * LArdensity;
   	double d = p[1];
@@ -40,12 +40,12 @@ namespace stoppingcosmicmuonselection {
   }
 
   // Return MPV of dEdx according to landau-vavilov
-  double TruedEdxHelper::LandauVav(double &resRange, const double &trackPitch) {
+  double TruedEdxHelper::LandauVav(double &resRange, const double &trackPitch, const double &LArdensity) {
     double kEn = ResRangeToKEnergy(resRange);
     double yb = GetBetaGammaFromKEnergy(kEn);
     double d = DensityEffect(yb); // density correction
     double pars[2] = {trackPitch, d};
-    return LandauVav(&resRange, pars);
+    return LandauVav(&resRange, pars, LArdensity);
   }
 
   // Get the dEdx from the MC simulation.

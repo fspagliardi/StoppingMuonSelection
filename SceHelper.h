@@ -37,6 +37,7 @@ namespace stoppingcosmicmuonselection {
 
   public:
     SceHelper();
+    SceHelper(detinfo::DetectorPropertiesData const& detprop);
     ~SceHelper();
 
     // Get corrected position given TVector3
@@ -50,8 +51,7 @@ namespace stoppingcosmicmuonselection {
     GeometryHelper geoHelper;
     // Handle for space charge service
     const spacecharge::SpaceCharge* sce = lar::providerFrom<spacecharge::SpaceChargeService>();
-    // Handle for detector properties
-    const detinfo::DetectorProperties *detprop = lar::providerFrom<detinfo::DetectorPropertiesService>();
+    double _Efield;
   };
 }
 

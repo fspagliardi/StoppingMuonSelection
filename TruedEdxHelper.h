@@ -7,8 +7,6 @@
 
 #include "larcore/Geometry/Geometry.h"
 #include "larcorealg/Geometry/TPCGeo.h"
-#include "larcorealg/Geometry/GeometryCore.h"
-#include "lardata/DetectorInfoServices/DetectorPropertiesService.h"
 #include "TVector3.h"
 #include "TMath.h"
 #include "TFile.h"
@@ -23,10 +21,10 @@ namespace stoppingcosmicmuonselection {
     ~TruedEdxHelper();
 
     // Return MPV of dEdx according to landau-vavilov
-    double LandauVav(double *x, double *p);
+    double LandauVav(double *x, double *p, const double &LArdensity);
 
     // Return MPV of dEdx according to landau-vavilov
-    double LandauVav(double &resRange, const double &trackPitch);
+    double LandauVav(double &resRange, const double &trackPitch, const double &LArdensity);
 
     // Get the dEdx from the MC simulation.
     double GetMCdEdx(const double &resRange);
@@ -51,12 +49,8 @@ namespace stoppingcosmicmuonselection {
 
     TH1D *_h_dEdx;
 
-    // Declare handle for detector properties
-    const detinfo::DetectorProperties *detprop = lar::providerFrom<detinfo::DetectorPropertiesService>();
-
     const double m_muon = 105.6583745; //MeV
     const double c = 299792458;
-    const double LArdensity = detprop->Density(detprop->Temperature()); // g/cm3
   };
 }
 

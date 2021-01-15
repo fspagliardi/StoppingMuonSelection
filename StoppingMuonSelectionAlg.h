@@ -24,6 +24,7 @@
 #include "larsim/MCCheater/ParticleInventoryService.h"
 #include "nusimdata/SimulationBase/MCParticle.h"
 #include "nusimdata/SimulationBase/MCTruth.h"
+#include "lardata/DetectorInfoServices/DetectorClocksService.h"
 #include "lardata/DetectorInfoServices/DetectorPropertiesService.h"
 
 #include "GeometryHelper.h"
@@ -107,6 +108,7 @@ namespace stoppingcosmicmuonselection {
     double _minHitPeakTime, _maxHitPeakTime;
     double _trackLength;
     double _trackID;
+    double _driftVelocity;
 
     // Truth information
     int _pdg;
@@ -122,8 +124,6 @@ namespace stoppingcosmicmuonselection {
 
     // Declare handle for particle inventory service
     art::ServiceHandle<cheat::ParticleInventoryService> pi_serv;
-    // Declare handle for detector properties
-    const detinfo::DetectorProperties *detprop = lar::providerFrom<detinfo::DetectorPropertiesService>();
 
     // Declare analysis utils
     protoana::ProtoDUNETruthUtils        truthUtil;

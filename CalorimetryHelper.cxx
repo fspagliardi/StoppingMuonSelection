@@ -24,6 +24,10 @@ namespace stoppingcosmicmuonselection {
   // Get the calorimetry from the PFParticle
   void CalorimetryHelper::Set(const recob::PFParticle &thisParticle, art::Event const &evt, const int &plane) {
     Reset();
+
+    auto const clockData = art::ServiceHandle<detinfo::DetectorClocksService>()->DataFor(evt);
+    auto const detprop = art::ServiceHandle<detinfo::DetectorPropertiesService>()->DataFor(evt, clockData);
+
     _plane = plane;
     bool correct_dQdx = false;
     // Set variable to see if it's data or MC (different histo scales)
@@ -78,9 +82,9 @@ namespace stoppingcosmicmuonselection {
           continue;
         }
         int CryoID = geom->FindCryostatAtPosition(HitPoint);
-        double Ticks = detprop->ConvertXToTicks(TrackPos.X(), planeNumb, tpcid.TPC, CryoID);
-        _drift_time.push_back((Ticks - detprop->TriggerOffset()) * detprop->SamplingRate()*1e-3);
-        _corr_factors.push_back(LifeTimeCorr(Ticks, 0));
+        double Ticks = detprop.ConvertXToTicks(TrackPos.X(), planeNumb, tpcid.TPC, CryoID);
+        _drift_time.push_back((Ticks - trigger_offset(clockData)) * sampling_rate(clockData)*1e-3);
+        _corr_factors.push_back(LifeTimeCorr(Ticks, 0, sampling_rate(clockData)*1e-3, trigger_offset(clockData),detprop.ElectronLifetime()));
       }
     }
     OrderResRange();
@@ -200,14 +204,15 @@ namespace stoppingcosmicmuonselection {
   }
 
   // Get the lifetime correction
-  double CalorimetryHelper::LifeTimeCorr(double &ticks, const double &T0) {
-    double timetick = detprop->SamplingRate()*1e-3; // Sample in microsec
-    double presampling = detprop->TriggerOffset();
+  double CalorimetryHelper::LifeTimeCorr(double &ticks, const double &T0, const double &samplingRate, const double &triggerOffset, const double &electronLifetime) {
+
+    double timetick = samplingRate; // Sample in microsec
+    double presampling = triggerOffset;
     //std::cout << "Presampling: " << presampling << std::endl;
     ticks = ticks - presampling;
     double time;
     time = ticks * timetick - T0;
-    double tau = detprop->ElectronLifetime();
+    double tau = electronLifetime;
     double correction = TMath::Exp(time/tau);
     return correction;
   }
@@ -267,7 +272,7 @@ namespace stoppingcosmicmuonselection {
   }
 
   // Fill 2D histo for dQdx/dEdx with lifetime correction. dEdx taken from LandauVav.
-  void CalorimetryHelper::FillHisto_dQdEVsRR_LTCorr_LV(TH2D *h_dQdEVsRR, const double &tp_min, const double &tp_max) {
+  void CalorimetryHelper::FillHisto_dQdEVsRR_LTCorr_LV(TH2D *h_dQdEVsRR, const double &tp_min, const double &tp_max, const double &LArdensity) {
     const std::vector<double> &dQdx = GetdQdx();
     const std::vector<double> &resRangeOrd = GetResRangeOrdered();
     const std::vector<double> &trackPitch = GetTrackPitch();
@@ -275,7 +280,7 @@ namespace stoppingcosmicmuonselection {
     for (size_t it = 0; it < dQdx.size(); it++) {
       if (trackPitch[it]<tp_min || trackPitch[it]>tp_max) continue;
       double rex = resRangeOrd[it];
-      double dEdx = truedEdxHelper.LandauVav(rex,(tp_min+tp_max)/2);
+      double dEdx = truedEdxHelper.LandauVav(rex,(tp_min+tp_max)/2, LArdensity);
       h_dQdEVsRR->Fill(resRangeOrd[it],dQdx[it]*corrFactor[it]/dEdx);
     }
   }

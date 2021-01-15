@@ -8,6 +8,7 @@
 #include "TVector3.h"
 #include "TMath.h"
 #include "TGraphErrors.h"
+#include "lardata/DetectorInfoServices/DetectorClocksService.h"
 #include "lardata/DetectorInfoServices/DetectorPropertiesService.h"
 
 #include "DataTypes.h"
@@ -21,7 +22,7 @@ namespace stoppingcosmicmuonselection {
   class HitPlaneAlg {
 
   public:
-    HitPlaneAlg(const artPtrHitVec &trackHits, const size_t &start_index, const size_t &planeNumber, const double &_t0);
+    HitPlaneAlg(const artPtrHitVec &trackHits, const size_t &start_index, const size_t &planeNumber, const double &_t0, detinfo::DetectorClocksData const &ClockData, detinfo::DetectorPropertiesData const &Detprop);
     ~HitPlaneAlg();
 
     // Order hits based on their 2D (wire-time) position.
@@ -63,6 +64,9 @@ namespace stoppingcosmicmuonselection {
     const size_t &_planeNumber;
     const double &_t0;
 
+    detinfo::DetectorClocksData const &clockData;
+    detinfo::DetectorPropertiesData const &detprop;
+
     artPtrHitVec _hitsOnPlane;
     std::vector<double> _hitPeakTime;
     std::vector<double> _effectiveWireID;
@@ -75,9 +79,6 @@ namespace stoppingcosmicmuonselection {
     GeometryHelper geoHelper;
     HitHelper      hitHelper;
     CNNHelper      cnnHelper;
-
-    // Declare handle for detector properties
-    const detinfo::DetectorProperties *detprop = lar::providerFrom<detinfo::DetectorPropertiesService>();
 
     const bool DEBUG = false;
   };

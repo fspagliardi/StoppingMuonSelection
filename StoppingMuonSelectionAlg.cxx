@@ -65,6 +65,11 @@ namespace stoppingcosmicmuonselection {
     Reset();
     _evNumber = evt.id().event();
 
+    // Declare handle for detector properties
+    auto const clockData = art::ServiceHandle<detinfo::DetectorClocksService>()->DataFor(evt);
+    auto const detprop = art::ServiceHandle<detinfo::DetectorPropertiesService>()->DataFor(evt, clockData);
+    _driftVelocity = detprop.DriftVelocity()*1e-3;
+
     // Set the correct boundaries for cathode crossers.
     geoHelper.SetFiducialBoundOffset(offsetFiducialBounds_AC);
     geoHelper.InitFiducialVolumeBounds();
@@ -219,7 +224,7 @@ namespace stoppingcosmicmuonselection {
     //double t0 = (minHitPeakTime - 500) / 2. * 1000.; // in ns.
     double drift_distance = geoHelper.GetAbsolutePlaneCoordinate(0); // First induction plane coordinate.
     double drift_time_end_point = (maxHitPeakTime-minHitPeakTime) / 2. * 1000; // in ns.
-    double drift_velocity = detprop->DriftVelocity()*1e-3; // in cm/ns.
+    double drift_velocity = _driftVelocity; // in cm/ns.
 
     double sign = 0.;
     if (_recoStartPoint.X() <= _recoEndPoint.X()) {
@@ -238,21 +243,21 @@ namespace stoppingcosmicmuonselection {
   // Work out t0 for anode crossers.
   double StoppingMuonSelectionAlg::CorrectPosAndGetT0(TVector3 &_recoStartPoint, TVector3 &_recoEndPoint) {
 
-    double drift_velocity = detprop->DriftVelocity()*1e-3; // in cm/ns.
+    double drift_velocity = _driftVelocity; // in cm/ns.
     //std::cout << "StoppingMuonSelectionAlg::CorrectPosAndGetT0: " << "drift velocity = " << drift_velocity << std::endl;
     double drift_distance = geoHelper.GetAbsolutePlaneCoordinate(0); // First induction plane coordinate.
     //std::cout << "StoppingMuonSelectionAlg::CorrectPosAndGetT0: " << "drift distance = " << drift_distance << std::endl;
 
     if (_recoStartPoint.X() <= _recoEndPoint.X()) {
       if (_recoStartPoint.X() <= 0) {
-        _trackT0 = (drift_distance - TMath::Abs(_recoStartPoint.X())) / drift_velocity;
+        _trackT0 = (drift_distance - TMath::Abs(_recoStartPoint.X())) /drift_velocity;
         _recoStartPoint.SetX(_recoStartPoint.X() - (drift_velocity * _trackT0));
         _recoEndPoint.SetX(_recoEndPoint.X() - (drift_velocity * _trackT0));
       }
     }
     else {
       if (_recoStartPoint.X() >= 0) {
-        _trackT0 = (drift_distance - TMath::Abs(_recoStartPoint.X())) / drift_velocity;
+        _trackT0 = (drift_distance - TMath::Abs(_recoStartPoint.X())) /drift_velocity;
         _recoStartPoint.SetX(_recoStartPoint.X() + (drift_velocity * _trackT0));
         _recoEndPoint.SetX(_recoEndPoint.X() + (drift_velocity * _trackT0));
       }
@@ -266,6 +271,11 @@ namespace stoppingcosmicmuonselection {
                                                           recob::PFParticle const &thisParticle) {
     Reset();
     _evNumber = evt.id().event();
+
+    // Declare handle for detector properties
+    auto const clockData = art::ServiceHandle<detinfo::DetectorClocksService>()->DataFor(evt);
+    auto const detprop = art::ServiceHandle<detinfo::DetectorPropertiesService>()->DataFor(evt, clockData);
+    _driftVelocity = detprop.DriftVelocity()*1e-3;
 
     // Set the correct boundaries for cathode crossers.
     geoHelper.SetFiducialBoundOffset(offsetFiducialBounds_CC);
@@ -369,7 +379,9 @@ namespace stoppingcosmicmuonselection {
                                                                  recob::PFParticle const &thisParticle) {
     const simb::MCParticle *particleP = 0x0;
     if (!evt.isRealData()) {
-      particleP = truthUtil.GetMCParticleFromPFParticle(thisParticle,evt,fPFParticleTag);
+      // Declare handle for detector properties
+      auto const clockData = art::ServiceHandle<detinfo::DetectorClocksService>()->DataFor(evt);
+      particleP = truthUtil.GetMCParticleFromPFParticle(clockData,thisParticle,evt,fPFParticleTag);
       if (particleP == 0x0) return false;
       if ((pi_serv->TrackIdToMCTruth_P(particleP->TrackId())->Origin()) == simb::kCosmicRay) {
         //std::cout << "Particle ID: " << particleP->TrackId() << " Pdg: " << particleP->PdgCode() << std::endl;
@@ -420,7 +432,9 @@ namespace stoppingcosmicmuonselection {
 
   // Set MCParticle properties
   void StoppingMuonSelectionAlg::SetMCParticleProperties(art::Event const &evt, recob::PFParticle const &thisParticle) {
-    const simb::MCParticle *particleP = truthUtil.GetMCParticleFromPFParticle(thisParticle,evt,fPFParticleTag);
+    // Declare handle for detector properties
+    auto const clockData = art::ServiceHandle<detinfo::DetectorClocksService>()->DataFor(evt);
+    const simb::MCParticle *particleP = truthUtil.GetMCParticleFromPFParticle(clockData, thisParticle,evt,fPFParticleTag);
     _pdg = particleP->PdgCode();
     double *av = geoHelper.GetActiveVolumeBounds();
     int firstPoint = truthUtil.GetFirstTrajectoryPointInTPCActiveVolume(*particleP,av[0],av[1],av[2],av[3],av[4],av[5]);

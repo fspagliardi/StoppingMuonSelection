@@ -10,7 +10,6 @@
 namespace stoppingcosmicmuonselection {
 
   CalibrationHelper::CalibrationHelper() {
-
   }
 
   CalibrationHelper::~CalibrationHelper() {
@@ -19,6 +18,10 @@ namespace stoppingcosmicmuonselection {
 
   // Get the histos.
   void CalibrationHelper::Set(art::Event const &evt) {
+    auto const clockData = art::ServiceHandle<detinfo::DetectorClocksService>()->DataFor(evt);
+    auto const detprop = art::ServiceHandle<detinfo::DetectorPropertiesService>()->DataFor(evt, clockData);
+    sceHelper = new SceHelper(detprop);
+
     std::string filetype;
     if (!evt.isRealData())
       filetype = "sce";
@@ -114,7 +117,7 @@ namespace stoppingcosmicmuonselection {
       if (hit_x[i]==INV_DBL || hit_y[i]==INV_DBL || hit_z[i]==INV_DBL)
         fields.push_back(TVector3(INV_DBL, INV_DBL, INV_DBL));
       else {
-        fields.push_back(sceHelper.GetFieldVector(TVector3(hit_x[i], hit_y[i], hit_z[i])));
+        fields.push_back(sceHelper->GetFieldVector(TVector3(hit_x[i], hit_y[i], hit_z[i])));
       }
     }
 

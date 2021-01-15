@@ -8,7 +8,6 @@
 #include "larcore/Geometry/Geometry.h"
 #include "larcorealg/Geometry/TPCGeo.h"
 #include "larcorealg/Geometry/GeometryCore.h"
-#include "lardata/DetectorInfoServices/DetectorPropertiesService.h"
 #include "TVector3.h"
 #include "TMath.h"
 
@@ -97,7 +96,7 @@ namespace stoppingcosmicmuonselection {
     double _APABoundaries[2];
 
     // Handle for geometry service
-    const geo::GeometryCore *geom = lar::providerFrom<geo::Geometry>();
+    const geo::GeometryCore *geom = &*(art::ServiceHandle<geo::Geometry>());
 
   };
 }

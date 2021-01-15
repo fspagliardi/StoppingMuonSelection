@@ -12,11 +12,15 @@ namespace stoppingcosmicmuonselection {
   HitPlaneAlg::HitPlaneAlg(const artPtrHitVec &trackHits,
                            const size_t &start_index,
                            const size_t &planeNumber,
-                           const double &t0) :
+                           const double &t0,
+                           detinfo::DetectorClocksData const& ClockData,
+                           detinfo::DetectorPropertiesData const& Detprop) :
                            _trackHits(trackHits),
                            _start_index(start_index),
                            _planeNumber(planeNumber),
-                           _t0(t0) {
+                           _t0(t0),
+                           clockData(ClockData),
+                           detprop(Detprop) {
     _hitsOnPlane = hitHelper.GetHitsOnAPlane(_planeNumber,_trackHits);
     if (DEBUG) std::cout << "HitPlaneAlg.cxx: " << std::endl;
     if (DEBUG) std::cout << "\tSize of hits on plane before ordering: " << _hitsOnPlane.size() << std::endl;
@@ -42,7 +46,7 @@ namespace stoppingcosmicmuonselection {
     _effectiveWireID.push_back(geoHelper.GetWireNumb(starthit));
     _hitsOnPlane.erase(_hitsOnPlane.begin() + _start_index);
 
-    double tickT0 = _t0 / detprop->SamplingRate();
+    double tickT0 = _t0 / detinfo::sampling_rate(clockData);
 
     //double maxAllowedDistance = 50;
     int maxWireDistance = 10;
@@ -60,13 +64,13 @@ namespace stoppingcosmicmuonselection {
       for (size_t i = 0; i < _hitsOnPlane.size(); i++) {
         // For previous hit.
         double hitPeakTime = newVector.back()->PeakTime();
-        double x1 = detprop->ConvertTicksToX(hitPeakTime-tickT0, newVector.back()->WireID().Plane, newVector.back()->WireID().TPC,newVector.back()->WireID().Cryostat);
+        double x1 = detprop.ConvertTicksToX(hitPeakTime-tickT0, newVector.back()->WireID().Plane, newVector.back()->WireID().TPC,newVector.back()->WireID().Cryostat);
         size_t wireNumb1 = geoHelper.GetWireNumb(newVector.back());
         TVector3 pt1(x1,wireNumb1,0);
         // For current hit.
         double hitPeakTime2 = _hitsOnPlane.at(i)->PeakTime();
         size_t wireNumb2 = geoHelper.GetWireNumb(_hitsOnPlane.at(i));
-        double x2 = detprop->ConvertTicksToX(hitPeakTime2-tickT0,_hitsOnPlane[i]->WireID().Plane,_hitsOnPlane[i]->WireID().TPC,_hitsOnPlane[i]->WireID().Cryostat);
+        double x2 = detprop.ConvertTicksToX(hitPeakTime2-tickT0,_hitsOnPlane[i]->WireID().Plane,_hitsOnPlane[i]->WireID().TPC,_hitsOnPlane[i]->WireID().Cryostat);
         TVector3 pt2(x2,wireNumb2,0);
         double dist = (pt1-pt2).Mag();
         int wire_dist = TMath::Abs((int)wireNumb1 - (int)wireNumb2);
@@ -228,8 +232,8 @@ namespace stoppingcosmicmuonselection {
     for (size_t i = 0; i < _hitsOnPlane.size()-1; i++) {
       auto const &hit = _hitsOnPlane[i];
       auto const &nextHit = _hitsOnPlane[i+1];
-      double XThisPoint = detprop->ConvertTicksToX(hit->PeakTime(),hit->WireID().Plane,hit->WireID().TPC,hit->WireID().Cryostat);
-      double XNextPoint = detprop->ConvertTicksToX(nextHit->PeakTime(),nextHit->WireID().Plane,nextHit->WireID().TPC,nextHit->WireID().Cryostat);
+      double XThisPoint = detprop.ConvertTicksToX(hit->PeakTime(),hit->WireID().Plane,hit->WireID().TPC,hit->WireID().Cryostat);
+      double XNextPoint = detprop.ConvertTicksToX(nextHit->PeakTime(),nextHit->WireID().Plane,nextHit->WireID().TPC,nextHit->WireID().Cryostat);
 
       TVector3 thisPoint(_effectiveWireID[i]*geoHelper.GetWirePitch(_planeNumber), XThisPoint, 0);
       TVector3 nextPoint(_effectiveWireID[i+1]*geoHelper.GetWirePitch(_planeNumber), XNextPoint, 0);
@@ -313,7 +317,7 @@ namespace stoppingcosmicmuonselection {
         return newVector;
 
     }
-    
+
     return newVector;
 
   }

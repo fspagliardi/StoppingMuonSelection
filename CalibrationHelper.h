@@ -5,8 +5,8 @@
 #ifndef CALIBRATION_HELPER_H
 #define CALIBRATION_HELPER_H
 
-#include "protoduneana/protoduneana/Utilities/ProtoDUNETrackUtils.h"
-#include "protoduneana/protoduneana/Utilities/ProtoDUNEPFParticleUtils.h"
+#include "protoduneana/Utilities/ProtoDUNETrackUtils.h"
+#include "protoduneana/Utilities/ProtoDUNEPFParticleUtils.h"
 #include "fhiclcpp/ParameterSet.h"
 #include "lardataobj/RecoBase/Hit.h"
 #include "lardataobj/RecoBase/Track.h"
@@ -71,7 +71,7 @@ namespace stoppingcosmicmuonselection {
     TH2D *h_yz_neg;
     TH2D *h_yz_pos;
 
-    SceHelper sceHelper;
+    SceHelper *sceHelper;
 
   };
 }
