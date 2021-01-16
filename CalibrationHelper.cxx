@@ -23,14 +23,17 @@ namespace stoppingcosmicmuonselection {
     sceHelper = new SceHelper(detprop);
 
     std::string filetype;
-    if (!evt.isRealData())
+    std::string filenameX;
+    std::string filenameYZ;
+    if (!evt.isRealData()) {
       filetype = "sce";
+      filenameX = "Xcalo_prod4_sceon.root";
+      filenameYZ = "YZcalo_prod4_sceon.root";
+    }
     else {
       size_t runNumber = evt.id().run();
       filetype = "r" + std::to_string(runNumber);
     }
-    std::string filenameX = "Xcalo_" + filetype + ".root";
-    std::string filenameYZ = "YZcalo_" + filetype + ".root";
     std::cout << "CalibrationHelper.cxx: filenameX = " << filenameX <<std::endl;
     std::cout << "CalibrationHelper.cxx: filenameYZ = " << filenameYZ <<std::endl;
     TFile fileX(filenameX.c_str());
