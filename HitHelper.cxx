@@ -39,7 +39,7 @@ namespace stoppingcosmicmuonselection {
                                           const artPtrHitVec &allHits) {
     artPtrHitVec hitsOnPlane;
     for (auto const &hitp : allHits) {
-      if (!hitp->WireID().isValid) continue;
+      if (!hitp->WireID().isValid) {continue;}
       if (hitp->WireID().Plane != planeNumb) continue;
       hitsOnPlane.push_back(hitp);
     }
@@ -86,6 +86,11 @@ namespace stoppingcosmicmuonselection {
                                                     art::FindManyP<recob::Hit,recob::TrackHitMeta> &fmthm,
                                                     const std::vector<art::Ptr<recob::Track>> &tracklist,
                                                     const size_t &trackIndex) {
+    // guard
+    if (hits.size()==0) {
+      std::cout << "HitHelper class: Hit vector of size 0. Returning invalid hit index." << std::endl;
+      return 1;
+    }
     std::vector<double> distanceVec;
     for (auto const &hitp : hits) {
       const TVector3 &hitLoc = GetHitXYZ(hitp,fmthm,tracklist,trackIndex);
