@@ -7,10 +7,10 @@ stoppingmuonAlg:
   PFParticleTag:   "pandora"
   # cut values for cathode crossers
   length_cutoff_CC:               100
-  offsetFiducialBounds_CC:        50
+  offsetFiducialBounds_CC:        60
   thicknessStartVolume_CC:        40
-  cutMinHitPeakTime_CC:           500
-  cutMaxHitPeakTime_CC:           4800
+  cutMinHitPeakTime_CC:           250
+  cutMaxHitPeakTime_CC:           4900
   radiusBrokenTracksSearch_CC:    50
   cutCosAngleBrokenTracks_CC:     0.995
   cutCosAngleAlignment_CC:        0.995
