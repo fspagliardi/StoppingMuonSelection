@@ -13,7 +13,8 @@ namespace stoppingcosmicmuonselection {
     evNumber = evt.id().event();
     std::cout << "CutCheck_module is on event: " << evNumber << std::endl;
     mf::LogVerbatim("CutCheck") << "CutCheck module on event " << evNumber;
-
+    std::cout << "Is this data? " << evt.isRealData() << std::endl;
+    geoHelper.PrintActiveVolumeBounds();
     // Get handles
     // trackHandle is art::ValidHandle<std::vector<recob::Track>>
     auto const pfparticleHandle = evt.getValidHandle<std::vector<recob::PFParticle>>(fPFParticleTag);
