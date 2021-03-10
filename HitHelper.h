@@ -21,6 +21,8 @@
 #include "art/Framework/Principal/Event.h"
 #include "art/Framework/Principal/Handle.h"
 #include "canvas/Persistency/Common/FindManyP.h"
+#include "lardata/DetectorInfoServices/DetectorClocksService.h"
+#include "lardata/DetectorInfoServices/DetectorPropertiesService.h"
 #include "TVector3.h"
 #include "TH2D.h"
 #include "TProfile2D.h"
@@ -78,25 +80,29 @@ namespace stoppingcosmicmuonselection {
                          detinfo::DetectorClocksData const& clockData);
 
     // Get subvector of michel-like hits.
-    // artPtrHitVec GetMichelLikeHits(const artPtrHitVec &hits,
-    //                                const TVector3 &recoEndPoint,
-    //                                art::FindManyP<recob::Hit,recob::TrackHitMeta> &fmthm,
-    //                                const std::vector<art::Ptr<recob::Track>> &tracklist,
-    //                                const size_t &trackIndex);
+    artPtrHitVec GetMichelLikeHits(const artPtrHitVec &hits,
+                                   const TVector3 &recoEndPoint,
+                                   art::FindManyP<recob::Hit,recob::TrackHitMeta> &fmthm,
+                                   const std::vector<art::Ptr<recob::Track>> &tracklist,
+                                   const size_t &trackIndex,
+                                   detinfo::DetectorClocksData const& clockData);
 
     // Get subvector of michel-like hits.
-    // artPtrHitVec GetMuonLikeHits(const artPtrHitVec &hits,
-    //                              const TVector3 &recoEndPoint,
-    //                              art::FindManyP<recob::Hit,recob::TrackHitMeta> &fmthm,
-    //                              const std::vector<art::Ptr<recob::Track>> &tracklist,
-    //                              const size_t &trackIndex);
+    artPtrHitVec GetMuonLikeHits(const artPtrHitVec &hits,
+                                 const TVector3 &recoEndPoint,
+                                 art::FindManyP<recob::Hit,recob::TrackHitMeta> &fmthm,
+                                 const std::vector<art::Ptr<recob::Track>> &tracklist,
+                                 const size_t &trackIndex,
+                                 detinfo::DetectorClocksData const& clockData);
 
     // Fill the TGraph2D for the images.
-    // void FillTrackGraph2D(TGraph2D *graph,
-    //                       const artPtrHitVec &trackHits,
-    //                       const TVector3 &recoEndPoint,
-    //                       const size_t &planeNumber,
-    //                       const double &t0);
+    void FillTrackGraph2D(TGraph2D *graph,
+                          const artPtrHitVec &trackHits,
+                          const TVector3 &recoEndPoint,
+                          const size_t &planeNumber,
+                          const double &t0,
+                          detinfo::DetectorClocksData const& clockData,
+                          detinfo::DetectorPropertiesData const& detProp); 
 
     // Get a TProfile2D filled with hit peak times and wire number
     // void FillTrackHitPicture(TProfile2D* image,

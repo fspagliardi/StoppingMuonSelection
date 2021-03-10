@@ -135,81 +135,85 @@ namespace stoppingcosmicmuonselection {
   }
 
   // Get subvector of michel-like hits.
-  // artPtrHitVec HitHelper::GetMichelLikeHits(const artPtrHitVec &hits,
-  //                                           const TVector3 &recoEndPoint,
-  //                                           art::FindManyP<recob::Hit,recob::TrackHitMeta> &fmthm,
-  //                                           const std::vector<art::Ptr<recob::Track>> &tracklist,
-  //                                           const size_t &trackIndex) {
-  //
-  //   std::vector<art::Ptr<recob::Hit>> result;
-  //   result.clear();
-  //
-  //   for (const art::Ptr<recob::Hit> &hitp : hits) {
-  //     if (!IsHitMichelLike(hitp,recoEndPoint,fmthm,tracklist,trackIndex))
-  //       continue;
-  //     result.push_back(hitp);
-  //   }
-  //
-  //   if (result.size() == 0)
-  //     std::cout << "HitHelper.cxx: " << "HitHelper::GetMichelLikeHits " << "is returning an empty vector." << std::endl;
-  //   return result;
-  // }
+  artPtrHitVec HitHelper::GetMichelLikeHits(const artPtrHitVec &hits,
+                                            const TVector3 &recoEndPoint,
+                                            art::FindManyP<recob::Hit,recob::TrackHitMeta> &fmthm,
+                                            const std::vector<art::Ptr<recob::Track>> &tracklist,
+                                            const size_t &trackIndex,
+                                            detinfo::DetectorClocksData const & clockData) {
+ 
+    std::vector<art::Ptr<recob::Hit>> result;
+    result.clear();
+ 
+    for (const art::Ptr<recob::Hit> &hitp : hits) {
+      if (!IsHitMichelLike(hitp,recoEndPoint,fmthm,tracklist,trackIndex,clockData))
+        continue;
+      result.push_back(hitp);
+    }
+ 
+    if (result.size() == 0)
+    std::cout << "HitHelper.cxx: " << "HitHelper::GetMichelLikeHits " << "is returning an empty vector." << std::endl;
+    return result;
+  }
 
   // Get subvector of muon-like hits.
-  // artPtrHitVec HitHelper::GetMuonLikeHits(const artPtrHitVec &hits,
-  //                                         const TVector3 &recoEndPoint,
-  //                                         art::FindManyP<recob::Hit,recob::TrackHitMeta> &fmthm,
-  //                                         const std::vector<art::Ptr<recob::Track>> &tracklist,
-  //                                         const size_t &trackIndex) {
+  artPtrHitVec HitHelper::GetMuonLikeHits(const artPtrHitVec &hits,
+                                          const TVector3 &recoEndPoint,
+                                          art::FindManyP<recob::Hit,recob::TrackHitMeta> &fmthm,
+                                          const std::vector<art::Ptr<recob::Track>> &tracklist,
+                                          const size_t &trackIndex,
+                                          detinfo::DetectorClocksData const& clockData) {
+ 
+    std::vector<art::Ptr<recob::Hit>> result;
+    result.clear();
   //
-  //   std::vector<art::Ptr<recob::Hit>> result;
-  //   result.clear();
+    for (const art::Ptr<recob::Hit> &hitp : hits) {
+      if (IsHitMichelLike(hitp,recoEndPoint,fmthm,tracklist,trackIndex,clockData))
+        continue;
+      result.push_back(hitp);
+    }
   //
-  //   for (const art::Ptr<recob::Hit> &hitp : hits) {
-  //     if (IsHitMichelLike(hitp,recoEndPoint,fmthm,tracklist,trackIndex))
-  //       continue;
-  //     result.push_back(hitp);
-  //   }
-  //
-  //   if (result.size() == 0)
-  //     std::cout << "HitHelper.cxx: " << "HitHelper::GetMuonlLikeHits " << "is returning an empty vector." << std::endl;
-  //   return result;
-  // }
+    if (result.size() == 0)
+      std::cout << "HitHelper.cxx: " << "HitHelper::GetMuonlLikeHits " << "is returning an empty vector." << std::endl;
+    return result;
+   }
 
   // Fill the TGraph2D for the images.
-  // void HitHelper::FillTrackGraph2D(TGraph2D *graph,
-  //                                  const artPtrHitVec &trackHits,
-  //                                  const TVector3 &recoEndPoint,
-  //                                  const size_t &planeNumber,
-  //                                  const double &t0) {
-  //   graph->Set(0);
-  //   const geo::GeometryCore *geom = lar::providerFrom<geo::Geometry>();
-  //   const geo::Point_t EndPoint(recoEndPoint.X(), recoEndPoint.Y(), recoEndPoint.Z());
-  //   geo::TPCID const & tpcid = geom->FindTPCAtPosition(EndPoint);
-  //   if (!tpcid.isValid) {
-  //     std::cout << "Track End Point is in invalid TPC. Return empty Graph." << std::endl;
-  //     return;
-  //   }
-  //   for (size_t i = 0; i < trackHits.size(); i++) {
-  //     const art::Ptr<recob::Hit> &hitp = trackHits[i];
-  //     // Get only hit in the collection plane
-  //     if (!hitp->WireID().isValid) continue;
-  //     if (hitp->WireID().Plane != planeNumber) continue;
-  //     double hitPeakTime = hitp->PeakTime();
-  //     double tickT0 = t0 / detprop->SamplingRate();
-  //     double x = detprop->ConvertTicksToX(hitPeakTime-tickT0, hitp->WireID().Plane, hitp->WireID().TPC,hitp->WireID().Cryostat);
-  //     double electron_perc = 0;
-  //     for(const sim::TrackIDE& ide : bt_serv->HitToTrackIDEs(*hitp)) {
-  //       if (TMath::Abs(pi_serv->TrackIdToParticle_P(ide.trackID)->PdgCode())==11) {//contribution from electron
-  //         electron_perc += ide.energyFrac;
-  //         //std::cout << "Electron perc: " << electron_perc << std::endl;
-  //       }
-  //     }
-  //     size_t wireEff = geoHelper.GetWireNumb(hitp);
-  //     graph->SetPoint(i,wireEff,x,electron_perc);
-  //   }
-  //   return;
-  // }
+  void HitHelper::FillTrackGraph2D(TGraph2D *graph,
+                                   const artPtrHitVec &trackHits,
+                                   const TVector3 &recoEndPoint,
+                                   const size_t &planeNumber,
+                                   const double &t0,
+                                   detinfo::DetectorClocksData const& clockData,
+                                   detinfo::DetectorPropertiesData const& detProp) {
+    graph->Set(0);
+    const geo::GeometryCore *geom = lar::providerFrom<geo::Geometry>();
+    const geo::Point_t EndPoint(recoEndPoint.X(), recoEndPoint.Y(), recoEndPoint.Z());
+    geo::TPCID const & tpcid = geom->FindTPCAtPosition(EndPoint);
+    if (!tpcid.isValid) {
+      std::cout << "Track End Point is in invalid TPC. Return empty Graph." << std::endl;
+      return;
+    }
+   for (size_t i = 0; i < trackHits.size(); i++) {
+      const art::Ptr<recob::Hit> &hitp = trackHits[i];
+      // Get only hit in the collection plane
+      if (!hitp->WireID().isValid) continue;
+      if (hitp->WireID().Plane != planeNumber) continue;
+      double hitPeakTime = hitp->PeakTime();
+      double tickT0 = t0 / sampling_rate(clockData);
+      double x = detProp.ConvertTicksToX(hitPeakTime-tickT0, hitp->WireID().Plane, hitp->WireID().TPC,hitp->WireID().Cryostat);
+      double electron_perc = 0;
+      for(const sim::TrackIDE& ide : bt_serv->HitToTrackIDEs(clockData,*hitp)) {
+        if (TMath::Abs(pi_serv->TrackIdToParticle_P(ide.trackID)->PdgCode())==11) {//contribution from electron
+          electron_perc += ide.energyFrac;
+          //std::cout << "Electron perc: " << electron_perc << std::endl;
+        }
+      }
+      size_t wireEff = geoHelper.GetWireNumb(hitp);
+      graph->SetPoint(i,wireEff,x,electron_perc);
+    }
+    return;
+  }
 
   // Get a TProfile2D filled with hit peak times and wire number
   // void HitHelper::FillTrackHitPicture(TProfile2D* image,
