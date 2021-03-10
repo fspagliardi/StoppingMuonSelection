@@ -40,9 +40,16 @@ namespace stoppingcosmicmuonselection {
       if (!evt.isRealData() && !selectorAlg.IsTrackMatchedToTrueCosmicTrack(evt,thisParticle))
         continue;
 
+      // if (excludeCut=="distanceFiducialVolumeX") {
+      //   std::cout << "Is it a True Stopping Muon? " << selectorAlg.IsTrueParticleACathodeCrossingStoppingMuon(evt, thisParticle) << std::endl;
+      //   const TVector3 &trueStartPoint = selectorAlg.GetTrackProperties().trueStartPoint;
+      //   const TVector3 &trueEndPoint = selectorAlg.GetTrackProperties().trueEndPoint;
+      //   std::cout << "X: " << trueStartPoint.X() << " Y: " << trueStartPoint.Y() << " Z: " << trueStartPoint.Z() << std::endl;
+      //   std::cout << "X: " << trueEndPoint.X() << " Y: " << trueEndPoint.Y() << " Z: " << trueEndPoint.Z() << std::endl;
+      // }
       // Run the selection.
       if (!selectorAlg.NMinus1Cathode(excludeCut, evt, thisParticle)) continue;
-
+      std::cout << "Selection passed. TrackID: " << selectorAlg.GetTrackProperties().trackID << std::endl;
       // Check space points.
       const recob::Track &track = selectorAlg.GetTrackFromPFParticle(evt,thisParticle);
       if (!spAlg.IsGoodTrack(track,spacePoints,selectorAlg.GetTrackProperties())) continue;
