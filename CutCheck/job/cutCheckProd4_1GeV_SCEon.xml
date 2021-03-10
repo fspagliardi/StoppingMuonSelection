@@ -19,7 +19,7 @@
 
 <!-- Make sure we keep a 1-to-1 mapping with the SAM files -->
 <!-- Number of events large enough that we always process all events -->
-<numevents>10000000</numevents>
+<numevents>250000</numevents>
 <!--maxfilesperjob>1</maxfilesperjob-->
 
 <!-- Operating System -->
@@ -49,14 +49,14 @@
   <jobsub>-f /pnfs/dune/persistent/users/fspaglia/MCdEdxSuperBinning.root --memory=4000 --expected-lifetime=4h</jobsub>
 </stage>
 
-<stage name = "runProd2Cathode">
+<stage name = "runProd4Cathode">
   <fcl>runCutCheck_Cathode.fcl</fcl>
   <inputdef>PDSPProd4_MC_1GeV_reco1_sce_datadriven_v1</inputdef>
   <outdir>/pnfs/dune/scratch/users/fspaglia/&release;/&name;_cathode</outdir>
   <workdir>/pnfs/dune/scratch/users/fspaglia/&release;/&name;_cathode</workdir>
-  <numjobs>10</numjobs>
+  <numjobs>500</numjobs>
   <schema>root</schema>
-  <maxfilesperjob>1</maxfilesperjob>
+  <maxfilesperjob>10</maxfilesperjob>
   <anadatatier>full-reconstructed</anadatatier>
   <jobsub>-f /pnfs/dune/persistent/users/fspaglia/MCdEdxSuperBinning.root --memory=4000 --expected-lifetime=3h</jobsub>
 </stage>
