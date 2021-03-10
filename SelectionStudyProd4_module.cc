@@ -1,20 +1,20 @@
 ///////////////////////////////////////////////////////////////////////
-// Class:       MichelStudyTmp
+// Class:       SelectionStudyProd4
 // Plugin Type: ******
-// File:        MichelStudyTmp_module.cc
+// File:        SelectionStudyProd4_module.cc
 ////////////////////////////////////////////////////////////////////////
 
-#include "MichelStudyTmp.h"
+#include "SelectionStudyProd4.h"
 
 namespace stoppingcosmicmuonselection {
 
-  void MichelStudyTmp::analyze(art::Event const &evt)
+  void SelectionStudyProd4::analyze(art::Event const &evt)
   {
     // increase counter and store event number
     counter_total_number_events++;
     fEvNumber = evt.id().event();
-    std::cout << "MichelStudyTmp_module is on event: " << fEvNumber <<  " run: " << evt.id().run() << std::endl;
-    mf::LogVerbatim("MichelStudyTmp") << "MichelStudyTmp module on event " << fEvNumber;
+    std::cout << "SelectionStudyProd4_module is on event: " << fEvNumber <<  " run: " << evt.id().run() << std::endl;
+    mf::LogVerbatim("SelectionStudyProd4") << "SelectionStudyProd4 module on event " << fEvNumber;
 
     // Get handles
     // trackHandle is art::ValidHandle<std::vector<recob::Track>>
@@ -197,4 +197,4 @@ namespace stoppingcosmicmuonselection {
 
 } // namespace
 
-DEFINE_ART_MODULE(stoppingcosmicmuonselection::MichelStudyTmp)
+DEFINE_ART_MODULE(stoppingcosmicmuonselection::SelectionStudyProd4)
