@@ -3,9 +3,10 @@
 #include "stoppingmuonAlg.fcl"
 #include "caloHelper.fcl"
 #include "hitHelper.fcl"
+#include "protoDUNE_reco_data_prolog.fcl"
 #include "protodune_tools_dune.fcl"
 
-process_name: MichelStudy
+process_name: SelectionStudy
 
 services:
 {
@@ -16,13 +17,21 @@ services:
   RandomNumberGenerator: {}
   message:  @local::dune_message_services_prod_debug
   FileCatalogMetadata: @local::art_file_catalog_mc
+  PdspChannelMapService:        @local::pdspchannelmap
   @table::protodune_services
   #@table::protodune_reco_services
+  BackTrackerService: {
+    BackTracker: {
+      SimChannelModuleLabel: "tpcrawdecoder:simpleSC"
+      G4ModuleLabel: "largeant"
+      MinimumHitEnergyFraction: 1e-1
+    }
+  }
 }
 
-michel_study:
+selectionstudyprod4:
 {
-  module_type:   "MichelStudyTmp"
+  module_type:   "SelectionStudyProd4"
   PFParticleTag: "pandora"
   SpacePointTag: "reco3d"
   TrackerTag:    "pandoraTrack"
@@ -54,7 +63,7 @@ physics:
     @table::protoDUNE_reco_data_stage1_producers
   }
   analyzers: {
-    fabioana: @local::michel_study
+    fabioana: @local::selectionstudyprod4
   }
 
 ana: [fabioana]
