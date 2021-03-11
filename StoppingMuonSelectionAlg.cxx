@@ -436,17 +436,12 @@ namespace stoppingcosmicmuonselection {
     auto const clockData = art::ServiceHandle<detinfo::DetectorClocksService>()->DataFor(evt);
     const simb::MCParticle *particleP = truthUtil.GetMCParticleFromPFParticle(clockData, thisParticle,evt,fPFParticleTag);
     _pdg = particleP->PdgCode();
-    double *av = geoHelper.GetActiveVolumeBounds();
     // Not valid in prod4 as there are only 2 trajectory points in the
     // simb::MCParticle object.
     //int firstPoint = truthUtil.GetFirstTrajectoryPointInTPCActiveVolume(*particleP,av[0],av[1],av[2],av[3],av[4],av[5]);
     int firstPoint = 0;
-    double highestYborder = av[3];
     _trueStartPoint.SetXYZ(particleP->Vx(firstPoint),particleP->Vy(firstPoint),particleP->Vz(firstPoint));
     _trueEndPoint = particleP->EndPosition().Vect();
-    double X_start = ((_trueEndPoint.X()-_trueStartPoint.X())/(_trueEndPoint.Y()-_trueStartPoint.Y()))*(highestYborder-_trueStartPoint.Y())+_trueStartPoint.X();
-    double Z_start = ((_trueEndPoint.Z()-_trueStartPoint.Z())/(_trueEndPoint.X()-_trueStartPoint.X()))*(X_start-_trueStartPoint.X())+_trueStartPoint.Z();
-    _trueStartPoint.SetXYZ(X_start,highestYborder,Z_start);
     _trueStartT = particleP->T(firstPoint);
     _trueEndT = particleP->EndPosition().T();
     _trueTrackID = particleP->TrackId();
@@ -457,8 +452,13 @@ namespace stoppingcosmicmuonselection {
   bool StoppingMuonSelectionAlg::IsTrueParticleACathodeCrossingStoppingMuon(art::Event const &evt, recob::PFParticle const &thisParticle) {
     if (!_areMCParticlePropertiesSet)
       SetMCParticleProperties(evt,thisParticle);
+    double Z_cathode = ((_trueEndPoint.Z()-_trueStartPoint.Z())/(_trueEndPoint.X()-_trueStartPoint.X()))*(-_trueStartPoint.X())+_trueStartPoint.Z();
+    double Y_cathode = ((_trueEndPoint.Y()-_trueStartPoint.Y())/(_trueEndPoint.X()-_trueStartPoint.X()))*(-_trueStartPoint.X())+_trueStartPoint.Y();
+    double *av = geoHelper.GetActiveVolumeBounds();
     return (TMath::Abs(_pdg)==13
-            && (_trueStartPoint.X()*_trueEndPoint.X()<0)
+            // && (_trueStartPoint.X()*_trueEndPoint.X()<0) // not valid in prod4
+            && (Y_cathode>av[2] && Y_cathode<av[3])
+            && (Z_cathode>av[4] && Z_cathode<av[5])
             && geoHelper.IsPointInVolume(geoHelper.GetActiveVolumeBounds(),_trueEndPoint)
           );
   }
