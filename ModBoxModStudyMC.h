@@ -252,7 +252,6 @@ void ModBoxModStudyMC::beginJob()
 
   // Print active volume bounds.
   geoHelper.PrintActiveVolumeBounds();
-  geoHelper.InitFiducialVolumeBounds();
 
 }
 
@@ -272,6 +271,7 @@ void ModBoxModStudyMC::reconfigure(fhicl::ParameterSet const& p)
   fTrackerTag = p.get<std::string>("TrackerTag");
   fPFParticleTag = p.get<std::string>("PFParticleTag");
   fNNetTag = p.get<std::string>("NNetTag");
+  fSpacePointTag = p.get<std::string>("SpacePointTag");
   _minNumbMichelLikeHit = p.get<size_t>("minNumbMichelLikeHit", 2);
   _trackPitch = p.get<double>("trackPitch", 0.75);
   _trackPitchTolerance = p.get<double>("trackPitchTolerance", 0.1);
