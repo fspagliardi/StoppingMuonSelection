@@ -85,7 +85,7 @@ namespace stoppingcosmicmuonselection {
         fIsRecoSelectedAnodeCrosser = true;
       else
         continue;
-
+      
       // Check if the track is missing some space points (need to get
       // an handle on the track)
       const recob::Track &track = selectorAlg.GetTrackFromPFParticle(evt,thisParticle);
