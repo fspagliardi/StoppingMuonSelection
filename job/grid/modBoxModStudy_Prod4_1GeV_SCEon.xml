@@ -61,17 +61,6 @@
   <jobsub>-f &pathCalibFile;/MCdEdxSuperBinning.root -f &pathCalibFile;/Xcalo_prod4_sceon.root -f &pathCalibFile;/YZcalo_prod4_sceon.root --memory=4000 --expected-lifetime=3h</jobsub>
 </stage>
 
-<stage name = "runProd4CathodeData">
-  <fcl>runModBoxModStudyMCProd4_Cathode_data.fcl</fcl>
-  <inputdef>protodune-sp_runset_5387_reco_v09_01_01_v0</inputdef>
-  <outdir>/pnfs/dune/scratch/users/fspaglia/&release;/&name;_cathode</outdir>
-  <workdir>/pnfs/dune/scratch/users/fspaglia/&release;/&name;_cathode</workdir>
-  <numjobs>750</numjobs>
-  <schema>root</schema>
-  <maxfilesperjob>10</maxfilesperjob>
-  <anadatatier>full-reconstructed</anadatatier>
-  <jobsub>-f &pathCalibFile;/MCdEdxSuperBinning.root -f &pathCalibFile;/Xcalo_r5387.root -f &pathCalibFile;/YZcalo_r5387.root --memory=4000 --expected-lifetime=3h</jobsub>
-</stage>
 
 <filetype>&file_type;</filetype>
 <filetype>&file_type;</filetype>
