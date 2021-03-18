@@ -33,6 +33,8 @@ namespace stoppingcosmicmuonselection {
     else {
       size_t runNumber = evt.id().run();
       filetype = "r" + std::to_string(runNumber);
+      filenameX = "Xcalo_r" + std::to_string(runNumber) + ".root";
+      filenameYZ = "YZcalo_r" + std::to_string(runNumber) + ".root";
     }
     std::cout << "CalibrationHelper.cxx: filenameX = " << filenameX <<std::endl;
     std::cout << "CalibrationHelper.cxx: filenameYZ = " << filenameYZ <<std::endl;
