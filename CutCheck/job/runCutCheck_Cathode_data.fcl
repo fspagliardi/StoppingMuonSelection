@@ -59,6 +59,9 @@ source:
 
 physics:
 {
+  producers: {
+    @table::protoDUNE_reco_data_stage1_producers
+  }
   filters: {
     f2: @local::pdsp_fembfilter_all
     f1: @local::HVfilter
@@ -75,3 +78,7 @@ ana: [fabioana]
 
 end_paths: [ana]
 }
+physics.producers.emtrkmichelid.PointIdAlg.AdcMin: -10 # This was previously -50
+physics.producers.emtrkmichelid.PointIdAlg.AdcMax: 30  # This was previously 150
+services.SpaceCharge.EnableCalEfieldSCE: true
+services.SpaceCharge.EnableCalSpatialSCE: true
