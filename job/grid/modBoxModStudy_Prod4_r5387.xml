@@ -20,7 +20,7 @@
 
 <!-- Make sure we keep a 1-to-1 mapping with the SAM files -->
 <!-- Number of events large enough that we always process all events -->
-<numevents>7500000000</numevents>
+<numevents>100000000000000000000000</numevents>
 <!--maxfilesperjob>1</maxfilesperjob-->
 
 <!-- Operating System -->
@@ -43,7 +43,7 @@
   <inputdef>protodune-sp_runset_5387_reco_v09_01_01_v0</inputdef>
   <outdir>/pnfs/dune/scratch/users/fspaglia/&release;/&name;_cathode</outdir>
   <workdir>/pnfs/dune/scratch/users/fspaglia/&release;/&name;_cathode</workdir>
-  <numjobs>750</numjobs>
+  <numjobs>5</numjobs>
   <schema>root</schema>
   <maxfilesperjob>10</maxfilesperjob>
   <anadatatier>full-reconstructed</anadatatier>
