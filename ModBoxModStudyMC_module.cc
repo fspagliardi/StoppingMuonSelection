@@ -20,7 +20,10 @@ namespace stoppingcosmicmuonselection {
 
     // Get handles
     // trackHandle is art::ValidHandle<std::vector<recob::Track>>
-    auto const pfparticleHandle = evt.getValidHandle<std::vector<recob::PFParticle>>(fPFParticleTag);
+    art::Handle<std::vector<recob::PFParticle>> pfparticleHandle; // to use with getByLabel to check it's valid
+    //auto const pfparticleHandle = evt.getValidHandle<std::vector<recob::PFParticle>>(fPFParticleTag);
+    evt.getByLabel(fPFParticleTag, pfparticleHandle);
+    if (!pfparticleHandle.isValid()) return;
     auto const &recoParticles = *pfparticleHandle;
     auto const spacePointHandle = evt.getValidHandle<std::vector<recob::SpacePoint>>(fSpacePointTag);
     const std::vector<recob::SpacePoint> spacePoints = *spacePointHandle;
