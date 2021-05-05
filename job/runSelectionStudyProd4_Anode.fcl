@@ -1,0 +1,95 @@
+#include "services_dune.fcl"
+#include "spacepointAlg.fcl"
+#include "stoppingmuonAlg.fcl"
+#include "caloHelper.fcl"
+#include "hitHelper.fcl"
+#include "protoDUNE_reco_data_prolog.fcl"
+#include "protodune_tools_dune.fcl"
+
+process_name: SelectionStudy
+
+services:
+{
+  IFDH: {}
+  TFileService: {fileName: "%ifb_result.root"}
+  TimeTracker: {}
+  MemoryTracker: {}
+  RandomNumberGenerator: {}
+  message:  @local::dune_message_services_prod_debug
+  FileCatalogMetadata: @local::art_file_catalog_mc
+  PdspChannelMapService:        @local::pdspchannelmap
+  @table::protodune_services
+  #@table::protodune_reco_services
+  BackTrackerService: {
+    BackTracker: {
+      SimChannelModuleLabel: "tpcrawdecoder:simpleSC"
+      G4ModuleLabel: "largeant"
+      MinimumHitEnergyFraction: 1e-1
+    }
+  }
+}
+
+selectionstudyprod4:
+{
+  module_type:   "SelectionStudyProd4"
+  PFParticleTag: "pandora"
+  SpacePointTag: "reco3d"
+  TrackerTag:    "pandoraTrack"
+  NNetTag:       "emtrkmichelid:emtrkmichel"
+  minNumbMichelLikeHit:     5
+  trackPitch:               0.75
+  trackPitchTolerance:      0.1
+  numberNeighbors:          2
+  michelScoreThreshold:     0.7
+  michelScoreThresholdAvg:  0.5
+  selectAC:                 true
+  selectCC:                 false
+  SpacePointAlg:            @local::spacepointAlg
+  StoppingMuonSelectionAlg: @local::stoppingmuonAlg
+  CalorimetryHelper:        @local::caloHelper
+  HitHelper:                @local::hitHelper
+}
+
+source:
+{
+  module_type:RootInput
+  maxEvents: -1
+
+}
+
+physics:
+{
+  producers: {
+    @table::protoDUNE_reco_data_stage1_producers
+  }
+  analyzers: {
+    fabioana: @local::selectionstudyprod4
+  }
+
+ana: [fabioana]
+
+end_paths: [ana]
+}
+
+physics.producers.emtrkmichelid.PointIdAlg.AdcMin: -10 # This was previously -50
+physics.producers.emtrkmichelid.PointIdAlg.AdcMax: 30  # This was previously 150
+#michel_study.minNumberSpacePoints: 3
+#michel_study.SpacePointAlg.cilinderAxis:   50
+#michel_study.SpacePointAlg.cilinderRadius: 5
+#michel_study.SpacePointAlg.minNumberSpacePoints: 10
+#michel_study.StoppingMuonSelectionAlg.TrackerTag: "pandoraTrack"
+#michel_study.StoppingMuonSelectionAlg.PFParticleTag:   "pandora"
+#michel_study.StoppingMuonSelectionAlg.length_cutoff_CC:               100
+#michel_study.StoppingMuonSelectionAlg.offsetFiducialBounds_CC:        50
+#michel_study.StoppingMuonSelectionAlg.thicknessStartVolume_CC:        40
+#michel_study.StoppingMuonSelectionAlg.cutMinHitPeakTime_CC:           500
+#michel_study.StoppingMuonSelectionAlg.cutMaxHitPeakTime_CC:           4800
+#michel_study.StoppingMuonSelectionAlg.radiusBrokenTracksSearch_CC:    50
+#michel_study.StoppingMuonSelectionAlg.cutCosAngleBrokenTracks_CC:     0.995
+#michel_study.StoppingMuonSelectionAlg.cutCosAngleAlignment_CC:        0.995
+#michel_study.StoppingMuonSelectionAlg.cutContourAPA_CC:               10
+#michel_study.CalorimetryHelper.TrackerTag: "pandoraTrack"
+#michel_study.CalorimetryHelper.CalorimetryTag: "pandoracalo"
+#michel_study.CalorimetryHelper.PFParticleTag: "pandora"
+#michel_study.HitHelper.electronEnergyFractionToCallMichelHits:   0.7
+#michel_study.HitHelper.maxDistanceToCallMichelHits: 15
