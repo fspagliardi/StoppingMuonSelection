@@ -172,6 +172,9 @@ void CutCheck::beginJob()
   h_theta_yz_signal = NMinus1Dir.make<TH1D>("h_theta_yz_signal", "h_theta_yz_signal", 180,0,180);
   h_length = NMinus1Dir.make<TH1D>("h_length", "h_length", 800, 0, 800);
   h_length_signal = NMinus1Dir.make<TH1D>("h_length_signal", "h_length_signal", 800, 0, 800);
+  
+  // Print active volume bounds.
+  geoHelper.PrintActiveVolumeBounds();
 }
 
 void CutCheck::endJob()
