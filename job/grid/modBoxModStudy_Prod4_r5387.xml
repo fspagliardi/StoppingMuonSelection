@@ -20,7 +20,7 @@
 
 <!-- Make sure we keep a 1-to-1 mapping with the SAM files -->
 <!-- Number of events large enough that we always process all events -->
-<numevents>100000000000000000000000</numevents>
+<numevents>500000</numevents>
 <!--maxfilesperjob>1</maxfilesperjob-->
 
 <!-- Operating System -->
@@ -43,11 +43,11 @@
   <inputdef>protodune-sp_runset_5387_reco_v09_01_01_v0</inputdef>
   <outdir>/pnfs/dune/scratch/users/fspaglia/&release;/&name;_cathode</outdir>
   <workdir>/pnfs/dune/scratch/users/fspaglia/&release;/&name;_cathode</workdir>
-  <numjobs>5</numjobs>
+  <numjobs>950</numjobs>
   <schema>root</schema>
-  <maxfilesperjob>10</maxfilesperjob>
+  <maxfilesperjob>1</maxfilesperjob>
   <anadatatier>full-reconstructed</anadatatier>
-  <jobsub>-f &pathCalibFile;/MCdEdxSuperBinning.root -f &pathCalibFile;/Xcalo_r5387.root -f &pathCalibFile;/YZcalo_r5387.root --memory=4000 --expected-lifetime=3h</jobsub>
+  <jobsub>-f &pathCalibFile;/MCdEdxSuperBinning.root -f &pathCalibFile;/Xcalo_r5387.root -f &pathCalibFile;/YZcalo_r5387.root --memory=4000 --expected-lifetime=10h</jobsub>
 </stage>
 
 <filetype>&file_type;</filetype>

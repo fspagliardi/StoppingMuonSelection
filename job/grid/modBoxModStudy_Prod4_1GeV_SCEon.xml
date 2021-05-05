@@ -20,7 +20,7 @@
 
 <!-- Make sure we keep a 1-to-1 mapping with the SAM files -->
 <!-- Number of events large enough that we always process all events -->
-<numevents>7500000000</numevents>
+<numevents>4000000</numevents>
 <!--maxfilesperjob>1</maxfilesperjob-->
 
 <!-- Operating System -->
@@ -54,13 +54,24 @@
   <inputdef>PDSPProd4_MC_1GeV_reco1_sce_datadriven_v1</inputdef>
   <outdir>/pnfs/dune/scratch/users/fspaglia/&release;/&name;_cathode</outdir>
   <workdir>/pnfs/dune/scratch/users/fspaglia/&release;/&name;_cathode</workdir>
-  <numjobs>750</numjobs>
+  <numjobs>2764</numjobs>
   <schema>root</schema>
   <maxfilesperjob>10</maxfilesperjob>
   <anadatatier>full-reconstructed</anadatatier>
-  <jobsub>-f &pathCalibFile;/MCdEdxSuperBinning.root -f &pathCalibFile;/Xcalo_prod4_sceon.root -f &pathCalibFile;/YZcalo_prod4_sceon.root --memory=4000 --expected-lifetime=3h</jobsub>
+  <jobsub>-f &pathCalibFile;/MCdEdxSuperBinning.root -f &pathCalibFile;/Xcalo_prod4_sceon.root -f &pathCalibFile;/YZcalo_prod4_sceon.root --memory=4000 --expected-lifetime=10h</jobsub>
 </stage>
 
+<stage name = "runProd4CathodeTest">
+  <fcl>runModBoxModStudyMCProd4_Cathode.fcl</fcl>
+  <inputdef>PDSPProd4_MC_1GeV_reco1_sce_datadriven_v1</inputdef>
+  <outdir>/pnfs/dune/scratch/users/fspaglia/&release;/&name;_cathode</outdir>
+  <workdir>/pnfs/dune/scratch/users/fspaglia/&release;/&name;_cathode</workdir>
+  <numjobs>5</numjobs>
+  <schema>root</schema>
+  <maxfilesperjob>5</maxfilesperjob>
+  <anadatatier>full-reconstructed</anadatatier>
+  <jobsub>-f &pathCalibFile;/MCdEdxSuperBinning.root -f &pathCalibFile;/Xcalo_prod4_sceon.root -f &pathCalibFile;/YZcalo_prod4_sceon.root --memory=4000 --expected-lifetime=3h</jobsub>
+</stage>
 
 <filetype>&file_type;</filetype>
 <filetype>&file_type;</filetype>

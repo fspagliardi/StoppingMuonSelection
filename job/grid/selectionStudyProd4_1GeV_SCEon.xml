@@ -38,15 +38,16 @@
 
 <check>1</check>
 
-<stage name = "runProd2Anode">
-  <fcl>runMichelStudyProd2_Anode.fcl</fcl>
-  <inputdef>PDSPProd2_MC_1GeV_reco_sce_datadriven</inputdef>
+<stage name = "runProd4Anode">
+  <fcl>runSelectionStudyProd4_Anode.fcl</fcl>
+  <inputdef>PDSPProd4_MC_1GeV_reco1_sce_datadriven_v1</inputdef>
   <outdir>/pnfs/dune/scratch/users/fspaglia/&release;/&name;_anode</outdir>
   <workdir>/pnfs/dune/scratch/users/fspaglia/&release;/&name;_anode</workdir>
-  <numjobs>500</numjobs>
+  <numjobs>750</numjobs>
   <schema>root</schema>
+  <maxfilesperjob>10</maxfilesperjob>
   <anadatatier>full-reconstructed</anadatatier>
-  <jobsub>-f &pathCalibFile;/MCdEdxSuperBinning.root -f &pathCalibFile;/Xcalo_prod4_sceon.root -f &pathCalibFile;/YZcalo_prod4_sceon.root --memory=4000 --expected-lifetime=3h</jobsub>
+  <jobsub>-f &pathCalibFile;/MCdEdxSuperBinning.root --memory=4000 --expected-lifetime=3h</jobsub>
 </stage>
 
 <stage name = "runProd4Cathode">
