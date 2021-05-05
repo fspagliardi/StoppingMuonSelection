@@ -467,8 +467,19 @@ namespace stoppingcosmicmuonselection {
   bool StoppingMuonSelectionAlg::IsTrueParticleAnAnodeCrossingStoppingMuon(art::Event const &evt, recob::PFParticle const &thisParticle) {
     if (!_areMCParticlePropertiesSet)
       SetMCParticleProperties(evt,thisParticle);
+    double X_anode_Pos = geoHelper.GetActiveVolumeBounds()[1];
+    double X_anode_Neg = -X_anode_Pos;
+    double Z_anode_PosX = ((_trueEndPoint.Z()-_trueStartPoint.Z())/(_trueEndPoint.X()-_trueStartPoint.X()))*(X_anode_Pos-_trueStartPoint.X())+_trueStartPoint.Z();
+    double Y_anode_PosX = ((_trueEndPoint.Y()-_trueStartPoint.Y())/(_trueEndPoint.X()-_trueStartPoint.X()))*(X_anode_Pos-_trueStartPoint.X())+_trueStartPoint.Y();
+    double Z_anode_NegX = ((_trueEndPoint.Z()-_trueStartPoint.Z())/(_trueEndPoint.X()-_trueStartPoint.X()))*(X_anode_Neg-_trueStartPoint.X())+_trueStartPoint.Z();
+    double Y_anode_NegX = ((_trueEndPoint.Y()-_trueStartPoint.Y())/(_trueEndPoint.X()-_trueStartPoint.X()))*(X_anode_Neg-_trueStartPoint.X())+_trueStartPoint.Y();
+    double *av = geoHelper.GetActiveVolumeBounds();
+    bool goodYZ_Pos = (Y_anode_PosX>av[2] && Y_anode_PosX<av[3] && Z_anode_PosX>av[4] && Z_anode_PosX<av[5]);
+    bool goodYZ_Neg = (Y_anode_NegX>av[2] && Y_anode_NegX<av[3] && Z_anode_NegX>av[4] && Z_anode_NegX<av[5]);
+    
     return (TMath::Abs(_pdg)==13 &&
-           (TMath::Abs(_trueStartPoint.X()-geoHelper.GetActiveVolumeBounds()[1]) < 1. || TMath::Abs(_trueStartPoint.X()+geoHelper.GetActiveVolumeBounds()[1]<1.)) &&
+           // (TMath::Abs(_trueStartPoint.X()-geoHelper.GetActiveVolumeBounds()[1]) < 1. || TMath::Abs(_trueStartPoint.X()+geoHelper.GetActiveVolumeBounds()[1]<1.)) &&
+           (goodYZ_Pos || goodYZ_Neg) &&
            geoHelper.IsPointInVolume(geoHelper.GetActiveVolumeBounds(),_trueEndPoint));
   }
 
