@@ -2,6 +2,7 @@
 #include "stoppingmuonAlg.fcl"
 #include "caloHelper.fcl"
 #include "spacepointAlg.fcl"
+#include "protoDUNE_reco_data_prolog.fcl"
 #include "protodune_tools_dune.fcl"
 
 process_name: CutCheck
@@ -16,7 +17,14 @@ services:
   message:  @local::dune_message_services_prod_debug
   FileCatalogMetadata: @local::art_file_catalog_mc
   #@table::protodune_services
-  @table::protodune_reco_services
+  @table::protodune_services
+  BackTrackerService: {
+    BackTracker: {
+      SimChannelModuleLabel: "tpcrawdecoder:simpleSC"
+      G4ModuleLabel: "largeant"
+      MinimumHitEnergyFraction: 1e-1
+    }
+  }
 }
 
 cut_check:
