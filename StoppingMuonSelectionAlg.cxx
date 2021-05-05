@@ -728,7 +728,7 @@ namespace stoppingcosmicmuonselection {
     }
     else {
       if (DEBUG) std::cout << "Track tagged by Pandora." << std::endl;
-      CorrectPosEnd(_recoStartPoint, _recoEndPoint, _minHitPeakTime, _maxHitPeakTime);
+      //CorrectPosEnd(_recoStartPoint, _recoEndPoint, _minHitPeakTime, _maxHitPeakTime);
       trackInfo.isAnodeCrosserPandora = true;
       trackInfo.isAnodeCrosserMine = false;
     }
