@@ -21,6 +21,7 @@ namespace stoppingcosmicmuonselection {
     auto const clockData = art::ServiceHandle<detinfo::DetectorClocksService>()->DataFor(evt);
     auto const detprop = art::ServiceHandle<detinfo::DetectorPropertiesService>()->DataFor(evt, clockData);
     sceHelper = new SceHelper(detprop);
+    drift_velocity = detprop.DriftVelocity()*1e-3;
 
     std::string filetype;
     std::string filenameX;
@@ -148,6 +149,24 @@ namespace stoppingcosmicmuonselection {
 
     return phis;
 
+  }
+
+  void CalibrationHelper::CorrectXPosition(std::vector<double> &hit_xs, const double &startX, const double &endX, const double &t0) {
+
+    if (startX <= endX) {
+      if (startX <= 0) {
+        for(size_t i=0; i<hit_xs.size(); i++) {
+          hit_xs[i] = hit_xs[i] - (drift_velocity * t0);
+        }
+      }
+    }
+    else {
+      if (startX >= 0) {
+        for(size_t i=0; i<hit_xs.size(); i++) {
+          hit_xs[i] = hit_xs[i] + (drift_velocity * t0);
+        }
+      }
+    }
   }
 
 } // end of namespace stoppingcosmicmuonselection

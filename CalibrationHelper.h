@@ -66,12 +66,16 @@ namespace stoppingcosmicmuonselection {
     // Get vector of angles phi.
     std::vector<double> PitchFieldAngle(const std::vector<double> &hit_xs, const std::vector<double> &hit_ys, const std::vector<double> &hit_zs);
 
+    // Correct the X position for hits. Only to be used for some anode crossers.
+    void CorrectXPosition(std::vector<double> &hit_xs, const double &startX, const double &endX, const double &t0);
+
   private:
     TH1D *h_x;
     TH2D *h_yz_neg;
     TH2D *h_yz_pos;
 
     SceHelper *sceHelper;
+    double drift_velocity = INV_DBL;
 
   };
 }
