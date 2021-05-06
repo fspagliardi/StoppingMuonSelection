@@ -39,7 +39,7 @@
 <check>1</check>
 
 <stage name = "runProd4Anode">
-  <fcl>runModBoxModStudyMCProd4_Anode_data.fcl</fcl>
+  <fcl>runSelectionStudyProd4_Anode_data.fcl</fcl>
   <inputdef>protodune-sp_runset_5387_reco_v09_01_01_v0</inputdef>
   <outdir>/pnfs/dune/scratch/users/fspaglia/&release;/&name;_anode</outdir>
   <workdir>/pnfs/dune/scratch/users/fspaglia/&release;/&name;_anode</workdir>
@@ -48,7 +48,6 @@
   <maxfilesperjob>1</maxfilesperjob>
   <anadatatier>full-reconstructed</anadatatier>
   <jobsub>-f &pathCalibFile;/MCdEdxSuperBinning.root -f &pathCalibFile;/Xcalo_r5387.root -f &pathCalibFile;/YZcalo_r5387.root --memory=4000 --expected-lifetime=10h</jobsub>
-</stage>
 </stage>
 
 <filetype>&file_type;</filetype>
