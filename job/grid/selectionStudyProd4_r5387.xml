@@ -1,0 +1,59 @@
+<?xml version="1.0"?>
+
+<!-- Production Project -->
+
+<!DOCTYPE project [
+    <!ENTITY release "v09_12_00">
+    <!ENTITY file_type "mc">
+    <!ENTITY run_type "physics">
+    <!ENTITY name "SelectionStudyProd4_r5387">
+    <!ENTITY tag "ana">
+    <!ENTITY pathCalibFile "/pnfs/dune/persistent/users/fspaglia/CalibrationMatrices/Prod4">
+    ]>
+
+<job>
+
+<project name="&name;">
+
+<!-- Group -->
+<group>dune</group>
+
+<!-- Make sure we keep a 1-to-1 mapping with the SAM files -->
+<!-- Number of events large enough that we always process all events -->
+<numevents>750000</numevents>
+<!--maxfilesperjob>1</maxfilesperjob-->
+
+<!-- Operating System -->
+<os>SL7</os>
+
+<!-- Batch resources -->
+<resource>DEDICATED,OPPORTUNISTIC</resource>
+
+<!-- Larsoft information -->
+<larsoft>
+<tag>&release;</tag>
+<qual>e19:prof</qual>
+<local>/pnfs/dune/resilient/users/fspaglia/protoduneanav09_12_00.tar</local>
+</larsoft>
+
+<check>1</check>
+
+<stage name = "runProd4Anode">
+  <fcl>runModBoxModStudyMCProd4_Anode_data.fcl</fcl>
+  <inputdef>protodune-sp_runset_5387_reco_v09_01_01_v0</inputdef>
+  <outdir>/pnfs/dune/scratch/users/fspaglia/&release;/&name;_anode</outdir>
+  <workdir>/pnfs/dune/scratch/users/fspaglia/&release;/&name;_anode</workdir>
+  <numjobs>950</numjobs>
+  <schema>root</schema>
+  <maxfilesperjob>1</maxfilesperjob>
+  <anadatatier>full-reconstructed</anadatatier>
+  <jobsub>-f &pathCalibFile;/MCdEdxSuperBinning.root -f &pathCalibFile;/Xcalo_r5387.root -f &pathCalibFile;/YZcalo_r5387.root --memory=4000 --expected-lifetime=10h</jobsub>
+</stage>
+</stage>
+
+<filetype>&file_type;</filetype>
+<filetype>&file_type;</filetype>
+<runtype>&run_type;</runtype>
+
+</project>
+</job>
