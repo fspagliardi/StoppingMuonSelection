@@ -139,6 +139,9 @@ namespace stoppingcosmicmuonselection {
       fResRange = caloHelper.GetResRangeOrdered();
       fTrackPitch = caloHelper.GetTrackPitch();
       fHitX = caloHelper.GetHitX();
+      if (fIsRecoSelectedAnodeCrosser && selectorAlg.GetTrackProperties().isAnodeCrosserMine) {
+        calibHelper.CorrectXPosition(fHitX,selectorAlg.GetTrackProperties().recoStartPoint.X(),selectorAlg.GetTrackProperties().recoEndPoint.X(),selectorAlg.GetTrackProperties().trackT0);
+      }
       fHitY = caloHelper.GetHitY();
       fHitZ = caloHelper.GetHitZ();
       fPhis = calibHelper.PitchFieldAngle(fHitX, fHitY, fHitZ);
@@ -161,19 +164,7 @@ namespace stoppingcosmicmuonselection {
         fEfield.push_back(electric_field.at(i).Mag());
       }
 
-      // Correction for T0.
-      // Get rid of cathode crossers for the time being.
-      // if ((selectorAlg.GetTrackProperties().trueStartPoint.X()*selectorAlg.GetTrackProperties().trueEndPoint.X()<0) || selectorAlg.GetTrackProperties().trackT0 != INV_DBL)
-      //   continue;
-      // double x_shift = selectorAlg.GetTrackProperties().trueStartPoint.X() - selectorAlg.GetTrackProperties().recoStartPoint.X();
-      // // Correct hit position.
-      // for (size_t i=0; i < fHitX.size(); i++) {
-      //   fHitX[i] = fHitX[i] + x_shift;
-      // }
-
-
       // Get Calibration correction factors.
-      // TODO: If track is anode crosser, correct x position
       fYZcalibFactor = calibHelper.GetYZCorr_V(fHitX, fHitY, fHitZ);
       fXcalibFactor = calibHelper.GetXCorr_V(fHitX);
 
