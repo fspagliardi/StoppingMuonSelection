@@ -80,6 +80,7 @@ ana: [fabioana]
 end_paths: [ana]
 }
 
+physics.analyzers.fabioana.CalorimetryHelper.CalorimetryTag: "pandoracalinoxyzt"
 physics.producers.emtrkmichelid.PointIdAlg.AdcMin: -10 # This was previously -50
 physics.producers.emtrkmichelid.PointIdAlg.AdcMax: 30  # This was previously 150
 services.SpaceCharge.EnableCalEfieldSCE: true
