@@ -320,6 +320,8 @@ namespace stoppingcosmicmuonselection {
     //std::cout << "End point in volume: " << geoHelper.IsPointInVolume(geoHelper.GetFiducialVolumeBounds(),_recoEndPoint) << std::endl;
     //std::cout << "End point (XYZ): " << _recoEndPoint.X() << " " << _recoEndPoint.Y() << " " << _recoEndPoint.Z() << std::endl;
     if (!goodTrack) return false;
+    // Additional cut for prod4:
+    if (TMath::Abs(_recoStartPoint.X())<20) return false;
     if (_minHitPeakTime <= cutMinHitPeakTime_CC) return false;
     if (_maxHitPeakTime >= cutMaxHitPeakTime_CC) return false;
     if ((TMath::Abs(_recoEndPoint.Z()-geoHelper.GetAPABoundaries()[0])<=cutContourAPA_CC) || (TMath::Abs(_recoEndPoint.Z()-geoHelper.GetAPABoundaries()[1])<=cutContourAPA_CC)) return false;
