@@ -17,7 +17,7 @@ stoppingmuonAlg:
   cutContourAPA_CC:               10
 
   length_cutoff_AC :              100
-  offsetYStartPoint_AC:           30
+  offsetYStartPoint_AC:           75
   offsetZStartPoint_AC:           50
   cutMinHitPeakTime_AC:           700
   cutMaxHitPeakTime_AC:           4800
