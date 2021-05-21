@@ -114,13 +114,7 @@ namespace stoppingcosmicmuonselection {
 
     size_t nplanes = geom->Nplanes();
 
-    //create anab::Calorimetry objects and make association with recob::Track
-    std::unique_ptr<std::vector<anab::Calorimetry>> calorimetrycol(
-      new std::vector<anab::Calorimetry>);
-    std::unique_ptr<art::Assns<recob::Track, anab::Calorimetry>> assn(
-      new art::Assns<recob::Track, anab::Calorimetry>);
-
-    art::FindManyP<recob::Hit> fmht(trackListHandle, evt, fTrackModuleLabel);
+        art::FindManyP<recob::Hit> fmht(trackListHandle, evt, fTrackModuleLabel);
     art::FindManyP<recob::Hit, recob::TrackHitMeta> fmthm(
       trackListHandle,
       evt,
@@ -142,7 +136,6 @@ namespace stoppingcosmicmuonselection {
       unsigned int plane = 0; //hit plane number
 
       std::vector<art::Ptr<recob::Hit>> allHits = fmht.at(trkIter);
-      double T0 = 0;
       double TickT0 =0;
       TickT0 = T0 / sampling_rate(clock_data);
 
