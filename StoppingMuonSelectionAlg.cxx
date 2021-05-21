@@ -247,7 +247,7 @@ namespace stoppingcosmicmuonselection {
     //std::cout << "StoppingMuonSelectionAlg::CorrectPosAndGetT0: " << "drift velocity = " << drift_velocity << std::endl;
     double drift_distance = geoHelper.GetAbsolutePlaneCoordinate(0); // First induction plane coordinate.
     //std::cout << "StoppingMuonSelectionAlg::CorrectPosAndGetT0: " << "drift distance = " << drift_distance << std::endl;
-
+  std::cout << "DRIFT DISTANCE: " << drift_distance << std::endl;
     if (_recoStartPoint.X() <= _recoEndPoint.X()) {
       if (_recoStartPoint.X() <= 0) {
         _trackT0 = (drift_distance - TMath::Abs(_recoStartPoint.X())) /drift_velocity;
