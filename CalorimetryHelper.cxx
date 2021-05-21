@@ -217,6 +217,30 @@ namespace stoppingcosmicmuonselection {
     return correction;
   }
 
+  void CalorimetryHelper::LifeTimeCorrNew(std::vector<double> &dQdx, const std::vector<double> &hitX, const art::Event &evt) {
+    auto const clockData = art::ServiceHandle<detinfo::DetectorClocksService>()->DataFor(evt);
+    auto const detProp = art::ServiceHandle<detinfo::DetectorPropertiesService const>()->DataFor(evt);
+    double vDrift = detProp.DriftVelocity(); //cm/us
+    double xAnode = std::abs(detProp.ConvertTicksToX(trigger_offset(clockData),0,0,0));
+    std::cout << "X ANODE: " << xAnode << std::endl;
+    double fLifetime = INV_DBL;
+
+    if (evt.isRealData()) {
+      // Electron lifetime from database calibration service provider
+      art::ServiceHandle<calib::LifetimeCalibService> lifetimecalibHandler;
+      calib::LifetimeCalibService & lifetimecalibService = *lifetimecalibHandler;
+      calib::LifetimeCalib *lifetimecalib = lifetimecalibService.provider();
+      fLifetime = lifetimecalib->GetLifetime()*1000.0; // [ms]*1000.0 -> [us]
+      std::cout << "LIFETIME: " << fLifetime << std::endl;
+    }
+    else {
+      fLifetime = detProp.ElectronLifetime();
+    }
+    for (size_t i=0;i<dQdx.size();i++) {
+      dQdx[i] = dQdx[i] * TMath::Exp((xAnode-std::abs(hitX[i]))/(fLifetime*vDrift));;
+    }
+  }
+
   // FIll 2D histo of dQdx vs residual range for hits in a given plane
   void CalorimetryHelper::FillHisto_dQdxVsRR(TH2D *h_dQdxVsRR) {
     const std::vector<double> &dQdx = GetdQdx();
