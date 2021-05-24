@@ -34,6 +34,8 @@ namespace stoppingcosmicmuonselection {
     // Add handle for clock and detector properties.
     auto const clockData = art::ServiceHandle<detinfo::DetectorClocksService>()->DataFor(evt);
     auto const detProp = art::ServiceHandle<detinfo::DetectorPropertiesService>()->DataFor(evt, clockData);
+    double driftVelocity = detprop.DriftVelocity()*1e-3;
+    std::cout << "Drift velocity: " << driftVelocity << std::endl;
 
     // Get track handle.
     art::Handle<std::vector<recob::Track>> trackListHandle;
