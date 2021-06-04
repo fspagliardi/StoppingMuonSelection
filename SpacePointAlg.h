@@ -42,7 +42,7 @@ namespace stoppingcosmicmuonselection {
     double _cilinderRadius; // cm
     size_t _minNumberSpacePoints;
     
-    double _distanceFootSpYZ, _distanceFootEndYZ, _distance_FootSpXZ, distanceFootEndXZ;
+    double _distanceFootSpYZ, _distanceFootEndYZ, _distanceFootSpXZ, _distanceFootEndXZ;
     // Given a point and a line find the projection of that point on the line in 2D
     TVector3 FindFoot(double *coeffLine, const double &sp_Y, const double &sp_Z);
     // Fill the coefficients for the line interpolating the start and end of theALG
