@@ -159,6 +159,34 @@ namespace stoppingcosmicmuonselection {
         fHitY = myCalo.at(4);
         fHitZ = myCalo.at(5);
 
+        // Order residual range
+        std::vector<double> res_vect;
+        std::vector<double> fResRange_ord;
+        for (size_t i = 0; i < fResRange.size();i++) {
+          res_vect.push_back(fResRange[i]);
+        }
+        fResRange_ord.resize(fResRange.size());
+        size_t size = fResRange.size();
+        double max = *max_element(res_vect.begin(),res_vect.end());
+        for (size_t i = 0; i < fResRange.size();i++) {
+          if (fHitY[size-1] < fHitY[0])  {
+            if (fResRange[size-1] < fResRange[0])  {
+              fResRange_ord[i] = fResRange[i];
+            }
+            else {
+              fResRange_ord[i] = max-fResRange[i];
+            }
+          }
+          else {
+            if (fResRange[size-1] < fResRange[0])  {
+              fResRange_ord[i] = max-fResRange[i];
+            }
+            else {
+              fResRange_ord[i] = fResRange[i];
+            }
+          }
+        }
+        fResRange = fResRange_ord;
       }
       // Fix lifetime
       caloHelper.LifeTimeCorrNew(fdQdx, fHitX, evt);
