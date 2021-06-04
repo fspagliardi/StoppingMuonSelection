@@ -131,21 +131,21 @@ bool SpacePointAlg::IsTrackNotFittingSpacePoints(TVector3 &posExtremeValidPoint,
 
     // Check if the space point is within the designed geometry. NB: The coordinated for the vector foot**
     // are always such that Y(Z) for every plane
-    double distanceFootSpYZ = TMath::Sqrt(TMath::Power(footYZ.Y()-sp.XYZ()[1],2) + TMath::Power(footYZ.Z()-sp.XYZ()[2],2));
-    double distanceFootEndYZ = TMath::Sqrt(TMath::Power(footYZ.Y()-posExtremeValidPoint.Y(),2) + TMath::Power(footYZ.Z()-posExtremeValidPoint.Z(),2));
-    double distanceFootSpXZ = TMath::Sqrt(TMath::Power(footXZ.Y()-sp.XYZ()[0],2) + TMath::Power(footXZ.Z()-sp.XYZ()[2],2));
-    double distanceFootEndXZ = TMath::Sqrt(TMath::Power(footXZ.Y()-posExtremeValidPoint.X(),2) + TMath::Power(footXZ.Z()-posExtremeValidPoint.Z(),2));
+    _distanceFootSpYZ = TMath::Sqrt(TMath::Power(footYZ.Y()-sp.XYZ()[1],2) + TMath::Power(footYZ.Z()-sp.XYZ()[2],2));
+    _distanceFootEndYZ = TMath::Sqrt(TMath::Power(footYZ.Y()-posExtremeValidPoint.Y(),2) + TMath::Power(footYZ.Z()-posExtremeValidPoint.Z(),2));
+    _distanceFootSpXZ = TMath::Sqrt(TMath::Power(footXZ.Y()-sp.XYZ()[0],2) + TMath::Power(footXZ.Z()-sp.XYZ()[2],2));
+    _distanceFootEndXZ = TMath::Sqrt(TMath::Power(footXZ.Y()-posExtremeValidPoint.X(),2) + TMath::Power(footXZ.Z()-posExtremeValidPoint.Z(),2));
 
     if (whichEnd == "bottom") { // option bottom includes cathode-crossing tracks as well
       // If track is T0 tagged the space points not fitted are not aligned in the XY place because they have
       // the wrong X while the T0-tagged track has been shifted.
       if (tP.isAnodeCrosserPandora || tP.isCathodeCrosser) {
-        if (distanceFootSpYZ<_cilinderRadius && distanceFootEndYZ<_cilinderAxis && posExtremeValidPoint.Y()>sp.XYZ()[1]) {
+        if (_distanceFootSpYZ<_cilinderRadius && _distanceFootEndYZ<_cilinderAxis && posExtremeValidPoint.Y()>sp.XYZ()[1]) {
           spCounter++;
         }
       }
       else if (tP.isAnodeCrosserMine) {
-        if (distanceFootSpYZ<_cilinderRadius && distanceFootEndYZ<_cilinderAxis && distanceFootSpXZ<_cilinderRadius && distanceFootEndXZ<_cilinderAxis && posExtremeValidPoint.Y()>sp.XYZ()[1]) {
+        if (_distanceFootSpYZ<_cilinderRadius && _distanceFootEndYZ<_cilinderAxis && _distanceFootSpXZ<_cilinderRadius && _distanceFootEndXZ<_cilinderAxis && posExtremeValidPoint.Y()>sp.XYZ()[1]) {
           spCounter++;
           //std::cout << "X: " << sp.XYZ()[0] << " Y: " << sp.XYZ()[1] << " Z: " << sp.XYZ()[2] << std::endl;
         }
@@ -154,7 +154,7 @@ bool SpacePointAlg::IsTrackNotFittingSpacePoints(TVector3 &posExtremeValidPoint,
     }
     else if (whichEnd == "top") {
       if (tP.isAnodeCrosserMine) {
-        if (distanceFootSpYZ<_cilinderRadius && distanceFootEndYZ<_cilinderAxis && distanceFootSpXZ<_cilinderRadius && distanceFootEndXZ<_cilinderAxis && posExtremeValidPoint.Y()<sp.XYZ()[1]) {
+        if (_distanceFootSpYZ<_cilinderRadius && _distanceFootEndYZ<_cilinderAxis && _distanceFootSpXZ<_cilinderRadius && _distanceFootEndXZ<_cilinderAxis && posExtremeValidPoint.Y()<sp.XYZ()[1]) {
           spCounter++;
           //std::cout << "X: " << sp.XYZ()[0] << " Y: " << sp.XYZ()[1] << " Z: " << sp.XYZ()[2] << std::endl;
         }
