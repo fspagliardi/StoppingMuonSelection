@@ -134,6 +134,7 @@ namespace stoppingcosmicmuonselection {
       caloHelper.FillHisto_dQdxVsRR(h_dQdxVsRR);
       caloHelper.FillHisto_dQdxVsRR(h_dQdxVsRR_TP075,_trackPitch-_trackPitchTolerance,_trackPitch+_trackPitchTolerance);
       fdQdx = caloHelper.GetdQdx();
+      fdEdx = caloHelper.GetdEdx();
       fDriftTime = caloHelper.GetDriftTime();
       fLifeTimeCorr = caloHelper.GetCorrFactor();
       fResRange = caloHelper.GetResRangeOrdered();
