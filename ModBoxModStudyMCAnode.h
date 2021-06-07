@@ -141,6 +141,7 @@ private:
   std::vector<double> fYZcalibFactor;
   std::vector<double> fXcalibFactor;
   std::vector<double> fdQdx;
+  std::vector<double> fdEdx;
   std::vector<double> fResRange;
   std::vector<double> fTrackPitch;
   std::vector<double> fHitX;
@@ -222,6 +223,7 @@ void ModBoxModStudyAnode::beginJob()
   fTrackTree->Branch("YZcalibFactor", &fYZcalibFactor);
   fTrackTree->Branch("XcalibFactor", &fXcalibFactor);
   fTrackTree->Branch("dQdx", &fdQdx);
+  fTrackTree->Branch("dEdx", &fdEdx);
   fTrackTree->Branch("ResRange", &fResRange);
   fTrackTree->Branch("TrackPitch", &fTrackPitch);
   fTrackTree->Branch("HitX", &fHitX);

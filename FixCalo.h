@@ -422,6 +422,17 @@ namespace stoppingcosmicmuonselection {
           //   dEdx = caloAlg.dEdx_AREA(clock_data, detprop, *allHits[hits[ipl][ihit]], pitch, T0);
           // else
           //   dEdx = caloAlg.dEdx_AMP(clock_data, detprop, *allHits[hits[ipl][ihit]], pitch, T0);
+          double dQdx_e = dQdx / 1e-3;
+          double rho = detprop.Density();
+          double Wion = 1000./util::kGeVToElectrons;
+          double E_field_nominal = detprop.Efield();
+          geo::Vector_t E_field_offsets = {0., 0., 0.};
+          E_field_offsets = sce->GetCalEfieldOffsets(geo::Point_t{xyz3d[0], xyz3d[1], xyz3d[2]},planeID.TPC);
+          TVector3 E_field_vector = {E_field_nominal*(1 + E_field_offsets.X()), E_field_nominal*E_field_offsets.Y(), E_field_nominal*E_field_offsets.Z()};
+          double E_field = E_field_vector.Mag();
+          double Beta = 0.212 / (rho * E_field);
+          double Alpha = 0.93;
+          dEdx = (exp(Beta * Wion * dQdx_e) - Alpha) / Beta;
 
           Kin_En = Kin_En + dEdx * pitch;
 
@@ -589,6 +600,7 @@ namespace stoppingcosmicmuonselection {
         to_be_returned.push_back(XX);
         to_be_returned.push_back(YY);
         to_be_returned.push_back(ZZ);
+        to_be_returned.push_back(vdEdx);
 
       } //end looping over planes
     }   //end looping over tracks

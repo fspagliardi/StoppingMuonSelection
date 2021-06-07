@@ -148,7 +148,7 @@ namespace stoppingcosmicmuonselection {
       else if (fIsRecoSelectedAnodeCrosser && selectorAlg.GetTrackProperties().isAnodeCrosserMine) {
         //calibHelper.CorrectXPosition(fHitX,selectorAlg.GetTrackProperties().recoStartPoint.X(),selectorAlg.GetTrackProperties().recoEndPoint.X(),selectorAlg.GetTrackProperties().trackT0);
         const std::vector<std::vector<double>> &myCalo = fixCalo.GetRightCalo(evt,selectorAlg.GetTrackProperties().trackT0,track);
-        if (myCalo.size()!=6) {
+        if (myCalo.size()!=7) {
           std::cout << "Error: The size of the vector myCalo is wrong!" << std::endl;
           continue;
         }
@@ -158,6 +158,7 @@ namespace stoppingcosmicmuonselection {
         fHitX = myCalo.at(3);
         fHitY = myCalo.at(4);
         fHitZ = myCalo.at(5);
+        fdEdx = myCalo.at(6);
 
         // Order residual range
         std::vector<double> res_vect;
