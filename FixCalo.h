@@ -26,6 +26,7 @@
 #include "larevt/SpaceCharge/SpaceCharge.h"
 #include "larevt/SpaceChargeServices/SpaceChargeService.h"
 
+#include "protoduneana/StoppingMuonSelection/CalibrationHelper.h"
 // ROOT includes
 #include <TF1.h>
 #include <TGraph.h>
@@ -63,6 +64,7 @@ namespace stoppingcosmicmuonselection {
                                 double& pitch,
                                 double TickT0);
   private:
+    CalibrationHelper calibHelper;
 
   };
 
@@ -417,6 +419,7 @@ namespace stoppingcosmicmuonselection {
 
           double MIPs = charge;
           double dQdx = MIPs / pitch;
+          calibHelper.LifeTimeCorrNew(dQdx, xyz3d[0], evt);
           double dEdx = 0;
           // if (fUseArea)
           //   dEdx = caloAlg.dEdx_AREA(clock_data, detprop, *allHits[hits[ipl][ihit]], pitch, T0);
@@ -433,7 +436,7 @@ namespace stoppingcosmicmuonselection {
           double Beta = 0.212 / (rho * E_field);
           double Alpha = 0.93;
           dEdx = (exp(Beta * Wion * dQdx_e) - Alpha) / Beta;
-
+          //std::cout << "dQdx: " << dQdx << std::endl;
           Kin_En = Kin_En + dEdx * pitch;
 
           if (allHits[hits[ipl][ihit]]->WireID().Wire < wire0)
