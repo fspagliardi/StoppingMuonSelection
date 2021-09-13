@@ -93,6 +93,29 @@ namespace stoppingcosmicmuonselection {
     return result;
   }
 
+  void CalibrationHelper::LifeTimeCorrNew(double &dQdx, const double &hitX, const art::Event &evt)  {
+    auto const clockData = art::ServiceHandle<detinfo::DetectorClocksService>()->DataFor(evt);
+    auto const detProp = art::ServiceHandle<detinfo::DetectorPropertiesService const>()->DataFor(evt);
+    double vDrift = detProp.DriftVelocity(); //cm/us
+    double xAnode = std::abs(detProp.ConvertTicksToX(trigger_offset(clockData),0,0,0));
+    std::cout << "X ANODE: " << xAnode << std::endl;
+    double fLifetime = INV_DBL;
+
+    if (evt.isRealData()) {
+      // Electron lifetime from database calibration service provider
+      //art::ServiceHandle<calib::LifetimeCalibService> lifetimecalibHandler;
+      //calib::LifetimeCalibService & lifetimecalibService = *lifetimecalibHandler;
+      //calib::LifetimeCalib *lifetimecalib = lifetimecalibService.provider();
+      //fLifetime = lifetimecalib->GetLifetime()*1000.0; // [ms]*1000.0 -> [us]
+      //std::cout << "LIFETIME: " << fLifetime << std::endl;
+      fLifetime = 17518.3; // us?
+    }
+    else {
+      fLifetime = detProp.ElectronLifetime();
+    }
+    dQdx = dQdx * TMath::Exp((xAnode-std::abs(hitX))/(fLifetime*vDrift));
+  }
+
   // Get vector of directions.
   std::vector<TVector3> CalibrationHelper::GetHitDirVec(const std::vector<double> &hit_x, const std::vector<double> &hit_y, const std::vector<double> &hit_z) {
 

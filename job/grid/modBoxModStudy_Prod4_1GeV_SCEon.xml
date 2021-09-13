@@ -50,6 +50,18 @@
   <jobsub>-f &pathCalibFile;/MCdEdxSuperBinning.root -f &pathCalibFile;/Xcalo_prod4_sceon.root -f &pathCalibFile;/YZcalo_prod4_sceon.root --memory=4000 --expected-lifetime=10h</jobsub>
 </stage>
 
+<stage name = "runProd4Anode_strictSP">
+  <fcl>runModBoxModStudyMCProd4_Anode_strictSP.fcl</fcl>
+  <inputdef>PDSPProd4_MC_1GeV_reco1_sce_datadriven_v1</inputdef>
+  <outdir>/pnfs/dune/scratch/users/fspaglia/&release;/&name;_anode_strictSP</outdir>
+  <workdir>/pnfs/dune/scratch/users/fspaglia/&release;/&name;_anode_strictSP</workdir>
+  <numjobs>2764</numjobs>
+  <schema>root</schema>
+  <maxfilesperjob>10</maxfilesperjob>
+  <anadatatier>full-reconstructed</anadatatier>
+  <jobsub>-f &pathCalibFile;/MCdEdxSuperBinning.root -f &pathCalibFile;/Xcalo_prod4_sceon.root -f &pathCalibFile;/YZcalo_prod4_sceon.root --memory=4000 --expected-lifetime=10h</jobsub>
+</stage>
+
 <stage name = "runProd4Cathode">
   <fcl>runModBoxModStudyMCProd4_Cathode.fcl</fcl>
   <inputdef>PDSPProd4_MC_1GeV_reco1_sce_datadriven_v1</inputdef>

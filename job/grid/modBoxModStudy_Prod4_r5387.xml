@@ -33,8 +33,7 @@
 <larsoft>
 <tag>&release;</tag>
 <qual>e19:prof</qual>
-<!--local>/pnfs/dune/resilient/users/fspaglia/protoduneanav09_12_00.tar</local-->
-<local>/pnfs/dune/resilient/users/fspaglia/tmp.tar</local>
+<local>/pnfs/dune/resilient/users/fspaglia/protoduneanav09_12_00.tar</local>
 </larsoft>
 
 <check>1</check>
@@ -44,7 +43,8 @@
   <inputdef>protodune-sp_runset_5387_reco_v09_01_01_v0</inputdef>
   <outdir>/pnfs/dune/scratch/users/fspaglia/&release;/&name;_anode</outdir>
   <workdir>/pnfs/dune/scratch/users/fspaglia/&release;/&name;_anode</workdir>
-  <numjobs>950</numjobs>
+  <!--numjobs>950</numjobs-->
+  <numjobs>3</numjobs>
   <schema>root</schema>
   <maxfilesperjob>1</maxfilesperjob>
   <anadatatier>full-reconstructed</anadatatier>

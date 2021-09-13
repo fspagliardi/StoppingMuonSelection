@@ -3,13 +3,12 @@
 #include "stoppingmuonAlg.fcl"
 #include "caloHelper.fcl"
 #include "hitHelper.fcl"
-#include "ProtoDUNEUnstableHVFilter.fcl"
-#include "ProtoDUNEFembFilter.fcl"
-#include "filters.fcl"
+#include "ecalibration.fcl"
+#include "caldata_dune.fcl"
 #include "protoDUNE_reco_data_prolog.fcl"
 #include "protodune_tools_dune.fcl"
 
-process_name: ModBoxModStudyMCData
+process_name: ModBoxModStudyMC
 
 services:
 {
@@ -21,9 +20,8 @@ services:
   message:  @local::dune_message_services_prod_debug
   FileCatalogMetadata: @local::art_file_catalog_mc
   PdspChannelMapService:        @local::pdspchannelmap
-  #@table::protodune_services
+  @table::protodune_services
   #@table::protodune_reco_services
-  @table::protodune_data_reco_services
   BackTrackerService: {
     BackTracker: {
       SimChannelModuleLabel: "tpcrawdecoder:simpleSC"
@@ -52,7 +50,6 @@ modboxmodstudyprod4:
   StoppingMuonSelectionAlg: @local::stoppingmuonAlg
   CalorimetryHelper:        @local::caloHelper
   HitHelper:                @local::hitHelper
-  SelectEvents: [fpath]
 }
 
 source:
@@ -67,12 +64,6 @@ physics:
   producers: {
     @table::protoDUNE_reco_data_stage1_producers
   }
-  filters: {
-    f2: @local::pdsp_fembfilter_all
-    f1: @local::HVfilter
-  }
-
-  fpath: [f1, f2]
 
   analyzers: {
     fabioana: @local::modboxmodstudyprod4
@@ -87,10 +78,7 @@ physics.producers.emtrkmichelid.PointIdAlg.AdcMin: -10 # This was previously -50
 physics.producers.emtrkmichelid.PointIdAlg.AdcMax: 30  # This was previously 150
 services.SpaceCharge.EnableCalEfieldSCE: true
 services.SpaceCharge.EnableCalSpatialSCE: true
-services.LifetimeCalibService.IsMC: false
-services.LifetimeCalibService.UseCondbLifetime: true
-services.LifetimeCalibService.LifetimeDBTag: "v1.1"
-#michel_study.minNumberSpacePoints: 3
+physics.analyzers.fabioana.SpacePointAlg.minNumberSpacePoints: 3
 #michel_study.SpacePointAlg.cilinderAxis:   50
 #michel_study.SpacePointAlg.cilinderRadius: 5
 #michel_study.SpacePointAlg.minNumberSpacePoints: 10

@@ -19,6 +19,8 @@
 #include "larcorealg/Geometry/TPCGeo.h"
 #include "larcorealg/Geometry/GeometryCore.h"
 #include "lardata/DetectorInfoServices/DetectorPropertiesService.h"
+#include "dune/Calib/LifetimeCalib.h"
+#include "dune/CalibServices/LifetimeCalibService.h"
 #include "art/Framework/Principal/Event.h"
 #include "art/Framework/Principal/Handle.h"
 #include "TVector3.h"
@@ -57,7 +59,9 @@ namespace stoppingcosmicmuonselection {
     // Get vector of factors for YZ.
     std::vector<double> GetYZCorr_V(const std::vector<double> &hit_xs, const std::vector<double> &hit_ys, const std::vector<double> &hit_zs);
 
-    // Get vector of directions.
+    void LifeTimeCorrNew(double &dQdx, const double &hitX, const art::Event &evt);
+    
+      // Get vector of directions.
     std::vector<TVector3> GetHitDirVec(const std::vector<double> &hit_xs, const std::vector<double> &hit_ys, const std::vector<double> &hit_zs);
 
     // Get vector of Fields.

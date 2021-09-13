@@ -78,6 +78,7 @@ namespace stoppingcosmicmuonselection {
     // Get the lifetime correction
     double LifeTimeCorr(double &ticks, const double &T0, const double &samplingRate, const double &triggerOffset, const double &electronLifetime);
     void LifeTimeCorrNew(std::vector<double> &dQdx, const std::vector<double> &hitX, const art::Event &evt);
+    void LifeTimeCorrNew(double &dQdx, const double &hitX, const art::Event &evt);
     // Fill 2D histo of dQdx vs residual range for hits in a given plane
     void FillHisto_dQdxVsRR(TH2D *h_dQdxVsRR);
     void FillHisto_dQdxVsRR(TH2D *h_dQdxVsRR, const double &tp_min, const double &tp_max);

@@ -190,7 +190,7 @@ namespace stoppingcosmicmuonselection {
         fResRange = fResRange_ord;
       }
       // Fix lifetime
-      caloHelper.LifeTimeCorrNew(fdQdx, fHitX, evt);
+      //caloHelper.LifeTimeCorrNew(fdQdx, fHitX, evt);
       fPhis = calibHelper.PitchFieldAngle(fHitX, fHitY, fHitZ);
       std::vector<size_t> hitIndeces = caloHelper.GetHitIndex();
       //double xxx = detprop->ConvertTicksToX(allHits[hitIndeces[4]].PeakTime(),allHits[hitIndeces[4]].WireID().Plane, allHits[hitIndeces[4]].WireID().TPC, allHits[hitIndeces[4]].WireID().Cryostat);

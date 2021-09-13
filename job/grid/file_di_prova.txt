@@ -1,0 +1,1 @@
+/pnfs/dune/tape_backed/dunepro/protodune-sp/full-reconstructed/2020/mc/out1/PDSPProd4/13/77/88/29/PDSPProd4_protoDUNE_sp_reco_stage1_p1GeV_35ms_sce_datadriven_13778829_106_20201108T194551Z.root
