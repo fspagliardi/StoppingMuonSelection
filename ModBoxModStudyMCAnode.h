@@ -134,6 +134,7 @@ private:
   bool fIsTrueSelectedAnodeCrosser = false;
   bool fIsAnodePandora = false;
   bool fIsAnodeMine = false;
+  double fLifetime = INV_DBL;
   std::vector<double> f_michelHitsMichelScore;
   std::vector<double> f_muonHitsMichelScore;
   std::vector<double> fDriftTime;
@@ -218,6 +219,7 @@ void ModBoxModStudyAnode::beginJob()
   fTrackTree->Branch("isTrueSelectedAnodeCrosser",&fIsTrueSelectedAnodeCrosser);
   fTrackTree->Branch("isAnodePandora", &fIsAnodePandora);
   fTrackTree->Branch("isAnodeMine", &fIsAnodeMine);
+  fTrackTree->Branch("lifetime", &fLifetime, "fLifetime/d");
   fTrackTree->Branch("driftTime", &fDriftTime);
   fTrackTree->Branch("lifeTimeCorr", &fLifeTimeCorr);
   fTrackTree->Branch("YZcalibFactor", &fYZcalibFactor);
@@ -256,6 +258,12 @@ void ModBoxModStudyAnode::beginJob()
 
   // Print active volume bounds.
   geoHelper.PrintActiveVolumeBounds();
+  
+  art::ServiceHandle<calib::LifetimeCalibService> lifetimecalibHandler;
+  calib::LifetimeCalibService & lifetimecalibService = *lifetimecalibHandler;
+  calib::LifetimeCalib *lifetimecalib = lifetimecalibService.provider();
+  double Lifetime = lifetimecalib->GetLifetime()*1000.0; // [ms]*1000.0 -> [us]
+  std::cout << "LIFETIME: " << Lifetime << std::endl;
 
 }
 

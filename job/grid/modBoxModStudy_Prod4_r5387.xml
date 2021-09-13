@@ -43,8 +43,8 @@
   <inputdef>protodune-sp_runset_5387_reco_v09_01_01_v0</inputdef>
   <outdir>/pnfs/dune/scratch/users/fspaglia/&release;/&name;_anode</outdir>
   <workdir>/pnfs/dune/scratch/users/fspaglia/&release;/&name;_anode</workdir>
-  <!--numjobs>950</numjobs-->
-  <numjobs>3</numjobs>
+  <numjobs>950</numjobs>
+  <!--numjobs>3</numjobs-->
   <schema>root</schema>
   <maxfilesperjob>1</maxfilesperjob>
   <anadatatier>full-reconstructed</anadatatier>

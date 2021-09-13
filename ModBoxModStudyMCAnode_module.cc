@@ -14,6 +14,11 @@ namespace stoppingcosmicmuonselection {
     fEvNumber = evt.id().event();
     std::cout << "ModBoxModStudyAnode_module is on event: " << fEvNumber << std::endl;
     mf::LogVerbatim("ModBoxModStudyAnode") << "ModBoxModStudyAnode module on event " << fEvNumber;
+    art::ServiceHandle<calib::LifetimeCalibService> lifetimecalibHandler;
+    calib::LifetimeCalibService & lifetimecalibService = *lifetimecalibHandler;
+    calib::LifetimeCalib *lifetimecalib = lifetimecalibService.provider();
+    fLifetime = lifetimecalib->GetLifetime()*1000.0; // [ms]*1000.0 -> [us]
+    std::cout << "LIFETIME: " << fLifetime << std::endl;
 
     // Set the calibration helper.
     calibHelper.Set(evt);
@@ -159,6 +164,11 @@ namespace stoppingcosmicmuonselection {
         fHitY = myCalo.at(4);
         fHitZ = myCalo.at(5);
         fdEdx = myCalo.at(6);
+
+        // Apply lifetime correction
+        for (size_t j=0;j<fdQdx.size();j++) {
+          fdQdx[j] = fdQdx[j] * calibHelper.GetLifeTimeCorrFactor(fLifetime, fHitX[j], evt);
+        }
 
         // Order residual range
         std::vector<double> res_vect;

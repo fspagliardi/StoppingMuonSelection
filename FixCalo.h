@@ -419,7 +419,8 @@ namespace stoppingcosmicmuonselection {
 
           double MIPs = charge;
           double dQdx = MIPs / pitch;
-          calibHelper.LifeTimeCorrNew(dQdx, xyz3d[0], evt);
+          //calibHelper.LifeTimeCorrNew(dQdx, xyz3d[0], evt);
+          // let's do the correction in the analyzer
           double dEdx = 0;
           // if (fUseArea)
           //   dEdx = caloAlg.dEdx_AREA(clock_data, detprop, *allHits[hits[ipl][ihit]], pitch, T0);

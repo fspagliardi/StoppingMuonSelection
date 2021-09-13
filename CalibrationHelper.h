@@ -61,7 +61,9 @@ namespace stoppingcosmicmuonselection {
 
     void LifeTimeCorrNew(double &dQdx, const double &hitX, const art::Event &evt);
     
-      // Get vector of directions.
+    double GetLifeTimeCorrFactor(const double &lt, const double &hitX, const art::Event &evt);
+     
+    // Get vector of directions.
     std::vector<TVector3> GetHitDirVec(const std::vector<double> &hit_xs, const std::vector<double> &hit_ys, const std::vector<double> &hit_zs);
 
     // Get vector of Fields.
