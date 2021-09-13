@@ -14,6 +14,11 @@ namespace stoppingcosmicmuonselection {
     fEvNumber = evt.id().event();
     std::cout << "ModBoxModStudyMC_module is on event: " << fEvNumber << std::endl;
     mf::LogVerbatim("ModBoxModStudyMC") << "ModBoxModStudyMC module on event " << fEvNumber;
+    art::ServiceHandle<calib::LifetimeCalibService> lifetimecalibHandler;
+    calib::LifetimeCalibService & lifetimecalibService = *lifetimecalibHandler;
+    calib::LifetimeCalib *lifetimecalib = lifetimecalibService.provider();
+    fLifetime = lifetimecalib->GetLifetime()*1000.0; // [ms]*1000.0 -> [us]
+    std::cout << "LIFETIME: " << fLifetime << std::endl;
 
     // Set the calibration helper.
     calibHelper.Set(evt);
@@ -136,7 +141,7 @@ namespace stoppingcosmicmuonselection {
       fdQdx = caloHelper.GetdQdx();
       fdEdx = caloHelper.GetdEdx();
       fDriftTime = caloHelper.GetDriftTime();
-      fLifeTimeCorr = caloHelper.GetCorrFactor();
+      //fLifeTimeCorr = caloHelper.GetCorrFactor();
       fResRange = caloHelper.GetResRangeOrdered();
       fTrackPitch = caloHelper.GetTrackPitch();
       fHitX = caloHelper.GetHitX();
@@ -149,6 +154,16 @@ namespace stoppingcosmicmuonselection {
       std::vector<size_t> hitIndeces = caloHelper.GetHitIndex();
       //double xxx = detprop->ConvertTicksToX(allHits[hitIndeces[4]].PeakTime(),allHits[hitIndeces[4]].WireID().Plane, allHits[hitIndeces[4]].WireID().TPC, allHits[hitIndeces[4]].WireID().Cryostat);
       //std::cout << "X: " << fHitX[4] << " Time: " << allHits[hitIndeces[4]].PeakTime() << " Converted: " << xxx << std::endl;
+      // Save lifetime correction factors
+      for (size_t j=0;j<fdQdx.size();j++) {
+        fLifeTimeCorr.push_back(calibHelper.GetLifeTimeCorrFactor(fLifetime, fHitX[j], evt));
+        double ltP10 = 0.1*fLifetime + fLifetime;
+        double ltM10 = -0.1*fLifetime + fLifetime;
+        fLifeTimeCorrP10.push_back(calibHelper.GetLifeTimeCorrFactor(ltP10, fHitX[j], evt));
+        fLifeTimeCorrM10.push_back(calibHelper.GetLifeTimeCorrFactor(ltM10, fHitX[j], evt));
+      }
+
+      
       for (size_t i=0; i<hitIndeces.size();i++) {
         double hitAmpl = allHits[hitIndeces[i]].PeakAmplitude();
         double hitRMS = allHits[hitIndeces[i]].RMS();

@@ -132,10 +132,13 @@ private:
   bool fIsTrueSelectedAnodeCrosser = false;
   bool fIsAnodePandora = false;
   bool fIsAnodeMine = false;
+  double fLifetime = INV_DBL;
   std::vector<double> f_michelHitsMichelScore;
   std::vector<double> f_muonHitsMichelScore;
   std::vector<double> fDriftTime;
   std::vector<double> fLifeTimeCorr;
+  std::vector<double> fLifeTimeCorrP10;
+  std::vector<double> fLifeTimeCorrM10;
   std::vector<double> fYZcalibFactor;
   std::vector<double> fXcalibFactor;
   std::vector<double> fdQdx;
@@ -216,8 +219,11 @@ void ModBoxModStudyMC::beginJob()
   fTrackTree->Branch("isTrueSelectedAnodeCrosser",&fIsTrueSelectedAnodeCrosser);
   fTrackTree->Branch("isAnodePandora", &fIsAnodePandora);
   fTrackTree->Branch("isAnodeMine", &fIsAnodeMine);
+  fTrackTree->Branch("lifetime", &fLifetime, "fLifetime/d");
   fTrackTree->Branch("driftTime", &fDriftTime);
   fTrackTree->Branch("lifeTimeCorr", &fLifeTimeCorr);
+  fTrackTree->Branch("lifeTimeCorrP10", &fLifeTimeCorrP10);
+  fTrackTree->Branch("lifeTimeCorrM10", &fLifeTimeCorrM10);
   fTrackTree->Branch("YZcalibFactor", &fYZcalibFactor);
   fTrackTree->Branch("XcalibFactor", &fXcalibFactor);
   fTrackTree->Branch("dQdx", &fdQdx);

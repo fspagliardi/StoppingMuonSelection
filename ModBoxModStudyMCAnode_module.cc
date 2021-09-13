@@ -143,7 +143,6 @@ namespace stoppingcosmicmuonselection {
       if (fIsRecoSelectedAnodeCrosser && selectorAlg.GetTrackProperties().isAnodeCrosserPandora) {
         fdQdx = caloHelper.GetdQdx();
         fDriftTime = caloHelper.GetDriftTime();
-        fLifeTimeCorr = caloHelper.GetCorrFactor();
         fResRange = caloHelper.GetResRangeOrdered();
         fTrackPitch = caloHelper.GetTrackPitch();
         fHitX = caloHelper.GetHitX();
@@ -168,6 +167,11 @@ namespace stoppingcosmicmuonselection {
         // Apply lifetime correction
         for (size_t j=0;j<fdQdx.size();j++) {
           fdQdx[j] = fdQdx[j] * calibHelper.GetLifeTimeCorrFactor(fLifetime, fHitX[j], evt);
+          fLifeTimeCorr.push_back(calibHelper.GetLifeTimeCorrFactor(fLifetime, fHitX[j], evt));
+          double ltP10 = 0.1*fLifetime + fLifetime;
+          double ltM10 = -0.1*fLifetime + fLifetime;
+          fLifeTimeCorrP10.push_back(calibHelper.GetLifeTimeCorrFactor(ltP10, fHitX[j], evt));
+          fLifeTimeCorrM10.push_back(calibHelper.GetLifeTimeCorrFactor(ltM10, fHitX[j], evt));
         }
 
         // Order residual range
