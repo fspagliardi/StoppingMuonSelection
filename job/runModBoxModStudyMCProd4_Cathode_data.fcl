@@ -87,6 +87,10 @@ physics.producers.emtrkmichelid.PointIdAlg.AdcMin: -10 # This was previously -50
 physics.producers.emtrkmichelid.PointIdAlg.AdcMax: 30  # This was previously 150
 services.SpaceCharge.EnableCalEfieldSCE: true
 services.SpaceCharge.EnableCalSpatialSCE: true
+services.LifetimeCalibService.IsMC: false
+services.LifetimeCalibService.UseCondbLifetime: true
+services.LifetimeCalibService.LifetimeDBTag: "v1.1"
+#services.LifetimeCalibService.LifetimeDBTag: "v2.0"
 #michel_study.minNumberSpacePoints: 3
 #michel_study.SpacePointAlg.cilinderAxis:   50
 #michel_study.SpacePointAlg.cilinderRadius: 5

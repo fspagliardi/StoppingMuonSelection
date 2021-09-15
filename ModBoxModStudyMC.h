@@ -23,6 +23,7 @@
 #include "TMath.h"
 #include "TGraphErrors.h"
 #include "TGraph2D.h"
+#include "TTimeStamp.h"
 
 #include "protoduneana/StoppingMuonSelection/DataTypes.h"
 #include "protoduneana/StoppingMuonSelection/GeometryHelper.h"

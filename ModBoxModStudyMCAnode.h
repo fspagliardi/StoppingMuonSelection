@@ -23,6 +23,7 @@
 #include "TMath.h"
 #include "TGraphErrors.h"
 #include "TGraph2D.h"
+#include "TTimeStamp.h"
 
 #include "protoduneana/StoppingMuonSelection/DataTypes.h"
 #include "protoduneana/StoppingMuonSelection/GeometryHelper.h"
@@ -263,11 +264,12 @@ void ModBoxModStudyAnode::beginJob()
   // Print active volume bounds.
   geoHelper.PrintActiveVolumeBounds();
   
-  art::ServiceHandle<calib::LifetimeCalibService> lifetimecalibHandler;
-  calib::LifetimeCalibService & lifetimecalibService = *lifetimecalibHandler;
-  calib::LifetimeCalib *lifetimecalib = lifetimecalibService.provider();
-  double Lifetime = lifetimecalib->GetLifetime()*1000.0; // [ms]*1000.0 -> [us]
-  std::cout << "LIFETIME: " << Lifetime << std::endl;
+  // DO NOT USE HERE IN BEGINJOB
+  //art::ServiceHandle<calib::LifetimeCalibService> lifetimecalibHandler;
+  //calib::LifetimeCalibService & lifetimecalibService = *lifetimecalibHandler;
+  //calib::LifetimeCalib *lifetimecalib = lifetimecalibService.provider();
+  //double Lifetime = lifetimecalib->GetLifetime()*1000.0; // [ms]*1000.0 -> [us]
+  //std::cout << "LIFETIME: " << Lifetime << std::endl;
 
 }
 

@@ -20,6 +20,19 @@ namespace stoppingcosmicmuonselection {
     fLifetime = lifetimecalib->GetLifetime()*1000.0; // [ms]*1000.0 -> [us]
     std::cout << "LIFETIME: " << fLifetime << std::endl;
 
+    // Timing stuff
+    const char * timestamp;
+    art::Timestamp ts = evt.time();
+    if (ts.timeHigh()==0) {
+      TTimeStamp ts2(ts.timeLow());
+      timestamp = ts2.AsString();
+    }
+    else {
+      TTimeStamp ts2(ts.timeHigh(), ts.timeLow());
+      timestamp = ts2.AsString();
+    }
+    std::cout << "TIMESTAMP: "  << timestamp << std::endl;
+
     // Set the calibration helper.
     calibHelper.Set(evt);
 
