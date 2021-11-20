@@ -40,10 +40,12 @@
 
 <stage name = "runProd4Anode">
   <fcl>runModBoxModStudyMCProd4_Anode.fcl</fcl>
-  <inputdef>PDSPProd4_MC_1GeV_reco1_sce_datadriven_v1</inputdef>
+  <!--inputdef>PDSPProd4_MC_1GeV_reco1_sce_datadriven_v1</inputdef-->
+  <inputdef>PDSPProd4a_MC_1GeV_reco1_sce_datadriven_v1_03</inputdef>
   <outdir>/pnfs/dune/scratch/users/fspaglia/&release;/&name;_anode</outdir>
   <workdir>/pnfs/dune/scratch/users/fspaglia/&release;/&name;_anode</workdir>
-  <numjobs>2764</numjobs>
+  <!--numjobs>2764</numjobs-->
+  <numjobs>1000</numjobs>
   <schema>root</schema>
   <maxfilesperjob>10</maxfilesperjob>
   <anadatatier>full-reconstructed</anadatatier>
@@ -64,10 +66,12 @@
 
 <stage name = "runProd4Cathode">
   <fcl>runModBoxModStudyMCProd4_Cathode.fcl</fcl>
-  <inputdef>PDSPProd4_MC_1GeV_reco1_sce_datadriven_v1</inputdef>
+  <!--inputdef>PDSPProd4_MC_1GeV_reco1_sce_datadriven_v1</inputdef-->
+  <inputdef>PDSPProd4a_MC_1GeV_reco1_sce_datadriven_v1_03</inputdef>
   <outdir>/pnfs/dune/scratch/users/fspaglia/&release;/&name;_cathode</outdir>
   <workdir>/pnfs/dune/scratch/users/fspaglia/&release;/&name;_cathode</workdir>
-  <numjobs>2764</numjobs>
+  <!--numjobs>2764</numjobs-->
+  <numjobs>1000</numjobs>
   <schema>root</schema>
   <maxfilesperjob>10</maxfilesperjob>
   <anadatatier>full-reconstructed</anadatatier>
