@@ -97,7 +97,7 @@ namespace stoppingcosmicmuonselection {
 
     if (TMath::Abs(_theta_yz-90)<10 || TMath::Abs(_theta_yz+90)<10 || TMath::Abs(_theta_xz-90)<10 || TMath::Abs(_theta_xz+90)<10) {
       if(DEBUG) std::cout << "Track's angle not accepted." << std::endl;
-      return false;
+      //return false;
     }
 
     bool goodTrack = geoHelper.IsPointYZProjectionInArea(_recoStartPoint,offsetYStartPoint_AC,offsetZStartPoint_AC);
@@ -311,7 +311,7 @@ namespace stoppingcosmicmuonselection {
       _trackT0 = pfparticleT0s[0].Time();
 
     if (_trackLength < length_cutoff_CC) return false;
-    if (TMath::Abs(_theta_yz-90)<10 || TMath::Abs(_theta_yz+90)<10 || TMath::Abs(_theta_xz-90)<10 || TMath::Abs(_theta_xz+90)<10) return false;
+    //if (TMath::Abs(_theta_yz-90)<10 || TMath::Abs(_theta_yz+90)<10 || TMath::Abs(_theta_xz-90)<10 || TMath::Abs(_theta_xz+90)<10) return false;
     bool goodTrack = ((_recoStartPoint.X()*_recoEndPoint.X()<0)
                      && geoHelper.IsPointInSlice(_recoStartPoint)
                      && geoHelper.IsPointInVolume(geoHelper.GetFiducialVolumeBounds(),_recoEndPoint));
