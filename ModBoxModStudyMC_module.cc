@@ -14,10 +14,15 @@ namespace stoppingcosmicmuonselection {
     fEvNumber = evt.id().event();
     std::cout << "ModBoxModStudyMC_module is on event: " << fEvNumber << std::endl;
     mf::LogVerbatim("ModBoxModStudyMC") << "ModBoxModStudyMC module on event " << fEvNumber;
-    art::ServiceHandle<calib::LifetimeCalibService> lifetimecalibHandler;
-    calib::LifetimeCalibService & lifetimecalibService = *lifetimecalibHandler;
-    calib::LifetimeCalib *lifetimecalib = lifetimecalibService.provider();
-    fLifetime = lifetimecalib->GetLifetime()*1000.0; // [ms]*1000.0 -> [us]
+    
+    if (evt.isRealData()) {
+      art::ServiceHandle<calib::LifetimeCalibService> lifetimecalibHandler;
+      calib::LifetimeCalibService & lifetimecalibService = *lifetimecalibHandler;
+      calib::LifetimeCalib *lifetimecalib = lifetimecalibService.provider();
+      fLifetime = lifetimecalib->GetLifetime()*1000.0; // [ms]*1000.0 -> [us]
+    }
+    else
+      fLifetime = 35000;
     std::cout << "LIFETIME: " << fLifetime << std::endl;
 
     // Timing stuff
